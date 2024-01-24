@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -18,6 +14,35 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants 
 {
+  public static class DrivetrainConstants
+  {
+    //CAN Id's for the driving and turning motors
+    public static final int kFrontLeftDrivingCANId = 10;
+    public static final int kFrontRightDrivingCANId = 12;
+    public static final int kBackLeftDrivingCANId = 14;
+    public static final int kBackRightDrivingCANId = 16;
+
+    public static final int kFrontLeftTurningCANId = 11;
+    public static final int kFrontRightTurningCANId = 13;
+    public static final int kBackLeftTurningCANId = 15;
+    public static final int kBackRightTurningCANId = 17;
+
+    //Not the maxium capable speed of the robot 
+    //but an allowed max speed of the robot
+    public static final double kMaxSpeedMetersPerSecond = 5.0;
+    public static final double kMaxAngularSpeed = 2 * Math.PI; //radians per second
+
+    //May be removed
+    //Use REV hardware client to remove offset in the wheels by zeroing them
+    //if that doesn't work record offset of the wheels when lined up
+    //Angular offsets of the modules relative to the chassis in radians
+    public static final double kFrontLeftChassisAngularOffset = 0;
+    public static final double kFrontRightChassisAngularOffset = 0;
+    public static final double kBackLeftChassisAngularOffset = 0;
+    public static final double kBackRightChassisAngularOffset = 0;
+
+  }
+
   public static class SwerveModuleConstants
   {
     //may need to change to 12T or 14T
@@ -30,12 +55,12 @@ public final class Constants
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
 
     //RPM of the NEO brushless motors
-    public static final double kFreeSpeedRPM = 5676;
-    public static final double kDrivingMotorFreeSpeedRPS = kFreeSpeedRPM / 60;
+    public static final double kFreeSpeedRPM = 5676; //rotations per min
+    public static final double kDrivingMotorFreeSpeedRPS = kFreeSpeedRPM / 60; //rotations per sec
     //gear ratios of driving motor
-    // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15 teeth on the bevel pinion
+    //45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15 teeth on the bevel pinion
     public static final double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
-    public static final double kDrivingWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRPS * kWheelCircumferenceMeters) / kDrivingMotorReduction;
+    public static final double kDrivingWheelFreeSpeedRPS = (kDrivingMotorFreeSpeedRPS * kWheelCircumferenceMeters) / kDrivingMotorReduction;
 
     //conversion factors that may be needed
     public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI) / kDrivingMotorReduction; //meters
@@ -65,6 +90,10 @@ public final class Constants
 
     public static final int kDrivingMotorCurrentLimit = 50; // amps
     public static final int kTurningMotorCurrentLimit = 20; // amps
+  }
 
+  public static class IOConstants
+  {
+    public static final int kDriverControllerPort = 0;
   }
 }

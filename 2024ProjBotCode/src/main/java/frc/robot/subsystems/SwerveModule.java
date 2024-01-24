@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
@@ -24,7 +23,7 @@ public class SwerveModule
     private final SparkPIDController drivingPIDController;
     private final SparkPIDController turningPIDController;
 
-    private double chassisAngularOffset = 0;
+    private final double chassisAngularOffset;
     private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d());
 
     public SwerveModule(int driveMotorId, int turnMotorId, double p_chassisAngularOffset)
@@ -85,10 +84,30 @@ public class SwerveModule
 
     public void setDesiredState(SwerveModuleState p_desiredState)
     {
-        SwerveModuleState correctDesiredState = new SwerveModuleState();
-        correctDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
-        correctDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset));
-        
+        //make new desired state with angular offset
+        SwerveModuleState correctDesiredState = new SwerveModuleState(desiredState.speedMetersPerSecond, 
+            desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset)));
 
+        //make optimize desired state to make sure the wheel never turns more than 90 degrees
+        SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctDesiredState, 
+            new Rotation2d(turningEncoder.getPosition()));
+
+        //Command driving and turning motors to their respective setpoints
+        drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
+        turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+
+        desiredState = p_desiredState;
     }
+
+    public SwerveModuleState getDesiredState()
+    {
+        return desiredState;
+    }
+
+    public SwerveModuleState getModuleState()
+    {
+        return new SwerveModuleState(drivingEncoder.getVelocity(), 
+            new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
+    }
+
 }
