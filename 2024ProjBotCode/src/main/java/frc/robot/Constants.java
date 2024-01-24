@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.util.Units;
 
@@ -64,4 +65,19 @@ public final class Constants
     public static final int kTurningMotorCurrentLimit = 20; // amps
 
   }
+
+  public static class ElevatorConstants
+  {
+    //motor CAN IDs on elevator
+    public static final int elevatorCAN = 20;
+    public static final MotorType motorType = MotorType.kBrushless;
+  }
+  
+  public static final class IOConstants
+  {
+    //controller constants
+    public static final int driverJoystickPort = 0;
+    public static final double driverControllerDeadzones = 0.06;
+  }
+
 }
