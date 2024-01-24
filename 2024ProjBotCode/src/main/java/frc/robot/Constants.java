@@ -35,7 +35,7 @@ public final class Constants
     //gear ratios of driving motor
     // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15 teeth on the bevel pinion
     public static final double kDrivingMotorReduction = (45.0 * 22) / (kDrivingMotorPinionTeeth * 15);
-    public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRPS * kWheelCircumferenceMeters) / kDrivingMotorReduction;
+    public static final double kDrivingWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRPS * kWheelCircumferenceMeters) / kDrivingMotorReduction;
 
     //conversion factors that may be needed
     public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI) / kDrivingMotorReduction; //meters
@@ -56,6 +56,9 @@ public final class Constants
     public static final double kTurningD = 0;
     public static final double kTurningMinOutput = -1;
     public static final double kTurningMaxOutput = 1;
+    public static final boolean kEnablePIDWrapping = true;
+    public static final double kTurningEncoderPositionPIDMinInput = 0;
+    public static final double kTurningEncoderPositionPIDMaxInput = (2 * Math.PI);
 
     public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
