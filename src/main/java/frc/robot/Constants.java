@@ -70,13 +70,13 @@ public final class Constants
     public static final double kTurningEncoderVelocityFactor = kTurningEncoderPositionFactor / 60.0; //radians per second
 
     //constants for the PIDs
-    public static final double kDrivingP = 0;
-    public static final double kDrivingI = 0;
+    public static final double kDrivingP = 0.23;
+    public static final double kDrivingI = 0.0005;
     public static final double kDrivingD = 0;
     public static final double kDrivingMinOutput = -1;
     public static final double kDrivingMaxOutput = 1;
 
-    public static final double kTurningP = 0;
+    public static final double kTurningP = 0.09401;
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
     public static final double kTurningMinOutput = -1;

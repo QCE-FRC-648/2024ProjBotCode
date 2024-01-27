@@ -30,7 +30,7 @@ public class RobotContainer
   private void configureBindings() 
   {
     driverController.a().onTrue(new RunCommand(
-      () -> driveTrain.testSwerve(0, Math.PI/2), 
+      () -> driveTrain.testSwerve(1, 0), 
       driveTrain));
   }
 

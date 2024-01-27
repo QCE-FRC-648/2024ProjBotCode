@@ -40,12 +40,16 @@ public class DriveSubsystem extends SubsystemBase
         SmartDashboard.putNumber("Current angle front left", 
             frontLeft.getModuleState().angle.getRadians());
 
+        SmartDashboard.putNumber("Current velocity front left", frontLeft.getModuleState().speedMetersPerSecond);
+
         //front right module
         SmartDashboard.putNumber("Desired angle front right", 
             frontRight.getDesiredState().angle.getRadians());
 
         SmartDashboard.putNumber("Current angle front right", 
             frontRight.getModuleState().angle.getRadians());
+
+        SmartDashboard.putNumber("Current velocity front right", frontRight.getModuleState().speedMetersPerSecond);
 
         //back left module
         SmartDashboard.putNumber("Desired angle back left", 
@@ -54,12 +58,16 @@ public class DriveSubsystem extends SubsystemBase
         SmartDashboard.putNumber("Current angle back left", 
             backLeft.getModuleState().angle.getRadians());
 
+        SmartDashboard.putNumber("Current velocity back left", backLeft.getModuleState().speedMetersPerSecond);
+
         //back right module
         SmartDashboard.putNumber("Desired angle back right", 
             backRight.getDesiredState().angle.getRadians());
 
         SmartDashboard.putNumber("Current angle back right", 
             backRight.getModuleState().angle.getRadians());
+
+        SmartDashboard.putNumber("Current velocity back right", backRight.getModuleState().speedMetersPerSecond);
     }
 
     /**
