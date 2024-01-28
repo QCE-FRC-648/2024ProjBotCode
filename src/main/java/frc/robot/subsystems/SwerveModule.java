@@ -57,6 +57,7 @@ public class SwerveModule
         drivingPIDController.setP(SwerveModuleConstants.kDrivingP);
         drivingPIDController.setI(SwerveModuleConstants.kDrivingI);
         drivingPIDController.setD(SwerveModuleConstants.kDrivingD);
+        drivingPIDController.setFF(SwerveModuleConstants.kDrivingFF);
         drivingPIDController.setOutputRange(SwerveModuleConstants.kDrivingMinOutput, SwerveModuleConstants.kDrivingMaxOutput);
 
         turningPIDController.setP(SwerveModuleConstants.kTurningP);
@@ -108,6 +109,11 @@ public class SwerveModule
     {
         return new SwerveModuleState(drivingEncoder.getVelocity(), 
             new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
+    }
+
+    public SparkPIDController gettPidController()
+    {
+        return drivingPIDController;
     }
 
 }

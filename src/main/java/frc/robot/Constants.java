@@ -2,6 +2,8 @@ package frc.robot;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -29,17 +31,26 @@ public final class Constants
 
     //Not the maxium capable speed of the robot 
     //but an allowed max speed of the robot
-    public static final double kMaxSpeedMetersPerSecond = 5.0;
+    public static final double kMaxSpeedMetersPerSecond = 1.0;
     public static final double kMaxAngularSpeed = 2 * Math.PI; //radians per second
+
+    public static final double kTrackWidth = Units.inchesToMeters(24.5);
+    public static final double kWheelBase = Units.inchesToMeters(24.5);
+
+    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
+      new Translation2d(kWheelBase/2, kTrackWidth/2),
+      new Translation2d(kWheelBase/2, -kTrackWidth/2),
+      new Translation2d(-kWheelBase/2, kTrackWidth),
+      new Translation2d(-kWheelBase/2, -kTrackWidth));
 
     //May be removed
     //Use REV hardware client to remove offset in the wheels by zeroing them
     //if that doesn't work record offset of the wheels when lined up
     //Angular offsets of the modules relative to the chassis in radians
-    public static final double kFrontLeftChassisAngularOffset = 0;
+    public static final double kFrontLeftChassisAngularOffset = -Math.PI/2;
     public static final double kFrontRightChassisAngularOffset = 0;
-    public static final double kBackLeftChassisAngularOffset = 0;
-    public static final double kBackRightChassisAngularOffset = 0;
+    public static final double kBackLeftChassisAngularOffset = Math.PI;
+    public static final double kBackRightChassisAngularOffset = Math.PI/2;
 
   }
 
@@ -63,19 +74,19 @@ public final class Constants
     public static final double kDrivingWheelFreeSpeedRPS = (kDrivingMotorFreeSpeedRPS * kWheelCircumferenceMeters) / kDrivingMotorReduction;
 
     //conversion factors that may be needed
-    public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI) / kDrivingMotorReduction; //meters
+    public static final double kDrivingEncoderPositionFactor = kWheelCircumferenceMeters / kDrivingMotorReduction; //meters
     public static final double kDrivingEncoderVelocityFactor = kDrivingEncoderPositionFactor / 60.0; //meters per second
 
     public static final double kTurningEncoderPositionFactor = (2 * Math.PI); //radians
     public static final double kTurningEncoderVelocityFactor = kTurningEncoderPositionFactor / 60.0; //radians per second
 
     //constants for the PIDs
-    public static final double kDrivingP = 0.23;
-    public static final double kDrivingI = 0.0005;
+    public static final double kDrivingP = 0.0065;
+    public static final double kDrivingI = 0;
     public static final double kDrivingD = 0;
+    public static final double kDrivingFF = 1/kDrivingWheelFreeSpeedRPS;
     public static final double kDrivingMinOutput = -1;
     public static final double kDrivingMaxOutput = 1;
-
     public static final double kTurningP = 0.09401;
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
@@ -92,8 +103,9 @@ public final class Constants
     public static final int kTurningMotorCurrentLimit = 20; // amps
   }
 
-  public static class IOConstants
+  public static class OIConstants
   {
     public static final int kDriverControllerPort = 0;
+    public static final double kDriverDeadband = 0.05;
   }
 }

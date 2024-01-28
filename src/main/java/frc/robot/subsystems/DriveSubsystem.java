@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -37,10 +39,13 @@ public class DriveSubsystem extends SubsystemBase
         SmartDashboard.putNumber("Desired angle front left", 
             frontLeft.getDesiredState().angle.getRadians());
 
+        SmartDashboard.putNumber("Desired speed front left", frontLeft.getDesiredState().speedMetersPerSecond);
+
         SmartDashboard.putNumber("Current angle front left", 
             frontLeft.getModuleState().angle.getRadians());
 
         SmartDashboard.putNumber("Current velocity front left", frontLeft.getModuleState().speedMetersPerSecond);
+
 
         //front right module
         SmartDashboard.putNumber("Desired angle front right", 
@@ -77,7 +82,18 @@ public class DriveSubsystem extends SubsystemBase
      * @param ySpeed speed of robot in y direction (sideways)
      * @param rotSpeed angular rate of the robot 
      */
-    public void drive(double xSpeed, double ySpeed, double rotSpeed) { }
+    public void drive(double xSpeed, double ySpeed, double rotSpeed) 
+    { 
+        var swerveModuleStates = DrivetrainConstants.kDriveKinematics.toSwerveModuleStates(
+            new ChassisSpeeds(xSpeed, ySpeed, rotSpeed));
+
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DrivetrainConstants.kMaxSpeedMetersPerSecond);
+
+        frontLeft.setDesiredState(swerveModuleStates[0]);
+        frontRight.setDesiredState(swerveModuleStates[1]);
+        backLeft.setDesiredState(swerveModuleStates[2]);
+        backRight.setDesiredState(swerveModuleStates[3]);
+    }
 
     /**
      * A temperary method for testing the swerve modules. This will be used to tune PIDs

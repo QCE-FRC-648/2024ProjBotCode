@@ -1,11 +1,12 @@
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.Constants.IOConstants;
+import frc.robot.Constants.OIConstants;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -18,20 +19,28 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveTrain = new DriveSubsystem();
 
-  private final CommandXboxController driverController = new CommandXboxController(IOConstants.kDriverControllerPort);
+  private final CommandXboxController driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
   {
     // Configure the trigger bindings
     configureBindings();
+
+    driveTrain.setDefaultCommand(new RunCommand(
+      //left joystick controls translation
+      //right joystick controls rotation of the robot
+      () -> driveTrain.drive(-MathUtil.applyDeadband(driverController.getLeftY(), OIConstants.kDriverDeadband), 
+      -MathUtil.applyDeadband(driverController.getLeftX(), OIConstants.kDriverDeadband), 
+      -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriverDeadband)), 
+      driveTrain));
   }
 
   private void configureBindings() 
   {
-    driverController.a().onTrue(new RunCommand(
+    /*driverController.a().onTrue(new RunCommand(
       () -> driveTrain.testSwerve(1, 0), 
-      driveTrain));
+      driveTrain));*/
   }
 
   /**
@@ -39,7 +48,8 @@ public class RobotContainer
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public Command getAutonomousCommand() 
+  {
     // An example command will be run in autonomous
     return new InstantCommand();
   }
