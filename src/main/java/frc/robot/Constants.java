@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -107,5 +108,11 @@ public final class Constants
   {
     public static final int kDriverControllerPort = 0;
     public static final double kDriverDeadband = 0.05;
+  }
+
+  public static class ConveyorConstants
+  {
+    public static final int conveyorCAN = 20;
+    public static final MotorType motorType = MotorType.kBrushless;
   }
 }
