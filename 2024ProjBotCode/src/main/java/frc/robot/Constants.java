@@ -66,10 +66,10 @@ public final class Constants
 
   }
 
-  public static class ElevatorConstants
+  public static class ConveyorConstants
   {
     //motor CAN IDs on elevator
-    public static final int elevatorCAN = 20;
+    public static final int conveyorCAN = 20;
     public static final MotorType motorType = MotorType.kBrushless;
   }
   
