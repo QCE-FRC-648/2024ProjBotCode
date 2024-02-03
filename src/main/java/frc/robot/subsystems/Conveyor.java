@@ -2,25 +2,29 @@ package frc.robot.subsystems;
 import frc.robot.Constants.ConveyorConstants;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DigitalInput;
+
 
 public class Conveyor {
 
     public CANSparkMax conveyorMotor;
     public XboxController operator;
     public double leftY;
+    public DigitalInput beam;
 
     public Conveyor() {
         conveyorMotor = new CANSparkMax(ConveyorConstants.conveyorCAN, ConveyorConstants.motorType);
         conveyorMotor.set(0);
 
         operator = new XboxController(1);
+
+        leftY = operator.getLeftY();
+
+        beam = new DigitalInput(0);
     }
 
-    //the left joystick controlls the conveyor 
+    //operator's left joystick controlls the conveyor 
     public void runConveyorMotor() {
-
-        //gets the value of the operator's left joystick
-        leftY = operator.getLeftY();
 
         //go up conveyor
         if(leftY > 0.3) {
@@ -38,5 +42,18 @@ public class Conveyor {
         }
     }
 
+    //runs the conveyor once the beam is broken
+    public void autoConveyor() {
+
+        //runs the motor if the beam is broken
+       if(beam.get() == false) {
+        conveyorMotor.set(0.3);
+       } 
+
+       //stops the motor if the beam is not broken
+       else {
+        conveyorMotor.set(0);
+       }
+    }
     
 }
