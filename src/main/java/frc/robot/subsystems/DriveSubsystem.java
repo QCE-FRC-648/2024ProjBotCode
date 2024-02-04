@@ -1,15 +1,19 @@
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrivetrainConstants;
 public class DriveSubsystem extends SubsystemBase
 {
+    
     private final SwerveModule frontLeft = new SwerveModule(
         DrivetrainConstants.kFrontLeftDrivingCANId, 
         DrivetrainConstants.kFrontLeftTurningCANId, 
@@ -30,17 +34,27 @@ public class DriveSubsystem extends SubsystemBase
         DrivetrainConstants.kBackRightTurningCANId, 
         DrivetrainConstants.kBackRightChassisAngularOffset);
 
-    private ADIS16448_IMU imu = new ADIS16448_IMU();
+    private AHRS imu;
 
-    public DriveSubsystem() { }
+    public DriveSubsystem() 
+    { 
+        try
+        {
+            imu = new AHRS(SPI.Port.kMXP);
+        }
+        catch(RuntimeException ex)
+        {
+            DriverStation.reportError("Error instantiating navX MXP: " + ex.getMessage(), true);
+        }
+    }
 
     @Override
     public void periodic()
     {
         //smart dashboard
-        SmartDashboard.putNumber("imu x", imu.getGyroAngleX());
-        SmartDashboard.putNumber("imu y", imu.getGyroAngleY());
-        SmartDashboard.putNumber("imu z", imu.getGyroAngleZ());
+        SmartDashboard.putNumber("imu yaw", imu.getYaw());
+        SmartDashboard.putNumber("imu pitch", imu.getPitch());
+        SmartDashboard.putNumber("imu roll", imu.getRoll());
 
         //front left module
         SmartDashboard.putNumber("Desired angle front left", 
@@ -96,7 +110,7 @@ public class DriveSubsystem extends SubsystemBase
         rotSpeed *= DrivetrainConstants.kMaxAngularSpeed;
 
         var swerveModuleStates = DrivetrainConstants.kDriveKinematics.toSwerveModuleStates(
-            ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, Rotation2d.fromDegrees(-imu.getGyroAngleZ())));
+            ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, Rotation2d.fromDegrees(imu.getYaw())));
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DrivetrainConstants.kMaxSpeedMetersPerSecond);
 

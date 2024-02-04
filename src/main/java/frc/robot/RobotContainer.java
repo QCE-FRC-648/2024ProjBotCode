@@ -27,6 +27,7 @@ public class RobotContainer
     // Configure the trigger bindings
     configureBindings();
 
+     
     driveTrain.setDefaultCommand(new RunCommand(
       //left joystick controls translation
       //right joystick controls rotation of the robot
@@ -50,7 +51,6 @@ public class RobotContainer
    */
   public Command getAutonomousCommand() 
   {
-    // An example command will be run in autonomous
     return new InstantCommand();
   }
 }
