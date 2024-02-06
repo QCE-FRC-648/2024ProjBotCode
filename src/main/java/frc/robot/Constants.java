@@ -51,7 +51,23 @@ public final class Constants
     public static final double kFrontRightChassisAngularOffset = 0;
     public static final double kBackLeftChassisAngularOffset = Math.PI;
     public static final double kBackRightChassisAngularOffset = Math.PI/2;
+  }
 
+  public static class ShooterConstants
+  {
+    //CAN Ids for VictorSPX motor controllers
+    public static final int kTiltCANId = 20;
+    public static final int kTelescopeCANId = 21;
+    public static final int kFlywheel1CANId = 22;
+    public static final int kFlywheel2CANId = 23;
+
+    //DIO ports for sensors
+    public static final int kShooterProximitySensorDIOId = 3;//temporary id
+    public static final int kTiltThroughBoreEncoderDIOId = 0;
+    public static final int kShooterThroughBoreEncoderDIOId = 0;
+
+    //Shuffleboard tab name
+    public static final String kShuffleboardTabName = "ShooterSubsystem";
   }
 
   public static class SwerveModuleConstants

@@ -5,6 +5,8 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
@@ -36,6 +38,16 @@ public class DriveSubsystem extends SubsystemBase
 
     private AHRS imu;
 
+    private SwerveDriveOdometry odometry = new SwerveDriveOdometry(
+        DrivetrainConstants.kDriveKinematics, 
+        Rotation2d.fromDegrees(imu.getYaw()), 
+        new SwerveModulePosition[]{
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
+        });
+
     public DriveSubsystem() 
     { 
         try
@@ -46,6 +58,46 @@ public class DriveSubsystem extends SubsystemBase
         {
             DriverStation.reportError("Error instantiating navX MXP: " + ex.getMessage(), true);
         }
+    }
+
+    /**
+     * Method to drive drivetrain with joysticks
+     * 
+     * @param xSpeed speed of robot in x direction (forward)
+     * @param ySpeed speed of robot in y direction (sideways)
+     * @param rotSpeed angular rate of the robot 
+     */
+    public void drive(double xSpeed, double ySpeed, double rotSpeed) 
+    { 
+        xSpeed *= DrivetrainConstants.kMaxSpeedMetersPerSecond;
+        ySpeed *= DrivetrainConstants.kMaxSpeedMetersPerSecond;
+        rotSpeed *= DrivetrainConstants.kMaxAngularSpeed;
+
+        var swerveModuleStates = DrivetrainConstants.kDriveKinematics.toSwerveModuleStates(
+            ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, Rotation2d.fromDegrees(imu.getYaw())));
+
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DrivetrainConstants.kMaxSpeedMetersPerSecond);
+
+        frontLeft.setDesiredState(swerveModuleStates[0]);
+        frontRight.setDesiredState(swerveModuleStates[1]);
+        backLeft.setDesiredState(swerveModuleStates[2]);
+        backRight.setDesiredState(swerveModuleStates[3]);
+    }
+
+    /**
+     * A temperary method for testing the swerve modules. This will be used to tune PIDs
+     * 
+     * @param speed velocity of the wheels in meters per second
+     * @param angle angle of the wheels in radians
+     */
+    public void testSwerve(double speed, double angle)
+    {
+        SwerveModuleState testState = new SwerveModuleState(speed, new Rotation2d(angle));
+
+        frontLeft.setDesiredState(testState);
+        frontRight.setDesiredState(testState);
+        backLeft.setDesiredState(testState);
+        backRight.setDesiredState(testState);
     }
 
     @Override
@@ -94,45 +146,5 @@ public class DriveSubsystem extends SubsystemBase
             backRight.getModuleState().angle.getRadians());
 
         SmartDashboard.putNumber("Current velocity back right", backRight.getModuleState().speedMetersPerSecond);
-    }
-
-    /**
-     * Method to drive drivetrain with joysticks
-     * 
-     * @param xSpeed speed of robot in x direction (forward)
-     * @param ySpeed speed of robot in y direction (sideways)
-     * @param rotSpeed angular rate of the robot 
-     */
-    public void drive(double xSpeed, double ySpeed, double rotSpeed) 
-    { 
-        xSpeed *= DrivetrainConstants.kMaxSpeedMetersPerSecond;
-        ySpeed *= DrivetrainConstants.kMaxSpeedMetersPerSecond;
-        rotSpeed *= DrivetrainConstants.kMaxAngularSpeed;
-
-        var swerveModuleStates = DrivetrainConstants.kDriveKinematics.toSwerveModuleStates(
-            ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, Rotation2d.fromDegrees(imu.getYaw())));
-
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DrivetrainConstants.kMaxSpeedMetersPerSecond);
-
-        frontLeft.setDesiredState(swerveModuleStates[0]);
-        frontRight.setDesiredState(swerveModuleStates[1]);
-        backLeft.setDesiredState(swerveModuleStates[2]);
-        backRight.setDesiredState(swerveModuleStates[3]);
-    }
-
-    /**
-     * A temperary method for testing the swerve modules. This will be used to tune PIDs
-     * 
-     * @param speed velocity of the wheels in meters per second
-     * @param angle angle of the wheels in radians
-     */
-    public void testSwerve(double speed, double angle)
-    {
-        SwerveModuleState testState = new SwerveModuleState(speed, new Rotation2d(angle));
-
-        frontLeft.setDesiredState(testState);
-        frontRight.setDesiredState(testState);
-        backLeft.setDesiredState(testState);
-        backRight.setDesiredState(testState);
     }
 }
