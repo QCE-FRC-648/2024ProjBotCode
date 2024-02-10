@@ -62,12 +62,23 @@ public final class Constants
     public static final int kFlywheel2CANId = 23;
 
     //DIO ports for sensors
-    public static final int kShooterProximitySensorDIOId = 3;//temporary id
-    public static final int kTiltThroughBoreEncoderDIOId = 0;
-    public static final int kShooterThroughBoreEncoderDIOId = 0;
+    public static final int kShooterProximitySensorDIOId = 1;
+    public static final int kFlyWheel1RelativeEncoderDIOChannelA = 4;
+    public static final int kFlyWheel1RelativeEncoderDIOChannelB = 5;
+    public static final int kFlyWheel2RelativeEncoderDIOChannelA = 6;
+    public static final int kFlyWheel2RelativeEncoderDIOChannelB = 7;
+    public static final int kTiltDutyCycleEncoderDIOId = 8;
+    public static final int kTelescopeDutyCycleEncoderDIOId = 9;
+
 
     //Shuffleboard tab name
     public static final String kShuffleboardTabName = "ShooterSubsystem";
+  }
+
+  public static class ClimberConstants
+  {
+    public static final int kClimber1CANId = 25;
+    public static final int kClimber2CANId = 26;
   }
 
   public static class SwerveModuleConstants

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
+//Command to take in and hold note to score in the amp
 public class FlywheelHoldCommand extends Command
 {
     private final ShooterSubsystem shooterSubsystem;
