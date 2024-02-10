@@ -32,8 +32,8 @@ public final class Constants
 
     //Not the maxium capable speed of the robot 
     //but an allowed max speed of the robot
-    public static final double kMaxSpeedMetersPerSecond = 2.0;
-    public static final double kMaxAngularSpeed = 2 * Math.PI; //radians per second
+    public static final double kMaxSpeedMetersPerSecond = 1.0;
+    public static final double kMaxAngularSpeed = Math.PI; //radians per second
 
     public static final double kTrackWidth = Units.inchesToMeters(24.5);
     public static final double kWheelBase = Units.inchesToMeters(24.5);
@@ -41,8 +41,8 @@ public final class Constants
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
       new Translation2d(kWheelBase/2, kTrackWidth/2),
       new Translation2d(kWheelBase/2, -kTrackWidth/2),
-      new Translation2d(-kWheelBase/2, kTrackWidth),
-      new Translation2d(-kWheelBase/2, -kTrackWidth));
+      new Translation2d(-kWheelBase/2, kTrackWidth/2),
+      new Translation2d(-kWheelBase/2, -kTrackWidth/2));
 
     //May be removed
     //Use REV hardware client to remove offset in the wheels by zeroing them
@@ -52,7 +52,23 @@ public final class Constants
     public static final double kFrontRightChassisAngularOffset = 0;
     public static final double kBackLeftChassisAngularOffset = Math.PI;
     public static final double kBackRightChassisAngularOffset = Math.PI/2;
+  }
 
+  public static class ShooterConstants
+  {
+    //CAN Ids for VictorSPX motor controllers
+    public static final int kTiltCANId = 20;
+    public static final int kTelescopeCANId = 21;
+    public static final int kFlywheel1CANId = 22;
+    public static final int kFlywheel2CANId = 23;
+
+    //DIO ports for sensors
+    public static final int kShooterProximitySensorDIOId = 3;//temporary id
+    public static final int kTiltThroughBoreEncoderDIOId = 0;
+    public static final int kShooterThroughBoreEncoderDIOId = 0;
+
+    //Shuffleboard tab name
+    public static final String kShuffleboardTabName = "ShooterSubsystem";
   }
 
   public static class SwerveModuleConstants
@@ -82,13 +98,13 @@ public final class Constants
     public static final double kTurningEncoderVelocityFactor = kTurningEncoderPositionFactor / 60.0; //radians per second
 
     //constants for the PIDs
-    public static final double kDrivingP = 0.0065;
+    public static final double kDrivingP = 0.005;
     public static final double kDrivingI = 0;
     public static final double kDrivingD = 0;
     public static final double kDrivingFF = 1/kDrivingWheelFreeSpeedRPS;
     public static final double kDrivingMinOutput = -1;
     public static final double kDrivingMaxOutput = 1;
-    public static final double kTurningP = 0.09401;
+    public static final double kTurningP = 0.08;
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
     public static final double kTurningMinOutput = -1;

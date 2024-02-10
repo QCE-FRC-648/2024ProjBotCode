@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 import com.revrobotics.AbsoluteEncoder;
@@ -114,6 +115,19 @@ public class SwerveModule
     public SparkPIDController gettPidController()
     {
         return drivingPIDController;
+    }
+
+    public SwerveModulePosition getPosition()
+    {
+        return new SwerveModulePosition(
+            drivingEncoder.getPosition(),
+            new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset)
+        );
+    }
+
+    public void resetEncoder()
+    {
+        drivingEncoder.setPosition(0);
     }
 
 }
