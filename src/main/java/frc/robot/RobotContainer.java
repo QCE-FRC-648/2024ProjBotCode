@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.Commands.FlywheelHoldCommand;
+import frc.robot.Commands.flywheelCommands.FlywheelHoldCommand;
 import frc.robot.Constants.OIConstants;
 
 /**

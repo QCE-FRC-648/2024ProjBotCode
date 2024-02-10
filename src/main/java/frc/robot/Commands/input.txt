@@ -1,0 +1,8 @@
+Theresa's Input: 
+
+TO DO: 
+- Make more commands in here and split into folders 
+    Ex. Have a flywheel command folder and put commands for the flywheel in the flywheel folder (This was done in this repo already)
+    - Make folders for intake commands, climber commands, drive commands, etc. 
+- Go through and understand the changes I added in to make Path Planner work
+
