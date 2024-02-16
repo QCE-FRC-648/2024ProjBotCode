@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 
-public class Conveyor 
+public class ConveyorSubsystem
 {
 
     public VictorSPX conveyorMotor1;
