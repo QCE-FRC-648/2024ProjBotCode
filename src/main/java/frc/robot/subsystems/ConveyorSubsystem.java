@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 
-public class Conveyor 
+public class ConveyorSubsystem 
 {
 
     public VictorSPX conveyorMotor1;
@@ -15,7 +15,7 @@ public class Conveyor
     private DigitalInput proximitySensor = new DigitalInput(ShooterConstants.kShooterProximitySensorDIOId);
     public DigitalInput beam;
 
-    public Conveyor() {
+    public ConveyorSubsystem() {
         conveyorMotor1 = new VictorSPX(ConveyorConstants.conveyorCANID19);
         conveyorMotor1.set(ControlMode.PercentOutput, 0);
 

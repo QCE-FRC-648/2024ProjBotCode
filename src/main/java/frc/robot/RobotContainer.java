@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ShooterCommands.FlywheelHoldCommand;
-import frc.robot.commands.IntakeConveyorCommand;
+import frc.robot.commands.IntakeCommands.IntakeConveyorCommand;
+import frc.robot.commands.ClimberCommands.ToggleClimbCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.Constants.OIConstants;
 
@@ -25,6 +27,8 @@ public class RobotContainer
   private final ShooterSubsystem shooter = new ShooterSubsystem();
 
   private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
+
+  private final ClimberSubsystem climber = new ClimberSubsystem();
 
   private final CommandXboxController driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   private final CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
@@ -47,8 +51,9 @@ public class RobotContainer
 
   private void configureBindings() 
   {
-    driverController.x().onTrue(new FlywheelHoldCommand(shooter));
-    operatorController.y().toggleOnTrue(new IntakeConveyorCommand(conveyor));
+    //operatorController.a().onTrue(new FlywheelHoldCommand(shooter));
+    //operatorController.x().toggleOnTrue(new IntakeConveyorCommand(conveyor));
+    //operatorController.y().toggleOnTrue(new ToggleClimbCommand(climber));
   }
 
   /**
