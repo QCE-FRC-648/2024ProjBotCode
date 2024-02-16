@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.Commands.FlywheelHoldCommand;
+import frc.robot.Commands.IntakeConveyorCommand;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ShooterCommands.FlywheelHoldCommand;
 
@@ -22,7 +25,10 @@ public class RobotContainer
   private final DriveSubsystem driveTrain = new DriveSubsystem();
   private final ShooterSubsystem shooter = new ShooterSubsystem();
 
+  private final Conveyor conveyor = new Conveyor();
+
   private final CommandXboxController driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+  private final CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
@@ -43,6 +49,7 @@ public class RobotContainer
   private void configureBindings() 
   {
     driverController.x().onTrue(new FlywheelHoldCommand(shooter));
+    operatorController.y().toggleOnTrue(new IntakeConveyorCommand(conveyor));
   }
 
   /**

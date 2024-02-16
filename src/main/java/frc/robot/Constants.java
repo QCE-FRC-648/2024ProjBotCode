@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -134,5 +135,14 @@ public final class Constants
   {
     public static final int kDriverControllerPort = 0;
     public static final double kDriverDeadband = 0.05;
+    public static final int kOperatorControllerPort = 1;
+  }
+
+  public static class ConveyorConstants
+  {
+    public static final int intakeCAN = 18;
+    public static final int conveyorCANID19 = 19;
+    public static final int conveyorCANID20 = 20;
+    public static final int beamPort = 0;
   }
 }
