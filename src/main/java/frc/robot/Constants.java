@@ -129,8 +129,9 @@ public final class Constants
 
   public static class ConveyorConstants
   {
-    public static final int conveyorCAN = 20;
-    public static final int intakeCAN = 21;
+    public static final int intakeCAN = 18;
+    public static final int conveyorCANID19 = 19;
+    public static final int conveyorCANID20 = 20;
     public static final int beamPort = 0;
   }
 }

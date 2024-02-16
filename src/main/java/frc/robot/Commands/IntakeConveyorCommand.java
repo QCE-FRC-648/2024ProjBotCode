@@ -24,7 +24,8 @@ public class IntakeConveyorCommand extends Command {
     @Override 
     public void execute() {
         conveyor.intakeMotor.set(ControlMode.PercentOutput, 0.1);
-        conveyor.conveyorMotor.set(ControlMode.PercentOutput, 0.1);
+        conveyor.conveyorMotor1.set(ControlMode.PercentOutput, 0.1);
+        conveyor.conveyorMotor2.set(ControlMode.PercentOutput, 0.1);
     }
 
     @Override
@@ -41,7 +42,8 @@ public class IntakeConveyorCommand extends Command {
     public void end(boolean interrupted)
     {
         conveyor.intakeMotor.set(ControlMode.PercentOutput, 0);
-        conveyor.conveyorMotor.set(ControlMode.PercentOutput, 0);
+        conveyor.conveyorMotor1.set(ControlMode.PercentOutput, 0);
+        conveyor.conveyorMotor2.set(ControlMode.PercentOutput, 0);
     }
 
 }
