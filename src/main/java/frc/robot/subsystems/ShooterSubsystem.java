@@ -2,11 +2,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -39,7 +37,7 @@ public class ShooterSubsystem extends SubsystemBase
 
     private String shuffleFlyWheelSpeed = "FlyWheel Speed";
     private String proximitySwitchGet = "Proximity Switch";
-    private String shuffleFlyWheelVolt = "FlyWheel volt";
+    private String shuffleFlyWheelVolt = "FlyWheel voltage";
 
     private GenericEntry entryFlyWheel = tab.add(shuffleFlyWheelSpeed, 0).getEntry();
     private GenericEntry entryFlyWheelVolt = tab.add(shuffleFlyWheelVolt, 0).getEntry();
