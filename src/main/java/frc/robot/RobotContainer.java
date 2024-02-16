@@ -7,11 +7,10 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.Commands.FlywheelHoldCommand;
-import frc.robot.Commands.IntakeConveyorCommand;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.Constants.OIConstants;
 import frc.robot.commands.ShooterCommands.FlywheelHoldCommand;
+import frc.robot.commands.IntakeConveyorCommand;
+import frc.robot.subsystems.ConveyorSubsystem;
+import frc.robot.Constants.OIConstants;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,7 +24,7 @@ public class RobotContainer
   private final DriveSubsystem driveTrain = new DriveSubsystem();
   private final ShooterSubsystem shooter = new ShooterSubsystem();
 
-  private final Conveyor conveyor = new Conveyor();
+  private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
 
   private final CommandXboxController driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   private final CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);

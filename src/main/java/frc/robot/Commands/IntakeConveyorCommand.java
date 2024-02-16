@@ -1,17 +1,18 @@
-package frc.robot.Commands;
+package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.ConveyorSubsystem;
 
-public class IntakeConveyorCommand extends Command {
-    private final Conveyor conveyor;
+public class IntakeConveyorCommand extends Command 
+{
+    private final ConveyorSubsystem conveyor;
     private final DigitalInput proximitySensor;
 
 
-    public IntakeConveyorCommand(Conveyor subsystem)
+    public IntakeConveyorCommand(ConveyorSubsystem subsystem)
     {
         conveyor = subsystem;
 

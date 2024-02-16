@@ -71,6 +71,11 @@ public final class Constants
     public static final int kTiltDutyCycleEncoderDIOId = 8;
     public static final int kTelescopeDutyCycleEncoderDIOId = 9;
 
+    //PID constants
+    public static final double kFlyWheelVelocityP = 0;
+    public static final double kFlyWheelVelocityK = 0;
+
+    //Encoder conversions
 
     //Shuffleboard tab name
     public static final String kShuffleboardTabName = "ShooterSubsystem";
