@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.RobotContainer;
 
-public class MannualClimbCommand extends Command{
+public class ManualClimbCommand extends Command{
 
     private final ClimberSubsystem climber;
     private double leftY;
 
-    public MannualClimbCommand(ClimberSubsystem subsystem)
+    public ManualClimbCommand(ClimberSubsystem subsystem)
     {
         climber = subsystem;
     }
