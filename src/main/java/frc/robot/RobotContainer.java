@@ -10,6 +10,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ShooterCommands.FlywheelHoldCommand;
 import frc.robot.commands.IntakeCommands.IntakeConveyorCommand;
 import frc.robot.commands.ClimberCommands.ToggleClimbCommand;
+import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.Constants.OIConstants;
@@ -51,7 +52,7 @@ public class RobotContainer
 
   private void configureBindings() 
   {
-    //operatorController.a().onTrue(new FlywheelHoldCommand(shooter));
+    //operatorController.b().onTrue(new FlywheelHoldCommand(shooter));
     //operatorController.x().toggleOnTrue(new IntakeConveyorCommand(conveyor));
     //operatorController.y().toggleOnTrue(new ToggleClimbCommand(climber));
     //operatorController.getRightY(new MannualClimbCommand(climber));
