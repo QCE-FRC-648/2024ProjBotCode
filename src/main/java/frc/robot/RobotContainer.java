@@ -52,7 +52,7 @@ public class RobotContainer
 
   private void configureBindings() 
   {
-    //operatorController.b().onTrue(new FlywheelHoldCommand(shooter));
+    //operatorController.a().onTrue(new FlywheelHoldCommand(shooter));
     //operatorController.x().toggleOnTrue(new IntakeConveyorCommand(conveyor));
     //operatorController.y().toggleOnTrue(new ToggleClimbCommand(climber));
     //operatorController.getRightY(new MannualClimbCommand(climber));
