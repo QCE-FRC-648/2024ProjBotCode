@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.commands.IntakeCommands.IntakeConveyorCommand;
 import frc.robot.commands.ShooterCommands.FlywheelHoldCommand;
-import frc.robot.commands.IntakeConveyorCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.Constants.OIConstants;
 
@@ -47,8 +47,7 @@ public class RobotContainer
 
   private void configureBindings() 
   {
-    driverController.x().onTrue(new FlywheelHoldCommand(shooter));
-    operatorController.y().toggleOnTrue(new IntakeConveyorCommand(conveyor));
+    operatorController.x().toggleOnTrue(new IntakeConveyorCommand(conveyor));
   }
 
   /**

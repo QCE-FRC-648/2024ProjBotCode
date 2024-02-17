@@ -24,9 +24,10 @@ public class FlywheelHoldCommand extends Command
     @Override
     public void execute()
     {
-        shooterSubsystem.setFlyWheelMotors(0.05);
+        shooterSubsystem.setFlyWheelMotors(0.05); //need to change
     }
 
+    //ends when proximity sensor is active
     @Override
     public boolean isFinished()
     {

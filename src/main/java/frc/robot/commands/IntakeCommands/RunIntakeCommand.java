@@ -8,25 +8,25 @@ import frc.robot.subsystems.ConveyorSubsystem;
 
 public class IntakeConveyorCommand extends Command 
 {
-    private final ConveyorSubsystem conveyor;
+    private final ConveyorSubsystem conveyorSubsystem;
     private final DigitalInput proximitySensor;
 
 
     public IntakeConveyorCommand(ConveyorSubsystem subsystem)
     {
-        conveyor = subsystem;
+        conveyorSubsystem = subsystem;
 
-        proximitySensor = conveyor.getProximitySensor();
+        proximitySensor = conveyorSubsystem.getProximitySensor();
     }
 
     @Override
     public void initialize() { }
 
     @Override 
-    public void execute() {
-        conveyor.intakeMotor.set(ControlMode.PercentOutput, 0.1);
-        conveyor.conveyorMotor1.set(ControlMode.PercentOutput, 0.1);
-        conveyor.conveyorMotor2.set(ControlMode.PercentOutput, 0.1);
+    public void execute()
+    {
+        conveyorSubsystem.setConveyorMotors(0);
+        conveyorSubsystem.setIntakeMotor(0);
     }
 
     @Override
@@ -42,9 +42,8 @@ public class IntakeConveyorCommand extends Command
     @Override 
     public void end(boolean interrupted)
     {
-        conveyor.intakeMotor.set(ControlMode.PercentOutput, 0);
-        conveyor.conveyorMotor1.set(ControlMode.PercentOutput, 0);
-        conveyor.conveyorMotor2.set(ControlMode.PercentOutput, 0);
+        conveyorSubsystem.setConveyorMotors(0);
+        conveyorSubsystem.setIntakeMotor(0);
     }
 
 }

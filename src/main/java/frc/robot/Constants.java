@@ -5,7 +5,6 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -64,6 +63,7 @@ public final class Constants
 
     //DIO ports for sensors
     public static final int kShooterProximitySensorDIOId = 1;
+    //All encoders are through bore encoders
     public static final int kFlyWheel1RelativeEncoderDIOChannelA = 4;
     public static final int kFlyWheel1RelativeEncoderDIOChannelB = 5;
     public static final int kFlyWheel2RelativeEncoderDIOChannelA = 6;
@@ -75,7 +75,18 @@ public final class Constants
     public static final double kFlyWheelVelocityP = 0;
     public static final double kFlyWheelVelocityK = 0;
 
-    //Encoder conversions
+    public static final double kTiltPositionP = 0;
+    public static final double kTiltPositionK = 0;
+    public static final double kTiltPositionD = 0;
+
+    public static final double kThroughBoreEncoderPPR = 2048; //periods per revolution
+    //flywheel encoder conversion
+    public static final double kFlyWheelDiameter = Units.inchesToMeters(3.9); //meters
+    public static final double kFlyWheelCircumference = Math.PI * kFlyWheelDiameter;
+    public static final double kFlyWheelEncoderVelocityFactor = kFlyWheelCircumference/kThroughBoreEncoderPPR; //meters per revolution
+
+    //telescope encoder conversion
+    public static final double kTelescopeEncoderPositionFactor = 0;
 
     //Shuffleboard tab name
     public static final String kShuffleboardTabName = "ShooterSubsystem";

@@ -21,4 +21,22 @@ public class ShootNoteCommand extends Command
     {
         
     }
+
+    //returns true when shooter is at setpoint
+    @Override
+    public boolean isFinished()
+    {
+        if(shooterSubsystem.getFlyWheelPID().atSetpoint())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void end(boolean interrupted)
+    {
+
+    }
 }
