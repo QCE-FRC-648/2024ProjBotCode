@@ -1,10 +1,9 @@
 package frc.robot.commands.ClimberCommands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.ConveyorSubsystem;
+import edu.wpi.first.wpilibj.Timer;
 
 public class ToggleClimbCommand extends Command
 {
@@ -21,22 +20,20 @@ public class ToggleClimbCommand extends Command
     @Override
     public void execute() {
         climber.climber1.set(ControlMode.PercentOutput, 0.1);
-        
+        climber.climber2.set(ControlMode.PercentOutput, 0.1);
     }
 
     @Override
     public boolean isFinished()
     {
-        if(climber.climber1.getOutputCurrent() > 50)
-        {
-            return true;
-        }
-        return false;
+        Timer.delay(1);
+        return true;
     }
 
     @Override 
     public void end(boolean interrupted)
     {
         climber.climber1.set(ControlMode.PercentOutput, 0);
+        climber.climber2.set(ControlMode.PercentOutput, 0);
     }
 }
