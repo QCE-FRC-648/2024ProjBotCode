@@ -7,7 +7,7 @@ import frc.robot.RobotContainer;
 public class ManualClimbCommand extends Command{
 
     private final ClimberSubsystem climber;
-    private double leftY;
+    private double rightY;
 
     public ManualClimbCommand(ClimberSubsystem subsystem)
     {
@@ -19,15 +19,15 @@ public class ManualClimbCommand extends Command{
 
     @Override
     public void execute() {
-        leftY = RobotContainer.operatorController.getLeftY();
-        climber.climber1.set(leftY);
-        climber.climber2.set(leftY);
+        rightY = RobotContainer.operatorController.getRightY();
+        climber.climber1.set(rightY);
+        climber.climber2.set(rightY);
     }
 
     @Override
     public boolean isFinished()
     {
-        if(RobotContainer.operatorController.getLeftY() < 0.2 && RobotContainer.operatorController.getLeftY() > -0.2) {
+        if(RobotContainer.operatorController.getRightY() < 0.2 && RobotContainer.operatorController.getRightY() > -0.2) {
             return true;
         }
         return false;

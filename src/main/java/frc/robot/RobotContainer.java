@@ -54,7 +54,7 @@ public class RobotContainer
     //operatorController.a().onTrue(new FlywheelHoldCommand(shooter));
     //operatorController.x().toggleOnTrue(new IntakeConveyorCommand(conveyor));
     //operatorController.y().toggleOnTrue(new ToggleClimbCommand(climber));
-    //operatorController.getRightX(new MannualClimbCommand(climber));
+    //operatorController.getRightY(new MannualClimbCommand(climber));
   }
 
   /**
