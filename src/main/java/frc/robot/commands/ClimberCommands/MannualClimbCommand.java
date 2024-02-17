@@ -27,7 +27,7 @@ public class MannualClimbCommand extends Command{
     @Override
     public boolean isFinished()
     {
-        if(RobotContainer.operatorController.getLeftY() < 0.2 && RobotContainer.operatorController.getLeftY() > 0.2) {
+        if(RobotContainer.operatorController.getLeftY() < 0.2 && RobotContainer.operatorController.getLeftY() > -0.2) {
             return true;
         }
         return false;
