@@ -126,9 +126,9 @@ public class ShooterSubsystem extends SubsystemBase
      */
     public void setTiltPosition(double desiredPosition)
     {
-        double pidValue = tiltPIDController.calculate(tiltEncoder.getAbsolutePosition(), desiredPosition);
 
-        tiltMotor.set(ControlMode.PercentOutput, pidValue);
+        tiltMotor.set(ControlMode.PercentOutput, 
+            tiltPIDController.calculate(tiltEncoder.getAbsolutePosition(), desiredPosition));
     }
 
     public void setTelescopeDistance(double desiredDistance)

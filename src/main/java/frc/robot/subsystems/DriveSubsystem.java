@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -39,15 +40,7 @@ public class DriveSubsystem extends SubsystemBase
 
     private AHRS imu;
 
-    private SwerveDriveOdometry odometry = new SwerveDriveOdometry(
-        DrivetrainConstants.kDriveKinematics, 
-        Rotation2d.fromDegrees(imu.getYaw()), 
-        new SwerveModulePosition[]{
-            frontLeft.getPosition(),
-            frontRight.getPosition(),
-            backLeft.getPosition(),
-            backRight.getPosition()
-        });
+    private SwerveDriveOdometry odometry;
 
     public DriveSubsystem() 
     { 
@@ -59,6 +52,16 @@ public class DriveSubsystem extends SubsystemBase
         {
             DriverStation.reportError("Error instantiating navX MXP: " + ex.getMessage(), true);
         }
+
+        odometry = new SwerveDriveOdometry(
+        DrivetrainConstants.kDriveKinematics, 
+        Rotation2d.fromDegrees(imu.getAngle()), 
+        new SwerveModulePosition[]{
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
+        });
     }
 
     /**
@@ -75,7 +78,7 @@ public class DriveSubsystem extends SubsystemBase
         rotSpeed *= DrivetrainConstants.kMaxAngularSpeed;
 
         var swerveModuleStates = DrivetrainConstants.kDriveKinematics.toSwerveModuleStates(
-            ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, Rotation2d.fromDegrees(imu.getYaw())));
+            ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, Rotation2d.fromDegrees(imu.getAngle())));
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DrivetrainConstants.kMaxSpeedMetersPerSecond);
 
@@ -101,13 +104,33 @@ public class DriveSubsystem extends SubsystemBase
         backRight.setDesiredState(testState);
     }
 
+    public Pose2d getPose()
+    {
+        return odometry.getPoseMeters();
+    }
+
+    public void resetPose(Pose2d pose)
+    {
+        odometry.resetPosition(Rotation2d.fromDegrees(imu.getAngle()), 
+            new SwerveModulePosition[]{
+                    frontLeft.getPosition(), frontRight.getPosition(),
+                    backLeft.getPosition(), backRight.getPosition()
+                }, 
+            pose);
+    }
+
     @Override
     public void periodic()
     {
+        //update odometry
+        odometry.update(Rotation2d.fromDegrees(imu.getAngle()), 
+            new SwerveModulePosition[]{
+                frontLeft.getPosition(), frontRight.getPosition(),
+                backLeft.getPosition(), backRight.getPosition()
+            });
+
         //smart dashboard
-        SmartDashboard.putNumber("imu yaw", imu.getYaw());
-        SmartDashboard.putNumber("imu pitch", imu.getPitch());
-        SmartDashboard.putNumber("imu roll", imu.getRoll());
+        SmartDashboard.putNumber("gyro angle", imu.getAngle());
 
         //front left module
         SmartDashboard.putNumber("Desired angle front left", 

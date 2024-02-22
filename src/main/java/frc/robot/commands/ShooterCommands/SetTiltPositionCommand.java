@@ -19,6 +19,6 @@ public class SetTiltPositionCommand extends Command
     @Override
     public void execute()
     {
-        shooterSubsystem.setTiltPosition(setpoint); //reset
+        shooterSubsystem.setTiltPosition(setpoint); 
     }
 }

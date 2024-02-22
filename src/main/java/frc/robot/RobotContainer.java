@@ -6,10 +6,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.commands.IntakeCommands.IntakeConveyorCommand;
-import frc.robot.commands.ShooterCommands.FlywheelHoldCommand;
-import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.Constants.OIConstants;
 
 /**
@@ -22,12 +18,12 @@ public class RobotContainer
 {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveTrain = new DriveSubsystem();
-  private final ShooterSubsystem shooter = new ShooterSubsystem();
+  //private final ShooterSubsystem shooter = new ShooterSubsystem();
 
-  private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
+  //private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
 
   private final CommandXboxController driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-  private final CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
+  //private final CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
@@ -47,7 +43,9 @@ public class RobotContainer
 
   private void configureBindings() 
   {
-    operatorController.x().toggleOnTrue(new IntakeConveyorCommand(conveyor));
+    //operator controls
+    //operatorController.x().toggleOnTrue(new FeedShooterCommand(conveyor)); //intake
+
   }
 
   /**

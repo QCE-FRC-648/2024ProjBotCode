@@ -74,6 +74,7 @@ public final class Constants
     //PID constants
     public static final double kFlyWheelVelocityP = 0;
     public static final double kFlyWheelVelocityK = 0;
+    public static final double kFlyWheelVelocityD = 0;
 
     public static final double kTiltPositionP = 0;
     public static final double kTiltPositionK = 0;
@@ -84,6 +85,9 @@ public final class Constants
     public static final double kFlyWheelDiameter = Units.inchesToMeters(3.9); //meters
     public static final double kFlyWheelCircumference = Math.PI * kFlyWheelDiameter;
     public static final double kFlyWheelEncoderVelocityFactor = kFlyWheelCircumference/kThroughBoreEncoderPPR; //meters per revolution
+
+    //tilt encoder conversion
+    public static final double kTiltEncoderPositionFactor = 2 * Math.PI;
 
     //telescope encoder conversion
     public static final double kTelescopeEncoderPositionFactor = 0;

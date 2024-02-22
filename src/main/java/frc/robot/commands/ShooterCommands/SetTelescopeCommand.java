@@ -12,4 +12,10 @@ public class SetTelescopeCommand extends Command
         addRequirements(subsystem);
         shooterSubsystem = subsystem;
     }
+
+    @Override
+    public void execute()
+    {
+        
+    }
 }
