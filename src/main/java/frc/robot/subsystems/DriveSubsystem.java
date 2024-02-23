@@ -78,7 +78,7 @@ public class DriveSubsystem extends SubsystemBase
         rotSpeed *= DrivetrainConstants.kMaxAngularSpeed;
 
         var swerveModuleStates = DrivetrainConstants.kDriveKinematics.toSwerveModuleStates(
-            ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, Rotation2d.fromDegrees(imu.getAngle())));
+            ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, Rotation2d.fromDegrees(-imu.getAngle())));
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DrivetrainConstants.kMaxSpeedMetersPerSecond);
 
