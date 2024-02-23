@@ -1,21 +1,19 @@
-package frc.robot.commands.ShooterCommands;
+package frc.robot.commands.FlyWheelCommands;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 //Command to take in and hold note to score in the amp
 public class FlywheelHoldCommand extends Command
 {
-    private final ShooterSubsystem shooterSubsystem;
-    private final DigitalInput proximitySensor;
+    private final FlyWheelSubsystem subsystem;
 
-    public FlywheelHoldCommand(ShooterSubsystem subsystem)
+    public FlywheelHoldCommand(FlyWheelSubsystem flyWheelSubsystem)
     {
-        shooterSubsystem = subsystem;
-        addRequirements(shooterSubsystem);
-
-        proximitySensor = shooterSubsystem.getProximitySensor();
+        subsystem = flyWheelSubsystem;
+        addRequirements(subsystem);
     }
 
     @Override
@@ -24,14 +22,14 @@ public class FlywheelHoldCommand extends Command
     @Override
     public void execute()
     {
-        shooterSubsystem.setFlyWheelMotors(0.05); //need to change
+        subsystem.setFlyWheelMotors(0.05); //need to change
     }
 
     //ends when proximity sensor is active
     @Override
     public boolean isFinished()
     {
-        if(!proximitySensor.get())
+        if(!subsystem.getProximitySensor())
         {
             return true;
         }
@@ -42,6 +40,6 @@ public class FlywheelHoldCommand extends Command
     @Override 
     public void end(boolean interrupted)
     {
-        shooterSubsystem.setFlyWheelMotors(0);
+        subsystem.setFlyWheelMotors(0);
     }
 }

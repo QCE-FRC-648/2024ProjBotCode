@@ -18,7 +18,6 @@ public class RobotContainer
 {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveTrain = new DriveSubsystem();
-  //private final ShooterSubsystem shooter = new ShooterSubsystem();
 
   //private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
 

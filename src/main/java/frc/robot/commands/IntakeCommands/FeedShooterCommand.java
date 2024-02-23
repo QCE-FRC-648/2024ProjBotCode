@@ -6,17 +6,17 @@ import frc.robot.subsystems.ConveyorSubsystem;
 //command that will feed a note to the shooter subsystem
 public class FeedShooterCommand extends Command
 {
-    private ConveyorSubsystem conveyorSubsystem;
+    private ConveyorSubsystem subsystem;
 
-    public FeedShooterCommand(ConveyorSubsystem subsystem)
+    public FeedShooterCommand(ConveyorSubsystem conveyorSubsystem)
     {
-        addRequirements(subsystem);
-        conveyorSubsystem = subsystem;
+        addRequirements(conveyorSubsystem);
+        subsystem = conveyorSubsystem;
     }
 
     @Override
     public void execute()
     {
-        conveyorSubsystem.setConveyorMotors(0); //run converyor motors at low speed
+        subsystem.setConveyorMotors(0); //run converyor motors at low speed
     }
 }

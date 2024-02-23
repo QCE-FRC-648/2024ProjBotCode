@@ -53,6 +53,46 @@ public final class Constants
     public static final double kBackRightChassisAngularOffset = Math.PI/2;
   }
 
+  public static class FlyWheelConstants
+  {
+    public static final int kFlywheel1CANId = 22;
+    public static final int kFlywheel2CANId = 23;
+
+    public static final int kFlyWheelProximitySensorDIOId = 1;
+
+    public static final int kFlyWheel1RelativeEncoderDIOChannelA = 4;
+    public static final int kFlyWheel1RelativeEncoderDIOChannelB = 5;   
+    
+    public static final double kThroughBoreEncoderPPR = 2048; //periods per revolution
+    //flywheel encoder conversion
+    public static final double kFlyWheelDiameter = Units.inchesToMeters(3.9); //meters
+    public static final double kFlyWheelCircumference = Math.PI * kFlyWheelDiameter;
+    public static final double kFlyWheelEncoderVelocityFactor = kFlyWheelCircumference/kThroughBoreEncoderPPR; //meters per revolution
+  }
+
+  public static class TelescopeConstants
+  {
+    public static final int kTelescopeCANId = 21;
+
+    public static final int kTelescopeDutyCycleEncoderDIOId = 9;
+
+    public static final double kTelescopeEncoderPositionFactor = 0;
+  }
+
+  public static class TiltConstants
+  {
+    public static final int kTiltCANId = 20;
+
+    public static final int kTiltDutyCycleEncoderDIOId = 8;
+
+    public static final double kTiltPositionP = 0;
+    public static final double kTiltPositionK = 0;
+    public static final double kTiltPositionD = 0;
+
+    public static final double kTiltEncoderPositionFactor = 2 * Math.PI;
+
+  }
+
   public static class ShooterConstants
   {
     //CAN Ids for VictorSPX motor controllers
