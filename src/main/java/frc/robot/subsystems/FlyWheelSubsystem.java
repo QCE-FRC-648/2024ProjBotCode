@@ -5,11 +5,11 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FlyWheelConstants;
-import frc.robot.Constants.ShooterConstants;
 
 public class FlyWheelSubsystem extends SubsystemBase
 {
@@ -22,6 +22,11 @@ public class FlyWheelSubsystem extends SubsystemBase
         EncodingType.k1X);
 
     private DigitalInput proximitySensor = new DigitalInput(FlyWheelConstants.kFlyWheelProximitySensorDIOId);
+
+    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(
+        FlyWheelConstants.kFlyWheelkS, 
+        FlyWheelConstants.kFlyWheelkV, 
+        FlyWheelConstants.kFlyWheelkA);
 
     public FlyWheelSubsystem()
     {

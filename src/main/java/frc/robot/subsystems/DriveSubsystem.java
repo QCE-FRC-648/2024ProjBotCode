@@ -70,15 +70,19 @@ public class DriveSubsystem extends SubsystemBase
      * @param xSpeed speed of robot in x direction (forward)
      * @param ySpeed speed of robot in y direction (sideways)
      * @param rotSpeed angular rate of the robot 
+     * @param fieldRelative set if x and y speeds are relative to the field
      */
-    public void drive(double xSpeed, double ySpeed, double rotSpeed) 
+    public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative) 
     { 
         xSpeed *= DrivetrainConstants.kMaxSpeedMetersPerSecond;
         ySpeed *= DrivetrainConstants.kMaxSpeedMetersPerSecond;
         rotSpeed *= DrivetrainConstants.kMaxAngularSpeed;
 
         var swerveModuleStates = DrivetrainConstants.kDriveKinematics.toSwerveModuleStates(
-            ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, Rotation2d.fromDegrees(-imu.getAngle())));
+            fieldRelative ? //if fieldRelative
+                ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, Rotation2d.fromDegrees(-imu.getAngle()))
+                :new ChassisSpeeds(xSpeed, ySpeed, rotSpeed));
+
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DrivetrainConstants.kMaxSpeedMetersPerSecond);
 

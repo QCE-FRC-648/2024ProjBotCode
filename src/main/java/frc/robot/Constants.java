@@ -68,6 +68,10 @@ public final class Constants
     public static final double kFlyWheelDiameter = Units.inchesToMeters(3.9); //meters
     public static final double kFlyWheelCircumference = Math.PI * kFlyWheelDiameter;
     public static final double kFlyWheelEncoderVelocityFactor = kFlyWheelCircumference/kThroughBoreEncoderPPR; //meters per revolution
+
+    public static final double kFlyWheelkS = 0;
+    public static final double kFlyWheelkV = 0;
+    public static final double kFlyWheelkA = 0;
   }
 
   public static class TelescopeConstants
@@ -77,6 +81,10 @@ public final class Constants
     public static final int kTelescopeDutyCycleEncoderDIOId = 9;
 
     public static final double kTelescopeEncoderPositionFactor = 0;
+
+    public static final double kTelescopePositionP = 0;
+    public static final double kTelescopePositionI = 0;
+    public static final double kTelescopePositionD = 0;
   }
 
   public static class TiltConstants
@@ -85,55 +93,11 @@ public final class Constants
 
     public static final int kTiltDutyCycleEncoderDIOId = 8;
 
-    public static final double kTiltPositionP = 0;
-    public static final double kTiltPositionK = 0;
-    public static final double kTiltPositionD = 0;
-
     public static final double kTiltEncoderPositionFactor = 2 * Math.PI;
 
-  }
-
-  public static class ShooterConstants
-  {
-    //CAN Ids for VictorSPX motor controllers
-    public static final int kTiltCANId = 20;
-    public static final int kTelescopeCANId = 21;
-    public static final int kFlywheel1CANId = 22;
-    public static final int kFlywheel2CANId = 23;
-
-    //DIO ports for sensors
-    public static final int kShooterProximitySensorDIOId = 1;
-    //All encoders are through bore encoders
-    public static final int kFlyWheel1RelativeEncoderDIOChannelA = 4;
-    public static final int kFlyWheel1RelativeEncoderDIOChannelB = 5;
-    public static final int kFlyWheel2RelativeEncoderDIOChannelA = 6;
-    public static final int kFlyWheel2RelativeEncoderDIOChannelB = 7;
-    public static final int kTiltDutyCycleEncoderDIOId = 8;
-    public static final int kTelescopeDutyCycleEncoderDIOId = 9;
-
-    //PID constants
-    public static final double kFlyWheelVelocityP = 0;
-    public static final double kFlyWheelVelocityK = 0;
-    public static final double kFlyWheelVelocityD = 0;
-
     public static final double kTiltPositionP = 0;
-    public static final double kTiltPositionK = 0;
+    public static final double kTiltPositionI = 0;
     public static final double kTiltPositionD = 0;
-
-    public static final double kThroughBoreEncoderPPR = 2048; //periods per revolution
-    //flywheel encoder conversion
-    public static final double kFlyWheelDiameter = Units.inchesToMeters(3.9); //meters
-    public static final double kFlyWheelCircumference = Math.PI * kFlyWheelDiameter;
-    public static final double kFlyWheelEncoderVelocityFactor = kFlyWheelCircumference/kThroughBoreEncoderPPR; //meters per revolution
-
-    //tilt encoder conversion
-    public static final double kTiltEncoderPositionFactor = 2 * Math.PI;
-
-    //telescope encoder conversion
-    public static final double kTelescopeEncoderPositionFactor = 0;
-
-    //Shuffleboard tab name
-    public static final String kShuffleboardTabName = "ShooterSubsystem";
   }
 
   public static class ClimberConstants
@@ -203,6 +167,6 @@ public final class Constants
     public static final int intakeCAN = 18;
     public static final int conveyorCANID19 = 19;
     public static final int conveyorCANID20 = 20;
-    public static final int beamPort = 0;
+    public static final int kConveyorProximitySensorDIOId = 0;
   }
 }

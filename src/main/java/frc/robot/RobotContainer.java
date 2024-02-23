@@ -34,9 +34,11 @@ public class RobotContainer
     driveTrain.setDefaultCommand(new RunCommand(
       //left joystick controls translation
       //right joystick controls rotation of the robot
-      () -> driveTrain.drive(-MathUtil.applyDeadband(driverController.getLeftY(), OIConstants.kDriverDeadband), 
-      -MathUtil.applyDeadband(driverController.getLeftX(), OIConstants.kDriverDeadband), 
-      -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriverDeadband)), 
+      () -> driveTrain.drive(
+        -MathUtil.applyDeadband(driverController.getLeftY(), OIConstants.kDriverDeadband), 
+        -MathUtil.applyDeadband(driverController.getLeftX(), OIConstants.kDriverDeadband), 
+        -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriverDeadband), 
+        true), 
       driveTrain));
   }
 
