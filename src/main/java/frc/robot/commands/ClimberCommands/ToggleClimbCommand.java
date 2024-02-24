@@ -2,16 +2,19 @@ package frc.robot.commands.ClimberCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
+import edu.wpi.first.wpilibj.PowerDistribution;
 
 public class ToggleClimbCommand extends Command
 {
     private final ClimberSubsystem climber;
+    private final PowerDistribution PDH;
     private int num;
 
     public ToggleClimbCommand(ClimberSubsystem subsystem)
     {
         climber = subsystem;
         num = 0;
+        PDH = new PowerDistribution();
     }
 
     @Override
@@ -34,7 +37,7 @@ public class ToggleClimbCommand extends Command
     @Override
     public boolean isFinished()
     {
-        if(climber.climber1.getMotorOutputVoltage() > 40 || climber.climber2.getMotorOutputVoltage() > 40){ 
+        if(PDH.getCurrent(14) > 50 || PDH.getCurrent(15) > 50){ 
             return true;
         }
         return false;
