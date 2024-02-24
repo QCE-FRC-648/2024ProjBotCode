@@ -5,8 +5,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.Constants.OIConstants;
+//import frc.robot.commands.IntakeCommands.RunIntakeCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,10 +22,11 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveTrain = new DriveSubsystem();
 
-  //private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
+  private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
+  private final FlyWheelSubsystem flyWheel = new FlyWheelSubsystem();
 
   private final CommandXboxController driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-  //private final CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
+  private final CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
@@ -38,15 +42,16 @@ public class RobotContainer
         -MathUtil.applyDeadband(driverController.getLeftY(), OIConstants.kDriverDeadband), 
         -MathUtil.applyDeadband(driverController.getLeftX(), OIConstants.kDriverDeadband), 
         -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriverDeadband), 
-        true), 
+        false), 
       driveTrain));
   }
 
   private void configureBindings() 
   {
-    //operator controls
-    //operatorController.x().toggleOnTrue(new FeedShooterCommand(conveyor)); //intake
-
+    //operatdor controls
+    //operatorController.x().onTrue(new RunIntakeCommand(conveyor)); //intake
+    //operatorController.axisGreaterThan(operatorController.getRightTriggerAxis(), 0.9, 
+      //() -> flyWheel.setFlyWheelMotors(0.75), flyWheel);
   }
 
   /**
