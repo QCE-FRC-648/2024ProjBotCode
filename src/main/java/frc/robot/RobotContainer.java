@@ -13,6 +13,7 @@ import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
 import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.IntakeCommands.EjectNoteCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
 
 /**
@@ -61,6 +62,9 @@ public class RobotContainer
     if(operatorController.getRightY() > 0.1) {
       new ManualClimbCommand(climber, operatorController.getRightY());
     }
+    if(operatorController.getLeftTriggerAxis() > 0.1) {
+      new EjectNoteCommand(conveyor, operatorController.getLeftTriggerAxis());
+    } 
   }
 
   /**
