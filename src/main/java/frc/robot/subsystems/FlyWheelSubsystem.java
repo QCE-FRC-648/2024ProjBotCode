@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -14,8 +14,8 @@ import frc.robot.Constants.FlyWheelConstants;
 
 public class FlyWheelSubsystem extends SubsystemBase
 {
-    private VictorSPX flyWheelMotor1 = new VictorSPX(FlyWheelConstants.kFlywheel1CANId);
-    private VictorSPX flyWheelMotor2 = new VictorSPX(FlyWheelConstants.kFlywheel2CANId);
+    private WPI_VictorSPX flyWheelMotor1 = new WPI_VictorSPX(FlyWheelConstants.kFlywheel1CANId);
+    private WPI_VictorSPX flyWheelMotor2 = new WPI_VictorSPX(FlyWheelConstants.kFlywheel2CANId);
 
     /* 
     private Encoder flyWheelEncoder1 = new Encoder(FlyWheelConstants.kFlyWheel1RelativeEncoderDIOChannelA, 
@@ -60,7 +60,10 @@ public class FlyWheelSubsystem extends SubsystemBase
      */
     public void setFlyWheelVelocity(double desiredVelocity)
     {
+        double feedForwardVal = feedforward.calculate(desiredVelocity);
 
+        flyWheelMotor1.setVoltage(feedForwardVal);
+        flyWheelMotor2.setVoltage(feedForwardVal);
     }
 
     /* 
