@@ -9,8 +9,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController; 
+import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
+import frc.robot.Constants.ShuffleboardTabConstants;
 import frc.robot.Constants.SwerveModuleConstants;
 
 public class SwerveModule 
@@ -26,8 +31,17 @@ public class SwerveModule
 
     private final double chassisAngularOffset;
     private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d());
+    private SwerveModuleState optimizedState;
 
-    public SwerveModule(int driveMotorId, int turnMotorId, double p_chassisAngularOffset)
+    //Shuffleboard entries
+    private final ShuffleboardTab tab = ShuffleboardTabConstants.kDriveTab;
+    private final ShuffleboardLayout layout;
+    private GenericEntry desiredAngle;
+    private GenericEntry currentAngle;
+    private GenericEntry desiredVelocity;
+    private GenericEntry currentVelcoity;
+
+    public SwerveModule(int driveMotorId, int turnMotorId, double p_chassisAngularOffset, String layoutName)
     {
         drivingMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
         turningMotor = new CANSparkMax(turnMotorId, MotorType.kBrushless);
@@ -82,6 +96,14 @@ public class SwerveModule
         chassisAngularOffset = p_chassisAngularOffset;
         desiredState.angle = new Rotation2d(turningEncoder.getPosition());
         drivingEncoder.setPosition(0);
+
+        //shuffleboard setup
+        layout = tab.getLayout(layoutName).withSize(2,2);
+
+        desiredAngle = layout.add("desired angle(rads)", desiredState.angle.getRadians()).getEntry();
+        currentAngle = layout.add("current angle(rads)", turningEncoder.getPosition() - chassisAngularOffset).getEntry();
+        desiredVelocity = layout.add("desired velocity(m/s)", desiredState.speedMetersPerSecond).getEntry();
+        currentVelcoity = layout.add("current velocity(m/s)", drivingEncoder.getVelocity()).getEntry();
     }
 
     public void setDesiredState(SwerveModuleState p_desiredState)
@@ -98,12 +120,22 @@ public class SwerveModule
         drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
         turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
 
+        //shuffleboard values update
+        desiredAngle.setDouble(optimizedDesiredState.angle.getRadians());
+        desiredVelocity.setDouble(optimizedDesiredState.speedMetersPerSecond);
+
         desiredState = p_desiredState;
+        optimizedState = optimizedDesiredState;
     }
 
     public SwerveModuleState getDesiredState()
     {
         return desiredState;
+    }
+
+    public SwerveModuleState getOptimizedState()
+    {
+        return optimizedState;
     }
 
     public SwerveModuleState getModuleState()
@@ -112,7 +144,7 @@ public class SwerveModule
             new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
     }
 
-    public SparkPIDController gettPidController()
+    public SparkPIDController getPIDController()
     {
         return drivingPIDController;
     }
@@ -130,4 +162,13 @@ public class SwerveModule
         drivingEncoder.setPosition(0);
     }
 
+    /**
+     * Method to update current angle and current velocity
+     * in shuffleboard
+     */
+    public void updateCurrentValues()
+    {
+        currentAngle.setDouble(turningEncoder.getPosition() - chassisAngularOffset);
+        currentVelcoity.getDouble(drivingEncoder.getVelocity());
+    }
 }

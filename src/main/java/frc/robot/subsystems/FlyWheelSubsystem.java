@@ -17,13 +17,13 @@ public class FlyWheelSubsystem extends SubsystemBase
     private WPI_VictorSPX flyWheelMotor1 = new WPI_VictorSPX(FlyWheelConstants.kFlywheel1CANId);
     private WPI_VictorSPX flyWheelMotor2 = new WPI_VictorSPX(FlyWheelConstants.kFlywheel2CANId);
 
-    /* 
+    
     private Encoder flyWheelEncoder1 = new Encoder(FlyWheelConstants.kFlyWheel1RelativeEncoderDIOChannelA, 
         FlyWheelConstants.kFlyWheel1RelativeEncoderDIOChannelB,
         false,
         EncodingType.k1X);
 
-    private DigitalInput proximitySensor = new DigitalInput(FlyWheelConstants.kFlyWheelProximitySensorDIOId);*/
+    private DigitalInput proximitySensor = new DigitalInput(FlyWheelConstants.kFlyWheelProximitySensorDIOId);
 
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(
         FlyWheelConstants.kFlyWheelkS, 
@@ -37,9 +37,9 @@ public class FlyWheelSubsystem extends SubsystemBase
         flyWheelMotor1.setNeutralMode(NeutralMode.Coast);
         flyWheelMotor2.setNeutralMode(NeutralMode.Coast);
 
-        //flyWheelEncoder1.setSamplesToAverage(10);
+        flyWheelEncoder1.setSamplesToAverage(10);
 
-        //flyWheelEncoder1.setDistancePerPulse(FlyWheelConstants.kFlyWheelEncoderVelocityFactor);
+        flyWheelEncoder1.setDistancePerPulse(FlyWheelConstants.kFlyWheelEncoderVelocityFactor);
     }
 
     /**
@@ -66,11 +66,11 @@ public class FlyWheelSubsystem extends SubsystemBase
         flyWheelMotor2.setVoltage(feedForwardVal);
     }
 
-    /* 
+    
     public boolean getProximitySensor()
     {
         return proximitySensor.get();
-    }*/
+    }
 
     public void setFlyWheelMotorsCoast()
     {
