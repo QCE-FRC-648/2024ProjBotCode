@@ -167,10 +167,10 @@ public class SwerveModule
     /**
      * Method to update current angle and current velocity
      * in shuffleboard
-     
+    */
     public void updateCurrentValues()
     {
         currentAngle.setDouble(turningEncoder.getPosition() - chassisAngularOffset);
         currentVelcoity.getDouble(drivingEncoder.getVelocity());
-    }*/
+    }
 }

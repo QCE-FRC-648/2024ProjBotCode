@@ -10,8 +10,6 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.AnalogTrigger;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FlyWheelConstants;
@@ -35,7 +33,13 @@ public class FlyWheelSubsystem extends SubsystemBase
         FlyWheelConstants.kFlyWheelkV, 
         FlyWheelConstants.kFlyWheelkA);
 
-    private final DoublePublisher proximitySensorVoltPublisher;
+    private final NetworkTableInstance instance;
+    private final DoublePublisher flyWheel1PrecentPublisher;
+    private final DoublePublisher flyWheel2PrecentPublisher;
+
+    private final DoublePublisher proximityBitPublisher;
+    private final DoublePublisher proximityAverageBitPublisher;
+    private final DoublePublisher proximityVoltPublisher;
 
     public FlyWheelSubsystem()
     {
@@ -48,8 +52,13 @@ public class FlyWheelSubsystem extends SubsystemBase
 
         flyWheelEncoder1.setDistancePerPulse(FlyWheelConstants.kFlyWheelEncoderVelocityFactor);
 
-        proximitySensorVoltPublisher = NetworkTableInstance.getDefault().
-            getDoubleTopic("/ProximitySensor/ShooterSensor/Volts").publish();
+        instance = NetworkTableInstance.getDefault();
+        flyWheel1PrecentPublisher = instance.getDoubleTopic("/FlyWheelSubsystem/MotorsInfo/FlyWheel1/Precent").publish();
+        flyWheel2PrecentPublisher = instance.getDoubleTopic("/FlyWheelSubsystem/MotorsInfo/FlyWheel2/Precent").publish();
+
+        proximityBitPublisher = instance.getDoubleTopic("/FlyWheelSubsystem/Sensors/ProximitySensor/Bits").publish();
+        proximityAverageBitPublisher = instance.getDoubleTopic("/FlyWheelSubsystem/Sensors/ProximitySensor/Bits").publish();
+        proximityVoltPublisher = instance.getDoubleTopic("/FlyWheelSubsystem/Sensors/ProximitySensor/Volts").publish();
     }
 
     /**
@@ -98,6 +107,8 @@ public class FlyWheelSubsystem extends SubsystemBase
     @Override
     public void periodic()
     {
-        proximitySensorVoltPublisher.set(proximitySensor.getVoltage());
+        proximityBitPublisher.set(proximitySensor.getValue());
+        proximityAverageBitPublisher.set(proximitySensor.getAverageBits());
+        proximityVoltPublisher.set(proximitySensor.getVoltage());
     }
 }

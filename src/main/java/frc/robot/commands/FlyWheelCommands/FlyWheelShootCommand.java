@@ -30,6 +30,6 @@ public class FlyWheelShootCommand extends Command
     @Override
     public void end(boolean interrupted)
     {
-
+        subsystem.setFlyWheelVelocity(0); //go back to zero when finished
     }
 }

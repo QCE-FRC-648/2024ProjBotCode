@@ -5,10 +5,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
 
@@ -25,6 +27,7 @@ public class RobotContainer
 
   private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
   private final FlyWheelSubsystem flyWheel = new FlyWheelSubsystem();
+  private final ClimberSubsystem climber = new ClimberSubsystem();
 
   private final CommandXboxController driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   private final CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
@@ -43,8 +46,13 @@ public class RobotContainer
         -MathUtil.applyDeadband(driverController.getLeftY(), OIConstants.kDriverDeadband), 
         -MathUtil.applyDeadband(driverController.getLeftX(), OIConstants.kDriverDeadband), 
         -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriverDeadband), 
-        false), 
+        true), 
       driveTrain));
+
+    
+    climber.setDefaultCommand(new ManualClimbCommand(
+      climber, 
+      () -> -MathUtil.applyDeadband(operatorController.getLeftY(), OIConstants.kDriverDeadband)));
   }
 
   private void configureBindings() 
@@ -55,6 +63,7 @@ public class RobotContainer
     operatorController.y().toggleOnTrue(new RunCommand(
       () -> flyWheel.setFlyWheelMotors(1), flyWheel));
 
+    
     operatorController.y().toggleOnFalse(new RunCommand(
      () -> flyWheel.setFlyWheelMotors(0), flyWheel));
   }
