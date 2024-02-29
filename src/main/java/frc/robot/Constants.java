@@ -107,6 +107,8 @@ public final class Constants
     public static final int kClimber1CANId = 25;
     public static final int kClimber2CANId = 26;
     public static final int currentMax = 50;
+    public static final int kClimber1PDH = 14;
+    public static final int kClimber2PDH = 15;
   }
 
   public static class SwerveModuleConstants
