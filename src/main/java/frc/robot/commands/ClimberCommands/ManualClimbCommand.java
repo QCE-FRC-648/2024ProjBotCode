@@ -30,7 +30,7 @@ public class ManualClimbCommand extends Command{
     @Override
     public boolean isFinished()
     {
-        if(climber.PDH.getCurrent(14) > ClimberConstants.currentMax || climber.PDH.getCurrent(15) > ClimberConstants.currentMax) {
+        if(climber.climber1.getCurrent(ClimberCommands.kClimber1PDH) > ClimberConstants.currentMax || climber.climber2.getCurrent(ClimberCommands.kClimber2PDH) > ClimberConstants.currentMax) {
             return true;
         }
         return false;

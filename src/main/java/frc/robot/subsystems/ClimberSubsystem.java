@@ -18,4 +18,8 @@ public class ClimberSubsystem extends SubsystemBase
         climber2.setNeutralMode(NeutralMode.Brake);
         PDH = new PowerDistribution();
     }
+
+    public double getCurrent(int num) {
+        return PDH.getCurrent(num);
+    }
 }
