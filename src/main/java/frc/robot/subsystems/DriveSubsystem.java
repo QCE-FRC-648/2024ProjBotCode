@@ -9,6 +9,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,39 +23,30 @@ public class DriveSubsystem extends SubsystemBase
     private final SwerveModule frontLeft = new SwerveModule(
         DrivetrainConstants.kFrontLeftDrivingCANId, 
         DrivetrainConstants.kFrontLeftTurningCANId, 
-        DrivetrainConstants.kFrontLeftChassisAngularOffset);
+        DrivetrainConstants.kFrontLeftChassisAngularOffset,
+        "front left");
 
     private final SwerveModule frontRight = new SwerveModule(
         DrivetrainConstants.kFrontRightDrivingCANId, 
         DrivetrainConstants.kFrontRightTurningCANId, 
-        DrivetrainConstants.kFrontRightChassisAngularOffset);
+        DrivetrainConstants.kFrontRightChassisAngularOffset,
+        "front right");
 
     private final SwerveModule backLeft = new SwerveModule(
         DrivetrainConstants.kBackLeftDrivingCANId, 
         DrivetrainConstants.kBackLeftTurningCANId, 
-        DrivetrainConstants.kBackLeftChassisAngularOffset);
+        DrivetrainConstants.kBackLeftChassisAngularOffset,
+        "back left");
 
     private final SwerveModule backRight = new SwerveModule(
         DrivetrainConstants.kBackRightDrivingCANId, 
         DrivetrainConstants.kBackRightTurningCANId, 
-        DrivetrainConstants.kBackRightChassisAngularOffset);
+        DrivetrainConstants.kBackRightChassisAngularOffset,
+        "back right");
 
-    private AHRS imu;
+    private AHRS imu = new AHRS(SPI.Port.kMXP);
 
-    private SwerveDriveOdometry odometry;
-
-    public DriveSubsystem() 
-    { 
-        try
-        {
-            imu = new AHRS(SPI.Port.kMXP);
-        }
-        catch(RuntimeException ex)
-        {
-            DriverStation.reportError("Error instantiating navX MXP: " + ex.getMessage(), true);
-        }
-
-        odometry = new SwerveDriveOdometry(
+    private SwerveDriveOdometry odometry = new SwerveDriveOdometry(
         DrivetrainConstants.kDriveKinematics, 
         Rotation2d.fromDegrees(imu.getAngle()), 
         new SwerveModulePosition[]{
@@ -62,6 +55,17 @@ public class DriveSubsystem extends SubsystemBase
             backLeft.getPosition(),
             backRight.getPosition()
         });
+
+    private final StructArrayPublisher<SwerveModuleState> measuredSwerveStatePublisher;
+    private final StructArrayPublisher<SwerveModuleState> setpointSwerveStatePublisher;
+
+    public DriveSubsystem() 
+    { 
+        measuredSwerveStatePublisher = NetworkTableInstance.getDefault()
+            .getStructArrayTopic("/SwerveModuleStates/Measured", SwerveModuleState.struct).publish();
+        
+        setpointSwerveStatePublisher = NetworkTableInstance.getDefault()
+            .getStructArrayTopic("/SwerveModuleState/Setpoint", SwerveModuleState.struct).publish();
     }
 
     /**
@@ -132,6 +136,28 @@ public class DriveSubsystem extends SubsystemBase
                 frontLeft.getPosition(), frontRight.getPosition(),
                 backLeft.getPosition(), backRight.getPosition()
             });
+
+
+        //update current values of angle and velocity
+        frontLeft.updateCurrentValues();
+        frontRight.updateCurrentValues();
+        backLeft.updateCurrentValues();
+        backRight.updateCurrentValues();
+
+        //publish to networktable for advantagescope
+        measuredSwerveStatePublisher.set(new SwerveModuleState[]{
+            frontLeft.getModuleState(),
+            frontRight.getModuleState(),
+            backLeft.getModuleState(),
+            backRight.getModuleState()
+        });
+
+        setpointSwerveStatePublisher.set(new SwerveModuleState[]{
+            frontLeft.getOptimizedState(),
+            frontRight.getOptimizedState(),
+            backLeft.getOptimizedState(),
+            backRight.getOptimizedState()
+        });
 
         //smart dashboard
         SmartDashboard.putNumber("gyro angle", imu.getAngle());

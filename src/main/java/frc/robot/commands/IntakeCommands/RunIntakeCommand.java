@@ -25,7 +25,7 @@ public class RunIntakeCommand extends Command
     public void execute()
     {
         subsystem.setConveyorMotors(0.2);
-        subsystem.setIntakeMotor(0.5);
+        subsystem.setIntakeMotor(0.3);
     }
 
     @Override
