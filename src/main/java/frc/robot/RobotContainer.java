@@ -13,7 +13,15 @@ import frc.robot.commands.ClimberCommands.ToggleClimbCommand;
 import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FlyWheelSubsystem;
+import frc.robot.commands.ClimberCommands.ToggleClimbCommand;
+import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
+import frc.robot.commands.ClimberCommands.ManualClimbCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.IntakeCommands.EjectNoteCommand;
+import frc.robot.commands.IntakeCommands.RunIntakeCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,9 +33,10 @@ public class RobotContainer
 {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveTrain = new DriveSubsystem();
-  private final ShooterSubsystem shooter = new ShooterSubsystem();
 
   private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
+  private final FlyWheelSubsystem flyWheel = new FlyWheelSubsystem();
+  private final ClimberSubsystem climber = new ClimberSubsystem();
 
   private final ClimberSubsystem climber = new ClimberSubsystem();
 
@@ -44,18 +53,27 @@ public class RobotContainer
     driveTrain.setDefaultCommand(new RunCommand(
       //left joystick controls translation
       //right joystick controls rotation of the robot
-      () -> driveTrain.drive(-MathUtil.applyDeadband(driverController.getLeftY(), OIConstants.kDriverDeadband), 
-      -MathUtil.applyDeadband(driverController.getLeftX(), OIConstants.kDriverDeadband), 
-      -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriverDeadband)), 
+      () -> driveTrain.drive(
+        -MathUtil.applyDeadband(driverController.getLeftY(), OIConstants.kDriverDeadband), 
+        -MathUtil.applyDeadband(driverController.getLeftX(), OIConstants.kDriverDeadband), 
+        -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriverDeadband), 
+        false), 
       driveTrain));
   }
 
   private void configureBindings() 
   {
-    //operatorController.a().onTrue(new FlywheelHoldCommand(shooter));
-    //operatorController.x().toggleOnTrue(new IntakeConveyorCommand(conveyor));
-    //operatorController.y().toggleOnTrue(new ToggleClimbCommand(climber));
-    //operatorController.getRightY(new MannualClimbCommand(climber));
+    //operatdor controls
+    //operatorController.axisGreaterThan(operatorController.getRightTriggerAxis(), 0.9, 
+      //() -> flyWheel.setFlyWheelMotors(0.75), flyWheel);
+    operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor));
+    operatorController.y().toggleOnTrue(new ToggleClimbCommand(climber));
+    if(operatorController.getRightY() > 0.1) {
+      new ManualClimbCommand(climber, operatorController.getRightY());
+    }
+    if(operatorController.getLeftTriggerAxis() > 0.1) {
+      new EjectNoteCommand(conveyor, operatorController.getLeftTriggerAxis());
+    } 
   }
 
   /**

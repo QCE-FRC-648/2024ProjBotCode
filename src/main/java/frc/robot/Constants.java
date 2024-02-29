@@ -5,7 +5,6 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -32,8 +31,8 @@ public final class Constants
 
     //Not the maxium capable speed of the robot 
     //but an allowed max speed of the robot
-    public static final double kMaxSpeedMetersPerSecond = 1.0;
-    public static final double kMaxAngularSpeed = Math.PI; //radians per second
+    public static final double kMaxSpeedMetersPerSecond = 3.0;
+    public static final double kMaxAngularSpeed = 2*Math.PI; //radians per second
 
     public static final double kTrackWidth = Units.inchesToMeters(24.5);
     public static final double kWheelBase = Units.inchesToMeters(24.5);
@@ -54,37 +53,58 @@ public final class Constants
     public static final double kBackRightChassisAngularOffset = Math.PI/2;
   }
 
-  public static class ShooterConstants
+  public static class FlyWheelConstants
   {
-    //CAN Ids for VictorSPX motor controllers
-    public static final int kTiltCANId = 20;
-    public static final int kTelescopeCANId = 21;
     public static final int kFlywheel1CANId = 22;
     public static final int kFlywheel2CANId = 23;
 
-    //DIO ports for sensors
-    public static final int kShooterProximitySensorDIOId = 1;
+    public static final int kFlyWheelProximitySensorDIOId = 1;
+
     public static final int kFlyWheel1RelativeEncoderDIOChannelA = 4;
-    public static final int kFlyWheel1RelativeEncoderDIOChannelB = 5;
-    public static final int kFlyWheel2RelativeEncoderDIOChannelA = 6;
-    public static final int kFlyWheel2RelativeEncoderDIOChannelB = 7;
-    public static final int kTiltDutyCycleEncoderDIOId = 8;
+    public static final int kFlyWheel1RelativeEncoderDIOChannelB = 5;   
+    
+    public static final double kThroughBoreEncoderPPR = 2048; //periods per revolution
+    //flywheel encoder conversion
+    public static final double kFlyWheelDiameter = Units.inchesToMeters(3.9); //meters
+    public static final double kFlyWheelCircumference = Math.PI * kFlyWheelDiameter;
+    public static final double kFlyWheelEncoderVelocityFactor = kFlyWheelCircumference/kThroughBoreEncoderPPR; //meters per revolution
+
+    public static final double kFlyWheelkS = 0;
+    public static final double kFlyWheelkV = 0;
+    public static final double kFlyWheelkA = 0;
+  }
+
+  public static class TelescopeConstants
+  {
+    public static final int kTelescopeCANId = 21;
+
     public static final int kTelescopeDutyCycleEncoderDIOId = 9;
 
-    //PID constants
-    public static final double kFlyWheelVelocityP = 0;
-    public static final double kFlyWheelVelocityK = 0;
+    public static final double kTelescopeEncoderPositionFactor = 0;
 
-    //Encoder conversions
+    public static final double kTelescopePositionP = 0;
+    public static final double kTelescopePositionI = 0;
+    public static final double kTelescopePositionD = 0;
+  }
 
-    //Shuffleboard tab name
-    public static final String kShuffleboardTabName = "ShooterSubsystem";
+  public static class TiltConstants
+  {
+    public static final int kTiltCANId = 20;
+
+    public static final int kTiltDutyCycleEncoderDIOId = 8;
+
+    public static final double kTiltEncoderPositionFactor = 2 * Math.PI;
+
+    public static final double kTiltPositionP = 0;
+    public static final double kTiltPositionI = 0;
+    public static final double kTiltPositionD = 0;
   }
 
   public static class ClimberConstants
   {
     public static final int kClimber1CANId = 25;
     public static final int kClimber2CANId = 26;
+    public static final int currentMax = 50;
   }
 
   public static class SwerveModuleConstants
@@ -148,6 +168,6 @@ public final class Constants
     public static final int intakeCAN = 18;
     public static final int conveyorCANID19 = 19;
     public static final int conveyorCANID20 = 20;
-    public static final int beamPort = 0;
+    public static final int kConveyorProximitySensorDIOId = 0;
   }
 }

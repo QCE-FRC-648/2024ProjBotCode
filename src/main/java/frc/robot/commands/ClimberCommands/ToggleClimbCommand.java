@@ -1,20 +1,20 @@
 package frc.robot.commands.ClimberCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.subsystems.ClimberSubsystem;
-import edu.wpi.first.wpilibj.PowerDistribution;
 
 public class ToggleClimbCommand extends Command
 {
     private final ClimberSubsystem climber;
-    private final PowerDistribution PDH;
+    
     private int num;
 
     public ToggleClimbCommand(ClimberSubsystem subsystem)
     {
+        addRequirements(subsystem);
         climber = subsystem;
         num = 0;
-        PDH = new PowerDistribution();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ToggleClimbCommand extends Command
     @Override
     public boolean isFinished()
     {
-        if(PDH.getCurrent(14) > 50 || PDH.getCurrent(15) > 50){ 
+        if(climber.PDH.getCurrent(14) > ClimberConstants.currentMax || climber.PDH.getCurrent(15) > ClimberConstants.currentMax){ 
             return true;
         }
         return false;
