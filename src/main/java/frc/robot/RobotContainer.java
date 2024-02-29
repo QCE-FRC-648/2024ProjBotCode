@@ -9,6 +9,7 @@ import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
 
 /**
@@ -42,16 +43,20 @@ public class RobotContainer
         -MathUtil.applyDeadband(driverController.getLeftY(), OIConstants.kDriverDeadband), 
         -MathUtil.applyDeadband(driverController.getLeftX(), OIConstants.kDriverDeadband), 
         -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriverDeadband), 
-        true), 
+        false), 
       driveTrain));
   }
 
   private void configureBindings() 
   {
     //operatdor controls
-    //operatorController.x().onTrue(new RunIntakeCommand(conveyor)); //intake
-    //operatorController.axisGreaterThan(operatorController.getRightTriggerAxis(), 0.9, 
-      //() -> flyWheel.setFlyWheelMotors(0.75), flyWheel);
+    operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor)); //intake
+
+    operatorController.y().toggleOnTrue(new RunCommand(
+      () -> flyWheel.setFlyWheelMotors(1), flyWheel));
+
+    operatorController.y().toggleOnFalse(new RunCommand(
+     () -> flyWheel.setFlyWheelMotors(0), flyWheel));
   }
 
   /**

@@ -3,10 +3,17 @@ import frc.robot.Constants.ConveyorConstants;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.AnalogTrigger;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
 public class ConveyorSubsystem extends SubsystemBase
@@ -14,12 +21,18 @@ public class ConveyorSubsystem extends SubsystemBase
 
     private VictorSPX conveyorMotor1 = new VictorSPX(ConveyorConstants.conveyorCANID19);
     private VictorSPX conveyorMotor2 = new VictorSPX(ConveyorConstants.conveyorCANID20);
-    private VictorSPX intakeMotor = new VictorSPX(ConveyorConstants.intakeCAN);
-    private DigitalInput proximitySensor = new DigitalInput(ConveyorConstants.kConveyorProximitySensorDIOId);
+    private CANSparkMax intakeMotor = new CANSparkMax(ConveyorConstants.intakeCAN, MotorType.kBrushless);
+    private AnalogInput proximitySensorAI = new AnalogInput(ConveyorConstants.kConveyorProximitySensorDIOId);
+
+    private final DoublePublisher proximityVoltPublisher;
 
     public ConveyorSubsystem() 
     { 
-        conveyorMotor2.setInverted(InvertType.InvertMotorOutput);
+        conveyorMotor1.setInverted(InvertType.InvertMotorOutput);
+
+        
+        proximityVoltPublisher = NetworkTableInstance.getDefault().
+            getDoubleTopic("/ProximitySensor/ConveyorSensor/Volts").publish();
     }
 
     public void setConveyorMotors(double output)
@@ -30,14 +43,17 @@ public class ConveyorSubsystem extends SubsystemBase
 
     public void setIntakeMotor(double output)
     {
-        intakeMotor.set(ControlMode.PercentOutput, output);
+        intakeMotor.set(output);
     }
 
-    public DigitalInput getProximitySensor()
+    public boolean getProximitySensor()
     {
-        return proximitySensor;
+        return true;
     }
     
     @Override
-    public void periodic() { }
+    public void periodic() 
+    { 
+        proximityVoltPublisher.set(proximitySensorAI.getVoltage());
+    }
 }

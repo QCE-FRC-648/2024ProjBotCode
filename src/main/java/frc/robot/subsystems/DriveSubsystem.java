@@ -62,7 +62,7 @@ public class DriveSubsystem extends SubsystemBase
     public DriveSubsystem() 
     { 
         measuredSwerveStatePublisher = NetworkTableInstance.getDefault()
-            .getStructArrayTopic("/SwerveModuleStates/Measured", SwerveModuleState.struct).publish();
+            .getStructArrayTopic("/SwerveModuleState/Measured", SwerveModuleState.struct).publish();
         
         setpointSwerveStatePublisher = NetworkTableInstance.getDefault()
             .getStructArrayTopic("/SwerveModuleState/Setpoint", SwerveModuleState.struct).publish();
@@ -138,11 +138,11 @@ public class DriveSubsystem extends SubsystemBase
             });
 
 
-        //update current values of angle and velocity
+        /*update current values of angle and velocity
         frontLeft.updateCurrentValues();
         frontRight.updateCurrentValues();
         backLeft.updateCurrentValues();
-        backRight.updateCurrentValues();
+        backRight.updateCurrentValues();*/
 
         //publish to networktable for advantagescope
         measuredSwerveStatePublisher.set(new SwerveModuleState[]{
@@ -153,10 +153,10 @@ public class DriveSubsystem extends SubsystemBase
         });
 
         setpointSwerveStatePublisher.set(new SwerveModuleState[]{
-            frontLeft.getOptimizedState(),
-            frontRight.getOptimizedState(),
-            backLeft.getOptimizedState(),
-            backRight.getOptimizedState()
+            frontLeft.getDesiredState(),
+            frontRight.getDesiredState(),
+            backLeft.getDesiredState(),
+            backRight.getDesiredState()
         });
 
         //smart dashboard
