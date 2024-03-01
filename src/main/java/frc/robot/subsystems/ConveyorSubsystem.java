@@ -56,7 +56,10 @@ public class ConveyorSubsystem extends SubsystemBase
 
     public boolean getProximitySensor()
     {
-        return true;
+        if(proximitySensor.getVoltage() < 1) {
+            return true;
+        }
+        return false;
     }
     
     @Override
