@@ -7,9 +7,9 @@ public class IntakeConveyorCommand extends Command
 {
     private final ConveyorSubsystem conveyor;
 
-
     public IntakeConveyorCommand(ConveyorSubsystem subsystem)
     {
+        addRequirements(subsystem);
         conveyor = subsystem;
     }
 
