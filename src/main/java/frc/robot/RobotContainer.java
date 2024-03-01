@@ -5,12 +5,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.commands.ShooterCommands.FlywheelHoldCommand;
-import frc.robot.commands.IntakeCommands.IntakeConveyorCommand;
-import frc.robot.commands.ClimberCommands.ToggleClimbCommand;
-import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -21,6 +15,8 @@ import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.IntakeCommands.EjectNoteCommand;
+import frc.robot.commands.ClimberCommands.ManualClimbCommand;
+import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
 
 /**
@@ -36,8 +32,6 @@ public class RobotContainer
 
   private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
   private final FlyWheelSubsystem flyWheel = new FlyWheelSubsystem();
-  private final ClimberSubsystem climber = new ClimberSubsystem();
-
   private final ClimberSubsystem climber = new ClimberSubsystem();
 
   private final CommandXboxController driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
@@ -59,21 +53,31 @@ public class RobotContainer
         -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriverDeadband), 
         true), 
       driveTrain));
+
+    
+    climber.setDefaultCommand(new ManualClimbCommand(
+      climber, 
+      () -> -MathUtil.applyDeadband(operatorController.getLeftY(), OIConstants.kDriverDeadband)));
   }
 
   private void configureBindings() 
   {
     //operatdor controls
-    //operatorController.axisGreaterThan(operatorController.getRightTriggerAxis(), 0.9, 
-      //() -> flyWheel.setFlyWheelMotors(0.75), flyWheel);
-    operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor));
-    operatorController.y().toggleOnTrue(new ToggleClimbCommand(climber));
+    /* 
     if(operatorController.getRightY() > 0.1) {
       new ManualClimbCommand(climber, operatorController.getRightY());
     }
     if(operatorController.getLeftTriggerAxis() > 0.1) {
       new EjectNoteCommand(conveyor, operatorController.getLeftTriggerAxis());
     } 
+    */
+    operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor)); //intake
+
+    operatorController.y().toggleOnTrue(new RunCommand(
+      () -> flyWheel.setFlyWheelMotors(1), flyWheel));
+    
+    operatorController.y().toggleOnFalse(new RunCommand(
+     () -> flyWheel.setFlyWheelMotors(0), flyWheel));
   }
 
   /**

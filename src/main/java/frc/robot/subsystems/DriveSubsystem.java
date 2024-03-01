@@ -13,7 +13,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrivetrainConstants;
 
@@ -62,7 +61,7 @@ public class DriveSubsystem extends SubsystemBase
     public DriveSubsystem() 
     { 
         measuredSwerveStatePublisher = NetworkTableInstance.getDefault()
-            .getStructArrayTopic("/SwerveModuleStates/Measured", SwerveModuleState.struct).publish();
+            .getStructArrayTopic("/SwerveModuleState/Measured", SwerveModuleState.struct).publish();
         
         setpointSwerveStatePublisher = NetworkTableInstance.getDefault()
             .getStructArrayTopic("/SwerveModuleState/Setpoint", SwerveModuleState.struct).publish();
@@ -153,52 +152,10 @@ public class DriveSubsystem extends SubsystemBase
         });
 
         setpointSwerveStatePublisher.set(new SwerveModuleState[]{
-            frontLeft.getOptimizedState(),
-            frontRight.getOptimizedState(),
-            backLeft.getOptimizedState(),
-            backRight.getOptimizedState()
+            frontLeft.getDesiredState(),
+            frontRight.getDesiredState(),
+            backLeft.getDesiredState(),
+            backRight.getDesiredState()
         });
-
-        //smart dashboard
-        SmartDashboard.putNumber("gyro angle", imu.getAngle());
-
-        //front left module
-        SmartDashboard.putNumber("Desired angle front left", 
-            frontLeft.getDesiredState().angle.getRadians());
-
-        SmartDashboard.putNumber("Desired speed front left", frontLeft.getDesiredState().speedMetersPerSecond);
-
-        SmartDashboard.putNumber("Current angle front left", 
-            frontLeft.getModuleState().angle.getRadians());
-
-        SmartDashboard.putNumber("Current velocity front left", frontLeft.getModuleState().speedMetersPerSecond);
-
-
-        //front right module
-        SmartDashboard.putNumber("Desired angle front right", 
-            frontRight.getDesiredState().angle.getRadians());
-
-        SmartDashboard.putNumber("Current angle front right", 
-            frontRight.getModuleState().angle.getRadians());
-
-        SmartDashboard.putNumber("Current velocity front right", frontRight.getModuleState().speedMetersPerSecond);
-
-        //back left module
-        SmartDashboard.putNumber("Desired angle back left", 
-            backLeft.getDesiredState().angle.getRadians());
-
-        SmartDashboard.putNumber("Current angle back left", 
-            backLeft.getModuleState().angle.getRadians());
-
-        SmartDashboard.putNumber("Current velocity back left", backLeft.getModuleState().speedMetersPerSecond);
-
-        //back right module
-        SmartDashboard.putNumber("Desired angle back right", 
-            backRight.getDesiredState().angle.getRadians());
-
-        SmartDashboard.putNumber("Current angle back right", 
-            backRight.getModuleState().angle.getRadians());
-
-        SmartDashboard.putNumber("Current velocity back right", backRight.getModuleState().speedMetersPerSecond);
     }
 }

@@ -1,21 +1,16 @@
 package frc.robot.commands.IntakeCommands;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ConveyorSubsystem;
 
 public class RunIntakeCommand extends Command 
 {
     private final ConveyorSubsystem subsystem;
-    private final DigitalInput proximitySensor;
-
 
     public RunIntakeCommand(ConveyorSubsystem conveyorSubsystem)
     {
         addRequirements(conveyorSubsystem);
         subsystem = conveyorSubsystem;
-
-        proximitySensor = conveyorSubsystem.getProximitySensor();
     }
 
     @Override
@@ -24,14 +19,14 @@ public class RunIntakeCommand extends Command
     @Override 
     public void execute()
     {
-        subsystem.setConveyorMotors(0.2);
+        subsystem.setConveyorMotors(0.4);
         subsystem.setIntakeMotor(0.3);
     }
 
     @Override
     public boolean isFinished()
     {
-        if(!proximitySensor.get())
+        if(!subsystem.getProximitySensor())
         {
             return true;
         }

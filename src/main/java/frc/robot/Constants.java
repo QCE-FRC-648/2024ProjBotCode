@@ -33,7 +33,7 @@ public final class Constants
 
     //Not the maxium capable speed of the robot 
     //but an allowed max speed of the robot
-    public static final double kMaxSpeedMetersPerSecond = 3.0;
+    public static final double kMaxSpeedMetersPerSecond = 4;
     public static final double kMaxAngularSpeed = 2*Math.PI; //radians per second
 
     public static final double kTrackWidth = Units.inchesToMeters(24.5);
@@ -57,8 +57,8 @@ public final class Constants
 
   public static class FlyWheelConstants
   {
-    public static final int kFlywheel1CANId = 22;
-    public static final int kFlywheel2CANId = 23;
+    public static final int kFlywheel1CANId = 23;
+    public static final int kFlywheel2CANId = 24;
 
     public static final int kFlyWheelProximitySensorDIOId = 1;
 
@@ -109,7 +109,7 @@ public final class Constants
     public static final int currentMax = 50;
     public static final int kClimber1PDH = 14;
     public static final int kClimber2PDH = 15;
-  }
+  } 
 
   public static class SwerveModuleConstants
   {
@@ -144,7 +144,8 @@ public final class Constants
     public static final double kDrivingFF = 1/kDrivingWheelFreeSpeedRPS;
     public static final double kDrivingMinOutput = -1;
     public static final double kDrivingMaxOutput = 1;
-    public static final double kTurningP = 0.08;
+
+    public static final double kTurningP = 0.22;
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
     public static final double kTurningMinOutput = -1;
@@ -178,6 +179,5 @@ public final class Constants
   public static class ShuffleboardTabConstants
   {
     public static final String kDriveTabName = "Drive Subsystem";
-    public static final ShuffleboardTab kDriveTab = Shuffleboard.getTab(kDriveTabName);
   }
 }

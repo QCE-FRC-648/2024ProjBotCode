@@ -12,6 +12,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
@@ -31,10 +33,10 @@ public class SwerveModule
 
     private final double chassisAngularOffset;
     private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d());
-    private SwerveModuleState optimizedState;
+    private SwerveModuleState optimizedState = new SwerveModuleState(0.0,new Rotation2d());
 
     //Shuffleboard entries
-    private final ShuffleboardTab tab = ShuffleboardTabConstants.kDriveTab;
+    private final ShuffleboardTab tab = Shuffleboard.getTab(ShuffleboardTabConstants.kDriveTabName);
     private final ShuffleboardLayout layout;
     private GenericEntry desiredAngle;
     private GenericEntry currentAngle;
@@ -95,11 +97,11 @@ public class SwerveModule
 
         chassisAngularOffset = p_chassisAngularOffset;
         desiredState.angle = new Rotation2d(turningEncoder.getPosition());
+        optimizedState.angle = new Rotation2d(turningEncoder.getPosition());
         drivingEncoder.setPosition(0);
 
         //shuffleboard setup
-        layout = tab.getLayout(layoutName).withSize(2,2);
-
+        layout = tab.getLayout(layoutName, BuiltInLayouts.kList).withSize(2,2);
         desiredAngle = layout.add("desired angle(rads)", desiredState.angle.getRadians()).getEntry();
         currentAngle = layout.add("current angle(rads)", turningEncoder.getPosition() - chassisAngularOffset).getEntry();
         desiredVelocity = layout.add("desired velocity(m/s)", desiredState.speedMetersPerSecond).getEntry();
@@ -121,8 +123,8 @@ public class SwerveModule
         turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
 
         //shuffleboard values update
-        desiredAngle.setDouble(optimizedDesiredState.angle.getRadians());
-        desiredVelocity.setDouble(optimizedDesiredState.speedMetersPerSecond);
+        //desiredAngle.setDouble(optimizedDesiredState.angle.getRadians());
+        //desiredVelocity.setDouble(optimizedDesiredState.speedMetersPerSecond);
 
         desiredState = p_desiredState;
         optimizedState = optimizedDesiredState;
@@ -165,7 +167,7 @@ public class SwerveModule
     /**
      * Method to update current angle and current velocity
      * in shuffleboard
-     */
+    */
     public void updateCurrentValues()
     {
         currentAngle.setDouble(turningEncoder.getPosition() - chassisAngularOffset);

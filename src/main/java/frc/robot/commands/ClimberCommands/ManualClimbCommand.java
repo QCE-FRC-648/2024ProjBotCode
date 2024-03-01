@@ -1,5 +1,7 @@
 package frc.robot.commands.ClimberCommands;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.RobotContainer;
@@ -8,21 +10,23 @@ import frc.robot.Constants.ClimberConstants;
 public class ManualClimbCommand extends Command{
 
     private final ClimberSubsystem climber;
-    private double rightY;
+    private final Supplier<Double> rightJoystickY;
 
-    public ManualClimbCommand(ClimberSubsystem subsystem, double Y)
+    public ManualClimbCommand(ClimberSubsystem subsystem, Supplier<Double> _rightJoystickY)
     {
         addRequirements(subsystem);
         climber = subsystem;
-        rightY = Y;
+        rightJoystickY = _rightJoystickY;
     }
     
     @Override
     public void initialize() { }
 
     @Override
-    public void execute() {
-        rightY = RobotContainer.operatorController.getRightY();
+    public void execute() 
+    {
+        double rightY = rightJoystickY.get();
+
         climber.climber1.set(rightY);
         climber.climber2.set(rightY);
     }
@@ -30,7 +34,8 @@ public class ManualClimbCommand extends Command{
     @Override
     public boolean isFinished()
     {
-        if(climber.climber1.getCurrent(ClimberCommands.kClimber1PDH) > ClimberConstants.currentMax || climber.climber2.getCurrent(ClimberCommands.kClimber2PDH) > ClimberConstants.currentMax) {
+        if(climber.getCurrent(ClimberConstants.kClimber1PDH) > ClimberConstants.currentMax || climber.getCurrent(ClimberConstants.kClimber2PDH) > ClimberConstants.currentMax) 
+        {
             return true;
         }
         return false;
