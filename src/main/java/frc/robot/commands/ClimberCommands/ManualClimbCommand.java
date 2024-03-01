@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.ClimberConstants;
 
 public class ManualClimbCommand extends Command{
