@@ -26,8 +26,7 @@ public class ManualClimbCommand extends Command{
     {
         double rightY = rightJoystickY.get();
 
-        climber.climber1.set(rightY);
-        climber.climber2.set(rightY);
+        climber.setClimberSpeeds(rightY);
     }
 
     @Override
@@ -43,8 +42,7 @@ public class ManualClimbCommand extends Command{
     @Override 
     public void end(boolean interrupted)
     {
-        climber.climber1.set(0);
-        climber.climber2.set(0);
+        climber.setClimberSpeeds(0);
     }
 
 }

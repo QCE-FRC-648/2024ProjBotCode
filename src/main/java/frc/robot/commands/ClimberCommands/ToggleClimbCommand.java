@@ -25,19 +25,17 @@ public class ToggleClimbCommand extends Command
     @Override
     public void execute() {
         if(num%2 == 1) {
-            climber.climber1.set(0.2);
-            climber.climber2.set(0.2);
+            climber.setClimberSpeeds(0.2);
         }
         else {
-            climber.climber1.set(-0.2);
-            climber.climber2.set(-0.2);
+            climber.setClimberSpeeds(-0.2);
         }
     }
 
     @Override
     public boolean isFinished()
     {
-        if(climber.PDH.getCurrent(14) > ClimberConstants.currentMax || climber.PDH.getCurrent(15) > ClimberConstants.currentMax){ 
+        if(climber.getCurrent(ClimberConstants.kClimber1PDH) > ClimberConstants.currentMax || climber.getCurrent(ClimberConstants.kClimber2PDH) > ClimberConstants.currentMax) { 
             return true;
         }
         return false;
@@ -46,7 +44,6 @@ public class ToggleClimbCommand extends Command
     @Override 
     public void end(boolean interrupted)
     {
-        climber.climber1.set(0);
-        climber.climber2.set(0);
+        climber.setClimberSpeeds(0);
     }
 }
