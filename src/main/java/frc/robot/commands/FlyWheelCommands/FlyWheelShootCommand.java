@@ -18,7 +18,7 @@ public class FlyWheelShootCommand extends Command
     @Override 
     public void execute()
     {
-        subsystem.setFlyWheelVelocity(0);
+        subsystem.setFlyWheelMotors(1);
     }
 
     @Override

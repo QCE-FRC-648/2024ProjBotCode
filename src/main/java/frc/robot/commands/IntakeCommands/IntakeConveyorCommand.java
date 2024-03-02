@@ -18,8 +18,8 @@ public class IntakeConveyorCommand extends Command
 
     @Override 
     public void execute() {
-        conveyor.setConveyorMotors(0.1);
-        conveyor.setIntakeMotor(0.1);
+        conveyor.setConveyorMotors(0.15);
+        conveyor.setIntakeMotor(0.35);
     }
 
     @Override

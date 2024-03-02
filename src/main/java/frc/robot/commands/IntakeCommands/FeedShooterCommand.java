@@ -18,13 +18,13 @@ public class FeedShooterCommand extends Command
     @Override
     public void initialize()
     {
-        Timer.delay(0.1);
+        Timer.delay(1);
     }
 
     @Override
     public void execute()
     {
-        subsystem.setConveyorMotors(0.1); //run converyor motors at low speed
+        subsystem.setConveyorMotors(0.6); //run converyor motors at low speed
     }
 
     @Override

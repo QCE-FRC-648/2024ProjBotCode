@@ -35,7 +35,8 @@ public class ClimberSubsystem extends SubsystemBase
         return PDH.getCurrent(num);
     }
 
-    public void setClimberSpeeds(double num) {
+    public void setClimberSpeeds(double num) 
+    {
         climber1.set(num);
         climber2.set(num);
     }

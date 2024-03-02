@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -10,13 +11,14 @@ import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.commands.ClimberCommands.ToggleClimbCommand;
+import frc.robot.commands.FlyWheelCommands.FlyWheelShootCommand;
 import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
 import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.IntakeCommands.EjectNoteCommand;
+import frc.robot.commands.IntakeCommands.FeedShooterCommand;
 import frc.robot.commands.ClimberCommands.ManualClimbCommand;
-import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
 import frc.robot.commands.OperatorCommands.ShootNoteCommand;
 
@@ -65,10 +67,8 @@ public class RobotContainer
   {
     operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor)); //intake
 
-    operatorController.rightTrigger(1).whileTrue(new ShootNoteCommand(conveyor, flyWheel));
+    operatorController.y().toggleOnTrue(Commands.parallel(new FeedShooterCommand(conveyor), new FlyWheelShootCommand(flyWheel)));
     
-    operatorController.y().toggleOnFalse(new RunCommand(
-     () -> flyWheel.setFlyWheelMotors(0), flyWheel));
   }
 
   /**
