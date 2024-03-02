@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.ClimberConstants;
 
 public class ManualClimbCommand extends Command{
@@ -27,8 +26,7 @@ public class ManualClimbCommand extends Command{
     {
         double rightY = rightJoystickY.get();
 
-        climber.climber1.set(rightY);
-        climber.climber2.set(rightY);
+        climber.setClimberSpeeds(rightY);
     }
 
     @Override
@@ -44,8 +42,7 @@ public class ManualClimbCommand extends Command{
     @Override 
     public void end(boolean interrupted)
     {
-        climber.climber1.set(0);
-        climber.climber2.set(0);
+        climber.setClimberSpeeds(0);
     }
 
 }

@@ -9,7 +9,12 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlyWheelSubsystem;
+import frc.robot.commands.ClimberCommands.ToggleClimbCommand;
+import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
+import frc.robot.commands.ClimberCommands.ManualClimbCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.IntakeCommands.EjectNoteCommand;
 import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
@@ -31,7 +36,7 @@ public class RobotContainer
   private final ClimberSubsystem climber = new ClimberSubsystem();
 
   private final CommandXboxController driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-  private final CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
+  private final static CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
@@ -58,14 +63,9 @@ public class RobotContainer
 
   private void configureBindings() 
   {
-    //operatdor controls
     operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor)); //intake
 
     operatorController.rightTrigger(1).whileTrue(new ShootNoteCommand(conveyor, flyWheel));
-
-    operatorController.y().toggleOnTrue(new RunCommand(
-      () -> flyWheel.setFlyWheelMotors(0.2), flyWheel));
-
     
     operatorController.y().toggleOnFalse(new RunCommand(
      () -> flyWheel.setFlyWheelMotors(0), flyWheel));
