@@ -35,7 +35,7 @@ public class RobotContainer
   private final ClimberSubsystem climber = new ClimberSubsystem();
 
   private final CommandXboxController driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-  public final static CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
+  private final static CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
@@ -62,15 +62,6 @@ public class RobotContainer
 
   private void configureBindings() 
   {
-    //operatdor controls
-    /* 
-    if(operatorController.getRightY() > 0.1) {
-      new ManualClimbCommand(climber, operatorController.getRightY());
-    }
-    if(operatorController.getLeftTriggerAxis() > 0.1) {
-      new EjectNoteCommand(conveyor, operatorController.getLeftTriggerAxis());
-    } 
-    */
     operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor)); //intake
 
     operatorController.y().toggleOnTrue(new RunCommand(
