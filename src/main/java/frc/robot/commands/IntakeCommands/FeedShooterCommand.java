@@ -1,5 +1,6 @@
 package frc.robot.commands.IntakeCommands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ConveyorSubsystem;
 
@@ -15,8 +16,20 @@ public class FeedShooterCommand extends Command
     }
 
     @Override
+    public void initialize()
+    {
+        Timer.delay(0.1);
+    }
+
+    @Override
     public void execute()
     {
-        subsystem.setConveyorMotors(0); //run converyor motors at low speed
+        subsystem.setConveyorMotors(0.1); //run converyor motors at low speed
+    }
+
+    @Override
+    public void end(boolean interrupted)
+    {
+        subsystem.setConveyorMotors(0);
     }
 }

@@ -19,14 +19,14 @@ public class RunIntakeCommand extends Command
     @Override 
     public void execute()
     {
-        subsystem.setConveyorMotors(0.4);
+        subsystem.setConveyorMotors(0.2);
         subsystem.setIntakeMotor(0.3);
     }
 
     @Override
     public boolean isFinished()
     {
-        if(!subsystem.getProximitySensor())
+        if(subsystem.getProximitySensor())
         {
             return true;
         }
