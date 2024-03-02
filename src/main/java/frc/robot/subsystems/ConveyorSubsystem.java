@@ -39,7 +39,7 @@ public class ConveyorSubsystem extends SubsystemBase
         intakeMotorPrecentPublisher = instance.getDoubleTopic("/ConveyorSubsystem/MotorInformation/IntakeMotor/Precent").publish();
 
         proximityBitPublisher = instance.getDoubleTopic("/ConveyorSubsystem/Sensors/ProximitySensor/Bits").publish();
-        proximityAverageBitPublisher = instance.getDoubleTopic("/ConveyorSubsystem/Sensors/ProximitySensor/Bits").publish();
+        proximityAverageBitPublisher = instance.getDoubleTopic("/ConveyorSubsystem/Sensors/ProximitySensor/AverageBits").publish();
         proximityVoltPublisher = instance.getDoubleTopic("/ConveyorSubsystem/Sensors/ProximitySensor/Volts").publish();
     }
 
@@ -56,7 +56,8 @@ public class ConveyorSubsystem extends SubsystemBase
 
     public boolean getProximitySensor()
     {
-        if(proximitySensor.getVoltage() < 1) {
+        if(proximitySensor.getVoltage() < 1)
+        {
             return true;
         }
         return false;
@@ -70,7 +71,7 @@ public class ConveyorSubsystem extends SubsystemBase
         intakeMotorPrecentPublisher.set(intakeMotor.get());
 
         proximityBitPublisher.set(proximitySensor.getValue());
-        proximityAverageBitPublisher.set(proximitySensor.getAverageBits());
+        proximityAverageBitPublisher.set(proximitySensor.getAverageValue());
         proximityVoltPublisher.set(proximitySensor.getVoltage());
     }
 }

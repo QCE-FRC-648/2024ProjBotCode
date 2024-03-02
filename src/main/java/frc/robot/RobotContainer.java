@@ -18,6 +18,7 @@ import frc.robot.commands.IntakeCommands.EjectNoteCommand;
 import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
+import frc.robot.commands.OperatorCommands.ShootNoteCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -64,8 +65,7 @@ public class RobotContainer
   {
     operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor)); //intake
 
-    operatorController.y().toggleOnTrue(new RunCommand(
-      () -> flyWheel.setFlyWheelMotors(1), flyWheel));
+    operatorController.rightTrigger(1).whileTrue(new ShootNoteCommand(conveyor, flyWheel));
     
     operatorController.y().toggleOnFalse(new RunCommand(
      () -> flyWheel.setFlyWheelMotors(0), flyWheel));
