@@ -42,14 +42,9 @@ public class DriveSubsystem extends SubsystemBase
     private AHRS imu = new AHRS(SPI.Port.kMXP);
 
     private SwerveDriveOdometry odometry = new SwerveDriveOdometry(
-        DrivetrainConstants.kDriveKinematics, 
-        Rotation2d.fromDegrees(imu.getAngle()), 
-        new SwerveModulePosition[]{
-            frontLeft.getPosition(),
-            frontRight.getPosition(),
-            backLeft.getPosition(),
-            backRight.getPosition()
-        });
+        DrivetrainConstants.kDriveKinematics, getHeading(), getModulePositions());
+
+    
 
     private final StructArrayPublisher<SwerveModuleState> measuredSwerveStatePublisher;
     private final StructArrayPublisher<SwerveModuleState> setpointSwerveStatePublisher;
@@ -79,7 +74,7 @@ public class DriveSubsystem extends SubsystemBase
 
         var swerveModuleStates = DrivetrainConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative ? //if fieldRelative
-                ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, Rotation2d.fromDegrees(-imu.getAngle()))
+                ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, getHeading())
                 :new ChassisSpeeds(xSpeed, ySpeed, rotSpeed));
 
 
@@ -114,31 +109,39 @@ public class DriveSubsystem extends SubsystemBase
 
     public void resetPose(Pose2d pose)
     {
-        odometry.resetPosition(Rotation2d.fromDegrees(imu.getAngle()), 
-            new SwerveModulePosition[]{
-                    frontLeft.getPosition(), frontRight.getPosition(),
-                    backLeft.getPosition(), backRight.getPosition()
-                }, 
-            pose);
+        odometry.resetPosition(
+            getHeading(), getModulePositions(), pose);
+    }
+
+    public Rotation2d getHeading()
+    {
+        return Rotation2d.fromDegrees(-imu.getAngle());
+    }
+
+    public SwerveModuleState[] getModuleStates()
+    {
+        return new SwerveModuleState[]{
+            frontLeft.getModuleState(),
+            frontRight.getModuleState(),
+            backLeft.getModuleState(),
+            backRight.getModuleState()};
+    }
+
+    public SwerveModulePosition[] getModulePositions()
+    {
+        return new SwerveModulePosition[]{
+            frontLeft.getPosition(), frontRight.getPosition(),
+            backLeft.getPosition(), backRight.getPosition()};
     }
 
     @Override
     public void periodic()
     {
         //update odometry
-        odometry.update(Rotation2d.fromDegrees(imu.getAngle()), 
-            new SwerveModulePosition[]{
-                frontLeft.getPosition(), frontRight.getPosition(),
-                backLeft.getPosition(), backRight.getPosition()
-            });
+        odometry.update(getHeading(), getModulePositions());
 
         //publish to networktable for advantagescope
-        measuredSwerveStatePublisher.set(new SwerveModuleState[]{
-            frontLeft.getModuleState(),
-            frontRight.getModuleState(),
-            backLeft.getModuleState(),
-            backRight.getModuleState()
-        });
+        measuredSwerveStatePublisher.set(getModuleStates());
 
         setpointSwerveStatePublisher.set(new SwerveModuleState[]{
             frontLeft.getDesiredState(),

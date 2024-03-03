@@ -1,6 +1,6 @@
 package frc.robot.commands.FlyWheelCommands;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FlyWheelSubsystem;
 
@@ -21,18 +21,18 @@ public class FlywheelHoldCommand extends Command
     @Override
     public void execute()
     {
-        subsystem.setFlyWheelMotors(1); //need to change
+        subsystem.setFlyWheelMotors(0.2); //need to change
     }
 
     //ends when proximity sensor is active
     @Override
     public boolean isFinished()
     {
-        /* 
-        if(!subsystem.getProximitySensor())
+        if(subsystem.getProximitySensor())
         {
+            Timer.delay(0.1);
             return true;
-        }*/
+        }
 
         return false;
     }

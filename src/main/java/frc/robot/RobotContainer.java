@@ -64,16 +64,20 @@ public class RobotContainer
     
     climber.setDefaultCommand(new ManualClimbCommand(
       climber, 
-      () -> -MathUtil.applyDeadband(operatorController.getLeftY(), OIConstants.kDriverDeadband)));
+      () -> -MathUtil.applyDeadband(operatorController.getLeftTriggerAxis(), OIConstants.kDriverDeadband)));
+
+    climber.setDefaultCommand(new ManualClimbCommand(
+      climber, 
+      () -> -MathUtil.applyDeadband(-operatorController.getRightTriggerAxis(), OIConstants.kDriverDeadband)));
     
-    /* 
+    
     telescope.setDefaultCommand(new RunCommand(
       () -> telescope.setTelescopeMotor(-MathUtil.applyDeadband(operatorController.getLeftY(), OIConstants.kDriverDeadband)), 
       telescope));
     
     tilt.setDefaultCommand(new RunCommand(
       ()-> tilt.setTiltMotor(-MathUtil.applyDeadband(operatorController.getRightY(), OIConstants.kDriverDeadband)), 
-      tilt));*/
+      tilt));
 
     
   }
@@ -83,6 +87,8 @@ public class RobotContainer
     operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor)); //intake
 
     operatorController.y().toggleOnTrue(new ShootNoteCommand(conveyor, flyWheel));
+
+    operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
     
   }
 

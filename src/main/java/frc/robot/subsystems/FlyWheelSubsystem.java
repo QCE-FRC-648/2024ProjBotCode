@@ -92,11 +92,11 @@ public class FlyWheelSubsystem extends SubsystemBase
         encoder23RatePublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoders/Encoder23/Rate").publish();
         encoder23RawPublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoders/Encoder23/Raw").publish();
 
-        encoder24DirectionPublisher = instance.getBooleanTopic("FlyWheelSubsystem/Encoder/Encoder24/Direction").publish();
-        encoder24DistancePublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoder/Encoder24/Distance").publish();
-        encoder24DistancePerPulsePublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoder/Encoder24/DistancePerPulse").publish();
-        encoder24RatePublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoder/Encoder24/Rate").publish();
-        encoder24RawPublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoder/Encoder24/Raw").publish();
+        encoder24DirectionPublisher = instance.getBooleanTopic("FlyWheelSubsystem/Encoders/Encoder24/Direction").publish();
+        encoder24DistancePublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoders/Encoder24/Distance").publish();
+        encoder24DistancePerPulsePublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoders/Encoder24/DistancePerPulse").publish();
+        encoder24RatePublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoders/Encoder24/Rate").publish();
+        encoder24RawPublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoders/Encoder24/Raw").publish();
 
         proximityBitPublisher = instance.getDoubleTopic("/FlyWheelSubsystem/Sensors/ProximitySensor/Bits").publish();
         proximityAverageBitPublisher = instance.getDoubleTopic("/FlyWheelSubsystem/Sensors/ProximitySensor/Bits").publish();
