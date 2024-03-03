@@ -22,26 +22,22 @@ public class DriveSubsystem extends SubsystemBase
     private final SwerveModule frontLeft = new SwerveModule(
         DrivetrainConstants.kFrontLeftDrivingCANId, 
         DrivetrainConstants.kFrontLeftTurningCANId, 
-        DrivetrainConstants.kFrontLeftChassisAngularOffset,
-        "front left");
+        DrivetrainConstants.kFrontLeftChassisAngularOffset);
 
     private final SwerveModule frontRight = new SwerveModule(
         DrivetrainConstants.kFrontRightDrivingCANId, 
         DrivetrainConstants.kFrontRightTurningCANId, 
-        DrivetrainConstants.kFrontRightChassisAngularOffset,
-        "front right");
+        DrivetrainConstants.kFrontRightChassisAngularOffset);
 
     private final SwerveModule backLeft = new SwerveModule(
         DrivetrainConstants.kBackLeftDrivingCANId, 
         DrivetrainConstants.kBackLeftTurningCANId, 
-        DrivetrainConstants.kBackLeftChassisAngularOffset,
-        "back left");
+        DrivetrainConstants.kBackLeftChassisAngularOffset);
 
     private final SwerveModule backRight = new SwerveModule(
         DrivetrainConstants.kBackRightDrivingCANId, 
         DrivetrainConstants.kBackRightTurningCANId, 
-        DrivetrainConstants.kBackRightChassisAngularOffset,
-        "back right");
+        DrivetrainConstants.kBackRightChassisAngularOffset);
 
     private AHRS imu = new AHRS(SPI.Port.kMXP);
 
@@ -135,13 +131,6 @@ public class DriveSubsystem extends SubsystemBase
                 frontLeft.getPosition(), frontRight.getPosition(),
                 backLeft.getPosition(), backRight.getPosition()
             });
-
-
-        //update current values of angle and velocity
-        frontLeft.updateCurrentValues();
-        frontRight.updateCurrentValues();
-        backLeft.updateCurrentValues();
-        backRight.updateCurrentValues();
 
         //publish to networktable for advantagescope
         measuredSwerveStatePublisher.set(new SwerveModuleState[]{

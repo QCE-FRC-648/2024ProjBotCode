@@ -21,7 +21,7 @@ public class FlywheelHoldCommand extends Command
     @Override
     public void execute()
     {
-        subsystem.setFlyWheelMotors(0.4); //need to change
+        subsystem.setFlyWheelMotors(1); //need to change
     }
 
     //ends when proximity sensor is active

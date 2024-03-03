@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.networktables.BooleanPublisher;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Encoder;
@@ -16,14 +17,22 @@ import frc.robot.Constants.FlyWheelConstants;
 
 public class FlyWheelSubsystem extends SubsystemBase
 {
-    private WPI_VictorSPX flyWheelMotor1 = new WPI_VictorSPX(FlyWheelConstants.kFlywheel1CANId);
-    private WPI_VictorSPX flyWheelMotor2 = new WPI_VictorSPX(FlyWheelConstants.kFlywheel2CANId);
+    private WPI_VictorSPX flyWheelMotor23 = new WPI_VictorSPX(FlyWheelConstants.kFlywheel1CANId);
+    private WPI_VictorSPX flyWheelMotor24 = new WPI_VictorSPX(FlyWheelConstants.kFlywheel2CANId);
 
      
-    private Encoder flyWheelEncoder1 = new Encoder(FlyWheelConstants.kFlyWheel1RelativeEncoderDIOChannelA, 
-        FlyWheelConstants.kFlyWheel1RelativeEncoderDIOChannelB,
-        false,
+    private Encoder flyWheelEncoder23 = new Encoder(
+        FlyWheelConstants.kFlyWheel23RelativeEncoderDIOChannelA, 
+        FlyWheelConstants.kFlyWheel23RelativeEncoderDIOChannelB,
+        true,
         EncodingType.k1X);
+
+    private Encoder flyWheelEncoder24 = new Encoder(
+        FlyWheelConstants.kFlyWheel24RelativeEncoderDIOChannelA,
+        FlyWheelConstants.kFlyWheel24RelativeEncoderDIOChannelB,
+        false,
+        EncodingType.k1X
+    );
 
     private AnalogInput proximitySensor = new AnalogInput(FlyWheelConstants.kFlyWheelProximitySensorDIOId);
     
@@ -33,28 +42,61 @@ public class FlyWheelSubsystem extends SubsystemBase
         FlyWheelConstants.kFlyWheelkV, 
         FlyWheelConstants.kFlyWheelkA);
 
+    //network tables
     private final NetworkTableInstance instance;
-    private final DoublePublisher flyWheel1PrecentPublisher;
-    private final DoublePublisher flyWheel2PrecentPublisher;
 
+    //motors
+    private final DoublePublisher flyWheel23PrecentPublisher;
+    private final DoublePublisher flyWheel24PrecentPublisher;
+
+    //encoder 23 table
+    private final BooleanPublisher encoder23DirectionPublisher;
+    private final DoublePublisher encoder23DistancePublisher;
+    private final DoublePublisher encoder23DistancePerPulsePublisher;
+    private final DoublePublisher encoder23RatePublisher;
+    private final DoublePublisher encoder23RawPublisher;
+
+    //encoder 24 table
+    private final BooleanPublisher encoder24DirectionPublisher;
+    private final DoublePublisher encoder24DistancePublisher;
+    private final DoublePublisher encoder24DistancePerPulsePublisher;
+    private final DoublePublisher encoder24RatePublisher;
+    private final DoublePublisher encoder24RawPublisher;
+
+    //proximity switch table
     private final DoublePublisher proximityBitPublisher;
     private final DoublePublisher proximityAverageBitPublisher;
     private final DoublePublisher proximityVoltPublisher;
 
     public FlyWheelSubsystem()
     {
-        flyWheelMotor1.setInverted(InvertType.InvertMotorOutput);
+        flyWheelMotor23.setInverted(InvertType.InvertMotorOutput);
 
-        flyWheelMotor1.setNeutralMode(NeutralMode.Coast);
-        flyWheelMotor2.setNeutralMode(NeutralMode.Coast);
+        flyWheelMotor23.setNeutralMode(NeutralMode.Coast);
+        flyWheelMotor24.setNeutralMode(NeutralMode.Coast);
 
-        flyWheelEncoder1.setSamplesToAverage(10);
+        flyWheelEncoder24.setSamplesToAverage(10);
+        flyWheelEncoder23.setSamplesToAverage(10);
 
-        flyWheelEncoder1.setDistancePerPulse(FlyWheelConstants.kFlyWheelEncoderVelocityFactor);
+
+        flyWheelEncoder24.setDistancePerPulse(FlyWheelConstants.kFlyWheelEncoderVelocityFactor);
+        flyWheelEncoder23.setDistancePerPulse(FlyWheelConstants.kFlyWheelEncoderVelocityFactor);
 
         instance = NetworkTableInstance.getDefault();
-        flyWheel1PrecentPublisher = instance.getDoubleTopic("/FlyWheelSubsystem/MotorsInfo/FlyWheel1/Precent").publish();
-        flyWheel2PrecentPublisher = instance.getDoubleTopic("/FlyWheelSubsystem/MotorsInfo/FlyWheel2/Precent").publish();
+        flyWheel23PrecentPublisher = instance.getDoubleTopic("/FlyWheelSubsystem/MotorsInfo/FlyWheel23/Precent").publish();
+        flyWheel24PrecentPublisher = instance.getDoubleTopic("/FlyWheelSubsystem/MotorsInfo/FlyWheel24/Precent").publish();
+
+        encoder23DirectionPublisher = instance.getBooleanTopic("FlyWheelSubsystem/Encoders/Encoder23/Direction").publish();
+        encoder23DistancePublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoders/Encoder23/Distance").publish();
+        encoder23DistancePerPulsePublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoders/Encoder23/DistancePerPulse").publish();
+        encoder23RatePublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoders/Encoder23/Rate").publish();
+        encoder23RawPublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoders/Encoder23/Raw").publish();
+
+        encoder24DirectionPublisher = instance.getBooleanTopic("FlyWheelSubsystem/Encoder/Encoder24/Direction").publish();
+        encoder24DistancePublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoder/Encoder24/Distance").publish();
+        encoder24DistancePerPulsePublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoder/Encoder24/DistancePerPulse").publish();
+        encoder24RatePublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoder/Encoder24/Rate").publish();
+        encoder24RawPublisher = instance.getDoubleTopic("FlyWheelSubsystem/Encoder/Encoder24/Raw").publish();
 
         proximityBitPublisher = instance.getDoubleTopic("/FlyWheelSubsystem/Sensors/ProximitySensor/Bits").publish();
         proximityAverageBitPublisher = instance.getDoubleTopic("/FlyWheelSubsystem/Sensors/ProximitySensor/Bits").publish();
@@ -68,8 +110,8 @@ public class FlyWheelSubsystem extends SubsystemBase
      */
     public void setFlyWheelMotors(double desiredPower)
     {
-        flyWheelMotor1.set(ControlMode.PercentOutput, desiredPower);
-        flyWheelMotor2.set(ControlMode.PercentOutput, desiredPower);
+        flyWheelMotor23.set(ControlMode.PercentOutput, desiredPower);
+        flyWheelMotor24.set(ControlMode.PercentOutput, desiredPower);
     }
 
     /**
@@ -81,32 +123,55 @@ public class FlyWheelSubsystem extends SubsystemBase
     {
         double feedForwardVal = feedforward.calculate(desiredVelocity);
 
-        flyWheelMotor1.setVoltage(feedForwardVal);
-        flyWheelMotor2.setVoltage(feedForwardVal);
+        flyWheelMotor23.setVoltage(feedForwardVal);
+        flyWheelMotor24.setVoltage(feedForwardVal);
     }
 
-    /* 
+    
     public boolean getProximitySensor()
     {
-        return proximitySensor.get();
-    }*/
+        if(proximitySensor.getVoltage() < 1)
+        {
+            return true;
+        }
+        return false;
+    }
 
     public void setFlyWheelMotorsCoast()
     {
-        flyWheelMotor1.setNeutralMode(NeutralMode.Coast);
-        flyWheelMotor2.setNeutralMode(NeutralMode.Coast);
+        flyWheelMotor23.setNeutralMode(NeutralMode.Coast);
+        flyWheelMotor24.setNeutralMode(NeutralMode.Coast);
     }
 
     public void setFlyWheelMotorsBrake()
     {
-        flyWheelMotor1.setNeutralMode(NeutralMode.Brake);
-        flyWheelMotor2.setNeutralMode(NeutralMode.Brake);
+        flyWheelMotor23.setNeutralMode(NeutralMode.Brake);
+        flyWheelMotor24.setNeutralMode(NeutralMode.Brake);
     }
 
 
     @Override
     public void periodic()
     {
+        //motorinfo
+        flyWheel23PrecentPublisher.set(flyWheelMotor23.get());
+        flyWheel24PrecentPublisher.set(flyWheelMotor24.get());
+
+        //encoder 23
+        encoder23DirectionPublisher.set(flyWheelEncoder23.getDirection());
+        encoder23DistancePublisher.set(flyWheelEncoder23.getDistance());
+        encoder23DistancePerPulsePublisher.set(flyWheelEncoder23.getDistancePerPulse());
+        encoder23RatePublisher.set(flyWheelEncoder23.getRate());
+        encoder23RawPublisher.set(flyWheelEncoder23.getRaw());
+
+        //encoder 24
+        encoder24DirectionPublisher.set(flyWheelEncoder24.getDirection());
+        encoder24DistancePublisher.set(flyWheelEncoder24.getDistance());
+        encoder24DistancePerPulsePublisher.set(flyWheelEncoder24.getDistancePerPulse());
+        encoder24RatePublisher.set(flyWheelEncoder24.getRate());
+        encoder24RawPublisher.set(flyWheelEncoder24.getRaw());
+
+        //proximity sensor
         proximityBitPublisher.set(proximitySensor.getValue());
         proximityAverageBitPublisher.set(proximitySensor.getAverageBits());
         proximityVoltPublisher.set(proximitySensor.getVoltage());

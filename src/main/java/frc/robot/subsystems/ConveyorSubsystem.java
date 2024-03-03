@@ -36,7 +36,7 @@ public class ConveyorSubsystem extends SubsystemBase
         instance = NetworkTableInstance.getDefault();
         conveyorMotor1PrecentPublisher = instance.getDoubleTopic("/ConveyorSubsystem/MotorInfo/ConveyorMotor1/Precent").publish();
         conveyorMotor2PrecentPublisher = instance.getDoubleTopic("/ConveyorSubsystem/MotorInfo/ConveyorMotor2/Precent").publish();
-        intakeMotorPrecentPublisher = instance.getDoubleTopic("/ConveyorSubsystem/MotorInformation/IntakeMotor/Precent").publish();
+        intakeMotorPrecentPublisher = instance.getDoubleTopic("/ConveyorSubsystem/MotorInfo/IntakeMotor/Precent").publish();
 
         proximityBitPublisher = instance.getDoubleTopic("/ConveyorSubsystem/Sensors/ProximitySensor/Bits").publish();
         proximityAverageBitPublisher = instance.getDoubleTopic("/ConveyorSubsystem/Sensors/ProximitySensor/AverageBits").publish();

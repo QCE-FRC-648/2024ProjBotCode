@@ -10,6 +10,8 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlyWheelSubsystem;
+import frc.robot.subsystems.TelescopeSubsystem;
+import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.commands.ClimberCommands.ToggleClimbCommand;
 import frc.robot.commands.FlyWheelCommands.FlyWheelShootCommand;
 import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
@@ -36,6 +38,8 @@ public class RobotContainer
   private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
   private final FlyWheelSubsystem flyWheel = new FlyWheelSubsystem();
   private final ClimberSubsystem climber = new ClimberSubsystem();
+  private final TelescopeSubsystem telescope = new TelescopeSubsystem();
+  private final TiltSubsystem tilt = new TiltSubsystem();
 
   private final CommandXboxController driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
   private final static CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
@@ -61,13 +65,24 @@ public class RobotContainer
     climber.setDefaultCommand(new ManualClimbCommand(
       climber, 
       () -> -MathUtil.applyDeadband(operatorController.getLeftY(), OIConstants.kDriverDeadband)));
+    
+    /* 
+    telescope.setDefaultCommand(new RunCommand(
+      () -> telescope.setTelescopeMotor(-MathUtil.applyDeadband(operatorController.getLeftY(), OIConstants.kDriverDeadband)), 
+      telescope));
+    
+    tilt.setDefaultCommand(new RunCommand(
+      ()-> tilt.setTiltMotor(-MathUtil.applyDeadband(operatorController.getRightY(), OIConstants.kDriverDeadband)), 
+      tilt));*/
+
+    
   }
 
   private void configureBindings() 
   {
     operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor)); //intake
 
-    operatorController.y().toggleOnTrue(Commands.parallel(new FeedShooterCommand(conveyor), new FlyWheelShootCommand(flyWheel)));
+    operatorController.y().toggleOnTrue(new ShootNoteCommand(conveyor, flyWheel));
     
   }
 
