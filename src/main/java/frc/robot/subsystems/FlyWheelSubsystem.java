@@ -127,6 +127,10 @@ public class FlyWheelSubsystem extends SubsystemBase
         flyWheelMotor24.setVoltage(feedForwardVal);
     }
 
+    public double[] getEncoderDistance()
+    {
+        return new double[] {flyWheelEncoder23.getDistance(), flyWheelEncoder24.getDistance()};
+    }
     
     public boolean getProximitySensor()
     {

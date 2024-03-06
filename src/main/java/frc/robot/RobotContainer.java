@@ -1,5 +1,9 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.commands.PathfindingCommand;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -50,6 +54,8 @@ public class RobotContainer
     // Configure the trigger bindings
     configureBindings();
 
+    NamedCommands.registerCommand("IntakeNote", new RunIntakeCommand(conveyor));
+    NamedCommands.registerCommand("ShootNote", new ShootNoteCommand(conveyor, flyWheel));
     
     driveTrain.setDefaultCommand(new RunCommand(
       //left joystick controls translation
@@ -99,6 +105,7 @@ public class RobotContainer
    */
   public Command getAutonomousCommand() 
   {
-    return new InstantCommand();
+    return new PathPlannerAuto("Example Auto");
   }
+  
 }

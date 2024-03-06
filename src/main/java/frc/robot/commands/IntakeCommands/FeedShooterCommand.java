@@ -16,10 +16,7 @@ public class FeedShooterCommand extends Command
     }
 
     @Override
-    public void initialize()
-    {
-        Timer.delay(1);
-    }
+    public void initialize() { }
 
     @Override
     public void execute()

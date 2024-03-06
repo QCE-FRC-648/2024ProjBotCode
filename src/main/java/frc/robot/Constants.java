@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -54,7 +55,12 @@ public final class Constants
     public static final double kBackLeftChassisAngularOffset = Math.PI;
     public static final double kBackRightChassisAngularOffset = Math.PI/2;
 
-   
+   public static final HolonomicPathFollowerConfig kPathFollowerConfig = new HolonomicPathFollowerConfig(
+      new PIDConstants(5, 0, 0), 
+      new PIDConstants(5,0,0), 
+      kMaxSpeedMetersPerSecond,
+      new Translation2d(kWheelBase/2, kTrackWidth/2).getNorm(), //front left offset of kinematics
+      new ReplanningConfig());
   }
 
   public static class FlyWheelConstants

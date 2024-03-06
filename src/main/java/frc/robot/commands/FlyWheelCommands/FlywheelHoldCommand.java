@@ -1,6 +1,5 @@
 package frc.robot.commands.FlyWheelCommands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FlyWheelSubsystem;
 
@@ -9,28 +8,65 @@ public class FlywheelHoldCommand extends Command
 {
     private final FlyWheelSubsystem subsystem;
 
+    private enum Stage { 
+        feedIntake,
+        sensorTriggered,
+        end
+    }
+
+    private Stage stage;
+
+    private double[] setpointDistance;
+
     public FlywheelHoldCommand(FlyWheelSubsystem flyWheelSubsystem)
     {
         subsystem = flyWheelSubsystem;
+        subsystem.setFlyWheelMotorsBrake();
         addRequirements(subsystem);
     }
 
     @Override
-    public void initialize() { }
+    public void initialize() 
+    { 
+        stage = Stage.feedIntake;
+    }
 
     @Override
     public void execute()
     {
-        subsystem.setFlyWheelMotors(0.2); //need to change
+        switch(stage)
+        {
+            case feedIntake:
+                subsystem.setFlyWheelMotors(0.2);
+
+                if(subsystem.getProximitySensor())
+                {
+                    setpointDistance = subsystem.getEncoderDistance();
+                    setpointDistance[0] += 0.15;
+                    setpointDistance[1] += 0.15;
+
+                    stage = Stage.sensorTriggered;
+                }
+
+                break;
+            case sensorTriggered:
+                double[] currentDist = subsystem.getEncoderDistance();
+                if(currentDist[0] >= setpointDistance[0] && currentDist[1] >= setpointDistance[1])
+                {
+                    stage = Stage.end;
+                }
+            case end:
+                break;
+                
+        }
     }
 
     //ends when proximity sensor is active
     @Override
     public boolean isFinished()
     {
-        if(subsystem.getProximitySensor())
+        if(stage == Stage.end)
         {
-            Timer.delay(0.1);
             return true;
         }
 
