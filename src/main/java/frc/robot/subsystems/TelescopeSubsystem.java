@@ -17,35 +17,41 @@ public class TelescopeSubsystem extends SubsystemBase
 
     private DutyCycleEncoder encoder = new DutyCycleEncoder(TelescopeConstants.kTelescopeDutyCycleEncoderDIOId);
 
-    private PIDController telescopePIDController = new PIDController(
+    private PIDController pidController = new PIDController(
         TelescopeConstants.kTelescopePositionP,
         TelescopeConstants.kTelescopePositionI,
         TelescopeConstants.kTelescopePositionD);
 
-    private final double distanceOffset;
-
     //Network tables
     private final NetworkTableInstance instance = NetworkTableInstance.getDefault();
-    //relative rotations, absolute position, distance, distance per rotation, frequency
     private final DoublePublisher encoderRotationsPublisher;
     private final DoublePublisher encoderAbsolutePositionPublisher;
     private final DoublePublisher encoderDistancePublisher;
     private final DoublePublisher encoderDistancePerRotationPublisher;
     private final DoublePublisher encoderFrequencyPublisher;
 
+    private final DoublePublisher pidErrorPublisher;
+    private final DoublePublisher pidSetpointPublisher;
+
     public TelescopeSubsystem()
     {
         telescopeMotor.setInverted(true);
         telescopeMotor.setNeutralMode(NeutralMode.Brake);
 
-        encoder.setDistancePerRotation(TelescopeConstants.kTelescopeEncoderPositionFactor);
-        distanceOffset = encoder.getDistance(); //get offset
+        encoder.setDutyCycleRange(1,1024);
+        encoder.setDistancePerRotation(TelescopeConstants.kTelescopeEncoderDistanceFactor);
+
+        pidController.setTolerance(TelescopeConstants.kPIDTolerance);
 
         encoderRotationsPublisher = instance.getDoubleTopic("TelescopeSubsystem/Encoder/RelativeRotations").publish();
         encoderAbsolutePositionPublisher = instance.getDoubleTopic("TelescopeSubsystem/Encoder/AbsolutePosition").publish();
         encoderDistancePublisher = instance.getDoubleTopic("TelescopeSubsystem/Encoder/Distance").publish();
         encoderDistancePerRotationPublisher = instance.getDoubleTopic("TelescopeSubsystem/Encoder/DistancePerRotations").publish();
         encoderFrequencyPublisher = instance.getDoubleTopic("TelescopeSubsystem/Encoder/Frequency").publish();
+
+        pidErrorPublisher = instance.getDoubleTopic("TelescopeSubsystem/PID/Error").publish();
+        pidSetpointPublisher = instance.getDoubleTopic("TelescopeSubsystem/PID/Setpoint").publish();
+
 
         encoder.reset();
     }
@@ -58,7 +64,12 @@ public class TelescopeSubsystem extends SubsystemBase
     public void setTelescopeDistance(double desiredDistance)
     {
         telescopeMotor.set(ControlMode.PercentOutput,
-            telescopePIDController.calculate(encoder.getDistance() - distanceOffset, desiredDistance));
+            pidController.calculate(encoder.getDistance(), desiredDistance));
+    }
+
+    public boolean getPidAtSetpoint()
+    {
+        return pidController.atSetpoint();
     }
 
     @Override
@@ -69,5 +80,8 @@ public class TelescopeSubsystem extends SubsystemBase
         encoderDistancePublisher.set(encoder.getDistance());
         encoderDistancePerRotationPublisher.set(encoder.getDistancePerRotation());
         encoderFrequencyPublisher.set(encoder.getFrequency());
+
+        pidErrorPublisher.set(pidController.getPositionError());
+        pidSetpointPublisher.set(pidController.getSetpoint());
     }
 }

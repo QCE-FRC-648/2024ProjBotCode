@@ -28,6 +28,7 @@ import frc.robot.commands.IntakeCommands.FeedShooterCommand;
 import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
 import frc.robot.commands.OperatorCommands.ShootNoteCommand;
+import frc.robot.commands.TelescopeCommands.ExtendTelescope;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -67,7 +68,6 @@ public class RobotContainer
         -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriverDeadband), 
         true), 
       driveTrain));
-
     
     climber.setDefaultCommand(new ManualClimbCommand(
       climber, 
@@ -75,7 +75,7 @@ public class RobotContainer
 
     climber.setDefaultCommand(new ManualClimbCommand(
       climber, 
-      () -> -MathUtil.applyDeadband(-operatorController.getRightTriggerAxis(), OIConstants.kDriverDeadband)));
+      () -> MathUtil.applyDeadband(operatorController.getRightTriggerAxis(), OIConstants.kDriverDeadband)));
     
     
     telescope.setDefaultCommand(new RunCommand(
@@ -98,13 +98,7 @@ public class RobotContainer
 
     //operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
     
-    operatorController.b().onTrue(new RunCommand(
-      () -> telescope.setTelescopeDistance(Units.inchesToMeters(5)), telescope));
-
-    /* 
-    operatorController.b().onFalse(new RunCommand(
-      () -> telescope.setTelescopeMotor(0), telescope));*/
-
+    operatorController.b().toggleOnTrue(new ExtendTelescope(telescope));
   }
 
   /**

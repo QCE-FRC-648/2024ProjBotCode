@@ -17,7 +17,7 @@ public class TiltSubsystem extends SubsystemBase
 
     private DutyCycleEncoder encoder = new DutyCycleEncoder(TiltConstants.kTiltDutyCycleEncoderDIOId);
 
-    private PIDController tiltPIDController = new PIDController(
+    private PIDController pidController = new PIDController(
         TiltConstants.kTiltPositionP, 
         TiltConstants.kTiltPositionI, 
         TiltConstants.kTiltPositionD);
@@ -29,20 +29,26 @@ public class TiltSubsystem extends SubsystemBase
     private final DoublePublisher encoderDistancePerRotationPublisher;
     private final DoublePublisher encoderFrequencyPublisher;
 
+    private final DoublePublisher pidErrorPublisher;
+    private final DoublePublisher pidSetpointPublisher;
+
     public TiltSubsystem()
     {
         tiltMotor.setNeutralMode(NeutralMode.Brake);
 
         encoder.setDistancePerRotation(TiltConstants.kTiltEncoderPositionFactor);
-        encoder.setDutyCycleRange(0, 2 * Math.PI);
+        encoder.setDutyCycleRange(1, 1024);
 
-        tiltPIDController.setTolerance(0);
+        pidController.setTolerance(TiltConstants.kPIDTolerance);
 
         encoderRotationsPublisher = instance.getDoubleTopic("TiltSubsystem/Encoder/RelativeRotations").publish();
         encoderAbsolutePositionPublisher = instance.getDoubleTopic("TiltSubsystem/Encoder/AbsolutePosition").publish();
         encoderDistancePublisher = instance.getDoubleTopic("TiltSubsystem/Encoder/Distance").publish();
         encoderDistancePerRotationPublisher = instance.getDoubleTopic("TiltSubsystem/Encoder/DistancePerRotations").publish();
         encoderFrequencyPublisher = instance.getDoubleTopic("TiltSubsystem/Encoder/Frequency").publish();
+
+        pidErrorPublisher = instance.getDoubleTopic("TiltSubsystem/PID/Error").publish();
+        pidSetpointPublisher = instance.getDoubleTopic("TiltSubsystem/PID/Setpoint").publish();
     }
 
     public void setTiltMotor(double desiredPower)
@@ -58,7 +64,12 @@ public class TiltSubsystem extends SubsystemBase
     public void setTiltPosition(double desiredPosition)
     {
         tiltMotor.set(ControlMode.PercentOutput, 
-            tiltPIDController.calculate(encoder.getAbsolutePosition(), desiredPosition));
+            pidController.calculate(encoder.getAbsolutePosition(), desiredPosition));
+    }
+
+    public boolean getPidAtSetpoint()
+    {
+        return pidController.atSetpoint();
     }
 
     @Override
@@ -69,5 +80,8 @@ public class TiltSubsystem extends SubsystemBase
         encoderDistancePublisher.set(encoder.getDistance());
         encoderDistancePerRotationPublisher.set(encoder.getDistancePerRotation());
         encoderFrequencyPublisher.set(encoder.getFrequency());
+
+        pidErrorPublisher.set(pidController.getPositionError());
+        pidSetpointPublisher.set(pidController.getSetpoint());
     }
 }

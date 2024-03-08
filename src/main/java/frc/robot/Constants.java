@@ -95,7 +95,7 @@ public final class Constants
 
     public static final double kTelescopeGearDiameter = Units.inchesToMeters(1.9);
     public static final double kTelescopeGearCircumference = Math.PI * kTelescopeGearDiameter;
-    public static final double kTelescopeEncoderPositionFactor = -kTelescopeGearCircumference;
+    public static final double kTelescopeEncoderDistanceFactor = -kTelescopeGearCircumference; //negative to inverse distance counter
 
     public static final double kMinRetractLength = Units.inchesToMeters(0);
     public static final double kMaxExtendLength = Units.inchesToMeters(13.5);
@@ -103,6 +103,7 @@ public final class Constants
     public static final double kTelescopePositionP = 0.4;
     public static final double kTelescopePositionI = 0;
     public static final double kTelescopePositionD = 0;
+    public static final double kPIDTolerance = Units.inchesToMeters(0.01);
   }
 
   public static class TiltConstants
@@ -116,6 +117,7 @@ public final class Constants
     public static final double kTiltPositionP = 0;
     public static final double kTiltPositionI = 0;
     public static final double kTiltPositionD = 0;
+    public static final double kPIDTolerance = Units.degreesToRadians(5);
   }
 
   public static class ClimberConstants
