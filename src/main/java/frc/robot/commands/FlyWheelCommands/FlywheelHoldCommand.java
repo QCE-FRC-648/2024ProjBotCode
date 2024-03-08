@@ -42,8 +42,8 @@ public class FlywheelHoldCommand extends Command
                 if(subsystem.getProximitySensor())
                 {
                     setpointDistance = subsystem.getEncoderDistance();
-                    setpointDistance[0] += 0.15;
-                    setpointDistance[1] += 0.15;
+                    setpointDistance[0] += 0.2;
+                    setpointDistance[1] += 0.2;
 
                     stage = Stage.sensorTriggered;
                 }

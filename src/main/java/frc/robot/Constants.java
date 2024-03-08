@@ -89,13 +89,18 @@ public final class Constants
 
   public static class TelescopeConstants
   {
-    public static final int kTelescopeCANId = 21;
+    public static final int kTelescopeCANId = 22;
 
     public static final int kTelescopeDutyCycleEncoderDIOId = 9;
 
-    public static final double kTelescopeEncoderPositionFactor = 0;
+    public static final double kTelescopeGearDiameter = Units.inchesToMeters(1.9);
+    public static final double kTelescopeGearCircumference = Math.PI * kTelescopeGearDiameter;
+    public static final double kTelescopeEncoderPositionFactor = -kTelescopeGearCircumference;
 
-    public static final double kTelescopePositionP = 0;
+    public static final double kMinRetractLength = Units.inchesToMeters(0);
+    public static final double kMaxExtendLength = Units.inchesToMeters(13.5);
+
+    public static final double kTelescopePositionP = 0.4;
     public static final double kTelescopePositionI = 0;
     public static final double kTelescopePositionD = 0;
   }

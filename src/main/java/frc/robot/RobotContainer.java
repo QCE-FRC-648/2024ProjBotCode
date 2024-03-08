@@ -5,6 +5,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -78,12 +79,13 @@ public class RobotContainer
     
     
     telescope.setDefaultCommand(new RunCommand(
-      () -> telescope.setTelescopeMotor(-MathUtil.applyDeadband(operatorController.getLeftY(), OIConstants.kDriverDeadband)), 
+      () -> telescope.setTelescopeMotor(-MathUtil.applyDeadband(operatorController.getRightY(), OIConstants.kDriverDeadband)*0.5), 
       telescope));
     
+    /* 
     tilt.setDefaultCommand(new RunCommand(
       ()-> tilt.setTiltMotor(-MathUtil.applyDeadband(operatorController.getRightY(), OIConstants.kDriverDeadband)), 
-      tilt));
+      tilt));*/
 
     
   }
@@ -92,10 +94,17 @@ public class RobotContainer
   {
     operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor)); //intake
 
-    operatorController.y().toggleOnTrue(new ShootNoteCommand(conveyor, flyWheel));
+    //operatorController.y().toggleOnTrue(new ShootNoteCommand(conveyor, flyWheel));
 
-    operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
+    //operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
     
+    operatorController.b().onTrue(new RunCommand(
+      () -> telescope.setTelescopeDistance(Units.inchesToMeters(5)), telescope));
+
+    /* 
+    operatorController.b().onFalse(new RunCommand(
+      () -> telescope.setTelescopeMotor(0), telescope));*/
+
   }
 
   /**

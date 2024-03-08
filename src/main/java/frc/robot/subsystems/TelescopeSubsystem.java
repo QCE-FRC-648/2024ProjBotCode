@@ -22,6 +22,8 @@ public class TelescopeSubsystem extends SubsystemBase
         TelescopeConstants.kTelescopePositionI,
         TelescopeConstants.kTelescopePositionD);
 
+    private final double distanceOffset;
+
     //Network tables
     private final NetworkTableInstance instance = NetworkTableInstance.getDefault();
     //relative rotations, absolute position, distance, distance per rotation, frequency
@@ -33,9 +35,11 @@ public class TelescopeSubsystem extends SubsystemBase
 
     public TelescopeSubsystem()
     {
+        telescopeMotor.setInverted(true);
         telescopeMotor.setNeutralMode(NeutralMode.Brake);
 
         encoder.setDistancePerRotation(TelescopeConstants.kTelescopeEncoderPositionFactor);
+        distanceOffset = encoder.getDistance(); //get offset
 
         encoderRotationsPublisher = instance.getDoubleTopic("TelescopeSubsystem/Encoder/RelativeRotations").publish();
         encoderAbsolutePositionPublisher = instance.getDoubleTopic("TelescopeSubsystem/Encoder/AbsolutePosition").publish();
@@ -43,7 +47,7 @@ public class TelescopeSubsystem extends SubsystemBase
         encoderDistancePerRotationPublisher = instance.getDoubleTopic("TelescopeSubsystem/Encoder/DistancePerRotations").publish();
         encoderFrequencyPublisher = instance.getDoubleTopic("TelescopeSubsystem/Encoder/Frequency").publish();
 
-
+        encoder.reset();
     }
 
     public void setTelescopeMotor(double desiredPower)
@@ -54,7 +58,7 @@ public class TelescopeSubsystem extends SubsystemBase
     public void setTelescopeDistance(double desiredDistance)
     {
         telescopeMotor.set(ControlMode.PercentOutput,
-            telescopePIDController.calculate(encoder.getDistance(), desiredDistance));
+            telescopePIDController.calculate(encoder.getDistance() - distanceOffset, desiredDistance));
     }
 
     @Override
