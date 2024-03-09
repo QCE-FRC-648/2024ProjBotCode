@@ -34,10 +34,10 @@ public class TiltSubsystem extends SubsystemBase
 
     public TiltSubsystem()
     {
+        tiltMotor.setInverted(true);
         tiltMotor.setNeutralMode(NeutralMode.Brake);
 
         encoder.setDistancePerRotation(TiltConstants.kTiltEncoderPositionFactor);
-        encoder.setDutyCycleRange(1, 1024);
 
         pidController.setTolerance(TiltConstants.kPIDTolerance);
 

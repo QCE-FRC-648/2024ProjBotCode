@@ -17,7 +17,7 @@ public class ExtendTelescope extends Command
     @Override
     public void execute()
     {
-        subsystem.setTelescopeDistance(Units.inchesToMeters(0));
+        subsystem.setTelescopeDistance(Units.inchesToMeters(3));
     }
 
     @Override

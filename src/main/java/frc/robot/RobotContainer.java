@@ -71,7 +71,7 @@ public class RobotContainer
     
     climber.setDefaultCommand(new ManualClimbCommand(
       climber, 
-      () -> -MathUtil.applyDeadband(operatorController.getLeftTriggerAxis(), OIConstants.kDriverDeadband)));
+      () -> MathUtil.applyDeadband(-operatorController.getLeftTriggerAxis(), OIConstants.kDriverDeadband)));
 
     climber.setDefaultCommand(new ManualClimbCommand(
       climber, 
@@ -82,10 +82,10 @@ public class RobotContainer
       () -> telescope.setTelescopeMotor(-MathUtil.applyDeadband(operatorController.getRightY(), OIConstants.kDriverDeadband)*0.5), 
       telescope));
     
-    /* 
+    
     tilt.setDefaultCommand(new RunCommand(
-      ()-> tilt.setTiltMotor(-MathUtil.applyDeadband(operatorController.getRightY(), OIConstants.kDriverDeadband)), 
-      tilt));*/
+      ()-> tilt.setTiltMotor(-MathUtil.applyDeadband(operatorController.getLeftY() *0.5, OIConstants.kDriverDeadband)), 
+      tilt));
 
     
   }

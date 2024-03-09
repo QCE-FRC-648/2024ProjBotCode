@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.networktables.BooleanPublisher;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -32,13 +33,14 @@ public class TelescopeSubsystem extends SubsystemBase
 
     private final DoublePublisher pidErrorPublisher;
     private final DoublePublisher pidSetpointPublisher;
+    private final DoublePublisher pidOutputPublisher;
+    private final BooleanPublisher pidAtSetpointPublisher;
 
     public TelescopeSubsystem()
     {
         telescopeMotor.setInverted(true);
         telescopeMotor.setNeutralMode(NeutralMode.Brake);
 
-        encoder.setDutyCycleRange(1,1024);
         encoder.setDistancePerRotation(TelescopeConstants.kTelescopeEncoderDistanceFactor);
 
         pidController.setTolerance(TelescopeConstants.kPIDTolerance);
@@ -51,7 +53,8 @@ public class TelescopeSubsystem extends SubsystemBase
 
         pidErrorPublisher = instance.getDoubleTopic("TelescopeSubsystem/PID/Error").publish();
         pidSetpointPublisher = instance.getDoubleTopic("TelescopeSubsystem/PID/Setpoint").publish();
-
+        pidOutputPublisher = instance.getDoubleTopic("TelescopeSubsystem/PID/Output").publish();
+        pidAtSetpointPublisher = instance.getBooleanTopic("TelescopeSubsystem/PID/AtSetpoint").publish();
 
         encoder.reset();
     }
@@ -63,8 +66,10 @@ public class TelescopeSubsystem extends SubsystemBase
 
     public void setTelescopeDistance(double desiredDistance)
     {
-        telescopeMotor.set(ControlMode.PercentOutput,
-            pidController.calculate(encoder.getDistance(), desiredDistance));
+        double value = pidController.calculate(encoder.getDistance(), desiredDistance);
+        pidOutputPublisher.set(value);
+
+        telescopeMotor.set(ControlMode.PercentOutput, value);
     }
 
     public boolean getPidAtSetpoint()
@@ -83,5 +88,6 @@ public class TelescopeSubsystem extends SubsystemBase
 
         pidErrorPublisher.set(pidController.getPositionError());
         pidSetpointPublisher.set(pidController.getSetpoint());
+        pidAtSetpointPublisher.set(pidController.atSetpoint());
     }
 }

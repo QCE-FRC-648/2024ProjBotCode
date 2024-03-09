@@ -100,7 +100,7 @@ public final class Constants
     public static final double kMinRetractLength = Units.inchesToMeters(0);
     public static final double kMaxExtendLength = Units.inchesToMeters(13.5);
 
-    public static final double kTelescopePositionP = 0.4;
+    public static final double kTelescopePositionP = 11;
     public static final double kTelescopePositionI = 0;
     public static final double kTelescopePositionD = 0;
     public static final double kPIDTolerance = Units.inchesToMeters(0.01);
@@ -137,7 +137,7 @@ public final class Constants
     //turn motor is inverted 
     public static final boolean kTurningEncoderInverted = true;
 
-    public static final double kWheelDiameterMeters = Units.inchesToMeters(3);
+    public static final double kWheelDiameterMeters = Units.inchesToMeters(2);
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
 
     //RPM of the NEO brushless motors
