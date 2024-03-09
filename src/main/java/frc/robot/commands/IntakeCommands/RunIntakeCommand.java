@@ -6,6 +6,7 @@ import frc.robot.subsystems.ConveyorSubsystem;
 public class RunIntakeCommand extends Command 
 {
     private final ConveyorSubsystem subsystem;
+    private boolean isTriggered = false;
 
     public RunIntakeCommand(ConveyorSubsystem conveyorSubsystem)
     {
@@ -21,12 +22,17 @@ public class RunIntakeCommand extends Command
     {
         subsystem.setConveyorMotors(0.2);
         subsystem.setIntakeMotor(0.3);
+
+        if(subsystem.getProximitySensor())
+        {
+            isTriggered = true;
+        }
     }
 
     @Override
     public boolean isFinished()
     {
-        if(subsystem.getProximitySensor())
+        if(!subsystem.getProximitySensor() && isTriggered)
         {
             return true;
         }
@@ -36,8 +42,10 @@ public class RunIntakeCommand extends Command
     @Override 
     public void end(boolean interrupted)
     {
-        subsystem.setConveyorMotors(0);
         subsystem.setIntakeMotor(0);
+        subsystem.setConveyorMotors(0);
+
+        isTriggered = false;
     }
 
 }
