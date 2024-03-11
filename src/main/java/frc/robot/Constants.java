@@ -140,7 +140,7 @@ public final class Constants
     public static final double kWheelDiameterMeters = Units.inchesToMeters(2);
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
 
-    //RPM of the NEO brushless motors
+    //RPM of the NEO brushless motors 
     public static final double kFreeSpeedRPM = 5676; //rotations per min
     public static final double kDrivingMotorFreeSpeedRPS = kFreeSpeedRPM / 60; //rotations per sec
     //gear ratios of driving motor

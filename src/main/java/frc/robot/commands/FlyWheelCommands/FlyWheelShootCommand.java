@@ -49,10 +49,10 @@ public class FlyWheelShootCommand extends Command
     @Override
     public boolean isFinished()
     {
-        if(counter == 4)
+        /*if(counter == 4)
         {
             return true;
-        }
+        }*/
         return false;
     }
 

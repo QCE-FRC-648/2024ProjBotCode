@@ -90,9 +90,9 @@ public class RobotContainer
   {
     operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor)); //intake
 
-    //operatorController.y().toggleOnTrue(new ShootNoteCommand(conveyor, flyWheel));
+    operatorController.y().toggleOnTrue(new ShootNoteCommand(conveyor, flyWheel));
 
-    //operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
+    operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
     
     operatorController.b().toggleOnTrue(new ExtendTelescope(telescope));
   }
