@@ -5,10 +5,8 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -17,15 +15,11 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.TelescopeSubsystem;
 import frc.robot.subsystems.TiltSubsystem;
-import frc.robot.commands.ClimberCommands.ToggleClimbCommand;
-import frc.robot.commands.FlyWheelCommands.FlyWheelShootCommand;
+import frc.utils.JoystickUtils;
 import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
 import frc.robot.commands.ClimberCommands.ManualClimbCommand;
-import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.IntakeCommands.EjectNoteCommand;
 import frc.robot.commands.IntakeCommands.FeedShooterCommand;
-import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
 import frc.robot.commands.OperatorCommands.ShootNoteCommand;
 import frc.robot.commands.TelescopeCommands.ExtendTelescope;
@@ -56,6 +50,7 @@ public class RobotContainer
     // Configure the trigger bindings
     configureBindings();
 
+    //Pathplanner commands
     NamedCommands.registerCommand("IntakeNote", new RunIntakeCommand(conveyor));
     NamedCommands.registerCommand("ShootNote", new ShootNoteCommand(conveyor, flyWheel));
     
@@ -63,19 +58,11 @@ public class RobotContainer
       //left joystick controls translation
       //right joystick controls rotation of the robot
       () -> driveTrain.drive(
-        -MathUtil.applyDeadband(driverController.getLeftY(), OIConstants.kDriverDeadband), 
-        -MathUtil.applyDeadband(driverController.getLeftX(), OIConstants.kDriverDeadband), 
-        -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriverDeadband), 
+        -JoystickUtils.applySensitivity(driverController.getLeftY(), OIConstants.kDriverDeadband, OIConstants.kDriverSensativity), 
+        -JoystickUtils.applySensitivity(driverController.getLeftX(), OIConstants.kDriverDeadband, OIConstants.kDriverSensativity), 
+        -JoystickUtils.applySensitivity(driverController.getRightX(), OIConstants.kDriverDeadband, OIConstants.kDriverSensativity), 
         true), 
       driveTrain));
-    
-    climber.setDefaultCommand(new ManualClimbCommand(
-      climber, 
-      () -> MathUtil.applyDeadband(-operatorController.getLeftTriggerAxis(), OIConstants.kDriverDeadband)));
-
-    climber.setDefaultCommand(new ManualClimbCommand(
-      climber, 
-      () -> MathUtil.applyDeadband(operatorController.getRightTriggerAxis(), OIConstants.kDriverDeadband)));
     
     telescope.setDefaultCommand(new RunCommand(
       () -> telescope.setTelescopeMotor(-MathUtil.applyDeadband(operatorController.getRightY(), OIConstants.kDriverDeadband)*0.5), 
@@ -95,8 +82,16 @@ public class RobotContainer
     operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
     
     operatorController.b().toggleOnTrue(new ExtendTelescope(telescope));
-  }
 
+    operatorController.leftTrigger().whileTrue(new ManualClimbCommand(
+      climber, 
+      () -> -operatorController.getLeftTriggerAxis()));
+
+    operatorController.rightTrigger().whileTrue(new ManualClimbCommand(
+      climber, 
+      () -> operatorController.getRightTriggerAxis()));
+  }
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -104,7 +99,7 @@ public class RobotContainer
    */
   public Command getAutonomousCommand() 
   {
-    return new PathPlannerAuto("Example Auto");
+    return new RunCommand(() -> driveTrain.testSwerve(1, 0), driveTrain);
   }
   
 }

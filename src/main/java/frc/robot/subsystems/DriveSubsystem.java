@@ -95,14 +95,20 @@ public class DriveSubsystem extends SubsystemBase
      */
     public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative) 
     { 
-        xSpeed *= DrivetrainConstants.kMaxSpeedMetersPerSecond;
-        ySpeed *= DrivetrainConstants.kMaxSpeedMetersPerSecond;
-        rotSpeed *= DrivetrainConstants.kMaxAngularSpeed;
+        double xSpeedCommanded = xSpeed;
+        double ySpeedCommanded = ySpeed;
+        double rotSpeedCommanded = rotSpeed;
+        
+
+        double xSpeedDelivered = xSpeedCommanded * DrivetrainConstants.kMaxSpeedMetersPerSecond;
+        double ySpeedDelivered = ySpeedCommanded * DrivetrainConstants.kMaxSpeedMetersPerSecond;
+        double rotDelivered = rotSpeedCommanded * DrivetrainConstants.kMaxAngularSpeed;
+
 
         var swerveModuleStates = DrivetrainConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative ? //if fieldRelative
-                ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, getHeading())
-                :new ChassisSpeeds(xSpeed, ySpeed, rotSpeed));
+                ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, getHeading())
+                :new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
 
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DrivetrainConstants.kMaxSpeedMetersPerSecond);
@@ -127,6 +133,14 @@ public class DriveSubsystem extends SubsystemBase
         frontRight.setDesiredState(testState);
         backLeft.setDesiredState(testState);
         backRight.setDesiredState(testState);
+    }
+
+    public void setDrivingMotors(double percent)
+    {
+        frontLeft.setDriveMotor(percent);
+        frontRight.setDriveMotor(percent);
+        backLeft.setDriveMotor(percent);
+        backRight.setDriveMotor(percent);
     }
 
     public void driveWithChassisSpeeds(ChassisSpeeds chassisSpeeds)

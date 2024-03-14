@@ -15,12 +15,15 @@ public class RunIntakeCommand extends Command
     }
 
     @Override
-    public void initialize() { }
+    public void initialize() 
+    { 
+        isTriggered = false;
+    }
 
     @Override 
     public void execute()
     {
-        subsystem.setConveyorMotors(0.2);
+        subsystem.setConveyorMotors(0.4);
         subsystem.setIntakeMotor(0.3);
 
         if(subsystem.getProximitySensor())
@@ -42,10 +45,9 @@ public class RunIntakeCommand extends Command
     @Override 
     public void end(boolean interrupted)
     {
+        isTriggered = false;
         subsystem.setIntakeMotor(0);
         subsystem.setConveyorMotors(0);
-
-        isTriggered = false;
     }
 
 }

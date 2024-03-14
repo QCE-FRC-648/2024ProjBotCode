@@ -100,12 +100,13 @@ public class SwerveModule
         drivingPIDController.setReference(optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
         turningPIDController.setReference(optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
 
-        //shuffleboard values update
-        //desiredAngle.setDouble(optimizedDesiredState.angle.getRadians());
-        //desiredVelocity.setDouble(optimizedDesiredState.speedMetersPerSecond);
-
         desiredState = p_desiredState;
         optimizedState = optimizedDesiredState;
+    }
+
+    public void setDriveMotor(double percent)
+    {
+        drivingMotor.set(percent);
     }
 
     public SwerveModuleState getDesiredState()

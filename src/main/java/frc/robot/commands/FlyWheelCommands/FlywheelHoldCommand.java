@@ -7,16 +7,7 @@ import frc.robot.subsystems.FlyWheelSubsystem;
 public class FlywheelHoldCommand extends Command
 {
     private final FlyWheelSubsystem subsystem;
-
-    private enum Stage { 
-        feedIntake,
-        sensorTriggered,
-        end
-    }
-
-    private Stage stage;
-
-    private double[] setpointDistance;
+    private boolean isTriggered = false;
 
     public FlywheelHoldCommand(FlyWheelSubsystem flyWheelSubsystem)
     {
@@ -26,46 +17,25 @@ public class FlywheelHoldCommand extends Command
     }
 
     @Override
-    public void initialize() 
-    { 
-        stage = Stage.feedIntake;
-    }
+    public void initialize() { }
 
     @Override
     public void execute()
     {
-        switch(stage)
+        subsystem.setFlyWheelMotors(0.2);
+
+        if(subsystem.getProximitySensor())
         {
-            case feedIntake:
-                subsystem.setFlyWheelMotors(0.2);
-
-                if(subsystem.getProximitySensor())
-                {
-                    setpointDistance = subsystem.getEncoderDistance();
-                    setpointDistance[0] += 0.2;
-                    setpointDistance[1] += 0.2;
-
-                    stage = Stage.sensorTriggered;
-                }
-
-                break;
-            case sensorTriggered:
-                double[] currentDist = subsystem.getEncoderDistance();
-                if(currentDist[0] >= setpointDistance[0] && currentDist[1] >= setpointDistance[1])
-                {
-                    stage = Stage.end;
-                }
-            case end:
-                break;
-                
+            isTriggered = true;
         }
+
     }
 
     //ends when proximity sensor is active
     @Override
     public boolean isFinished()
     {
-        if(stage == Stage.end)
+        if(!subsystem.getProximitySensor() && isTriggered)
         {
             return true;
         }
