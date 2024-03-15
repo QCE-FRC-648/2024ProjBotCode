@@ -8,6 +8,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.TiltConstants;
 
@@ -28,6 +30,8 @@ public class TiltSubsystem extends SubsystemBase
     private final DoublePublisher encoderDistancePublisher;
     private final DoublePublisher encoderDistancePerRotationPublisher;
     private final DoublePublisher encoderFrequencyPublisher;
+    private final DoublePublisher encoderPositionOffsetPublisher;
+    private final DoublePublisher encoderScaledRotationsPublisher;
 
     private final DoublePublisher pidErrorPublisher;
     private final DoublePublisher pidSetpointPublisher;
@@ -46,9 +50,16 @@ public class TiltSubsystem extends SubsystemBase
         encoderDistancePublisher = instance.getDoubleTopic("TiltSubsystem/Encoder/Distance").publish();
         encoderDistancePerRotationPublisher = instance.getDoubleTopic("TiltSubsystem/Encoder/DistancePerRotations").publish();
         encoderFrequencyPublisher = instance.getDoubleTopic("TiltSubsystem/Encoder/Frequency").publish();
+        encoderPositionOffsetPublisher = instance.getDoubleTopic("TiltSubsystem/Encoder/PositionOffset").publish();
+        encoderScaledRotationsPublisher = instance.getDoubleTopic("TiltSubsystem/Encoder/ScaledPosition").publish();
+
 
         pidErrorPublisher = instance.getDoubleTopic("TiltSubsystem/PID/Error").publish();
         pidSetpointPublisher = instance.getDoubleTopic("TiltSubsystem/PID/Setpoint").publish();
+
+        Timer.delay(3);
+        getOffset();
+  
     }
 
     public void setTiltMotor(double desiredPower)
@@ -64,12 +75,22 @@ public class TiltSubsystem extends SubsystemBase
     public void setTiltPosition(double desiredPosition)
     {
         tiltMotor.set(ControlMode.PercentOutput, 
-            pidController.calculate(encoder.getAbsolutePosition(), desiredPosition));
+            pidController.calculate(getScaledPosition(), desiredPosition));
     }
 
     public boolean getPidAtSetpoint()
     {
         return pidController.atSetpoint();
+    }
+
+    public double getScaledPosition()
+    {
+        return encoder.get() * TiltConstants.kTiltEncoderPositionFactor;
+    }
+
+    public void getOffset()
+    {
+        encoder.setPositionOffset(encoder.getAbsolutePosition());
     }
 
     @Override
@@ -80,6 +101,8 @@ public class TiltSubsystem extends SubsystemBase
         encoderDistancePublisher.set(encoder.getDistance());
         encoderDistancePerRotationPublisher.set(encoder.getDistancePerRotation());
         encoderFrequencyPublisher.set(encoder.getFrequency());
+        encoderPositionOffsetPublisher.set(encoder.getPositionOffset());
+        encoderScaledRotationsPublisher.set(getScaledPosition());
 
         pidErrorPublisher.set(pidController.getPositionError());
         pidSetpointPublisher.set(pidController.getSetpoint());

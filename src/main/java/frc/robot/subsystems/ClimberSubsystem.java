@@ -14,7 +14,7 @@ public class ClimberSubsystem extends SubsystemBase
 {
     private WPI_VictorSPX climber1 = new WPI_VictorSPX(ClimberConstants.kClimber1CANId);
     private WPI_VictorSPX climber2 = new WPI_VictorSPX(ClimberConstants.kClimber2CANId);
-    private PowerDistribution PDH;
+    private PowerDistribution PDH = new PowerDistribution();
     private final NetworkTableInstance instance;
     private final DoublePublisher climber1CurrentPublisher;
     private final DoublePublisher climber2CurrentPublisher;
@@ -23,7 +23,7 @@ public class ClimberSubsystem extends SubsystemBase
     {
         climber1.setNeutralMode(NeutralMode.Brake);
         climber2.setNeutralMode(NeutralMode.Brake);
-        PDH = new PowerDistribution(1, ModuleType.kRev);
+        //PDH = new PowerDistribution(1, ModuleType.kRev);
         instance = NetworkTableInstance.getDefault();
         climber1CurrentPublisher = instance.getDoubleTopic("/ClimberSubsystem/MotorsInfo/Climber1/Current").publish();
         climber2CurrentPublisher = instance.getDoubleTopic("/ClimberSubsystem/MotorsInfo/Climber2/Current").publish();

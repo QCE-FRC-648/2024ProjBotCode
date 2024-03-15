@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.BooleanPublisher;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.TelescopeConstants;
 
@@ -30,6 +31,7 @@ public class TelescopeSubsystem extends SubsystemBase
     private final DoublePublisher encoderDistancePublisher;
     private final DoublePublisher encoderDistancePerRotationPublisher;
     private final DoublePublisher encoderFrequencyPublisher;
+    private final DoublePublisher encoderPositionOffsetPublisher;
 
     private final DoublePublisher pidErrorPublisher;
     private final DoublePublisher pidSetpointPublisher;
@@ -38,6 +40,7 @@ public class TelescopeSubsystem extends SubsystemBase
 
     public TelescopeSubsystem()
     {
+        telescopeMotor.set(ControlMode.PercentOutput,0);
         telescopeMotor.setInverted(true);
         telescopeMotor.setNeutralMode(NeutralMode.Brake);
 
@@ -50,12 +53,14 @@ public class TelescopeSubsystem extends SubsystemBase
         encoderDistancePublisher = instance.getDoubleTopic("TelescopeSubsystem/Encoder/Distance").publish();
         encoderDistancePerRotationPublisher = instance.getDoubleTopic("TelescopeSubsystem/Encoder/DistancePerRotations").publish();
         encoderFrequencyPublisher = instance.getDoubleTopic("TelescopeSubsystem/Encoder/Frequency").publish();
+        encoderPositionOffsetPublisher = instance.getDoubleTopic("TelescopeSubsystem/Encoder/PositionOffset").publish();
 
         pidErrorPublisher = instance.getDoubleTopic("TelescopeSubsystem/PID/Error").publish();
         pidSetpointPublisher = instance.getDoubleTopic("TelescopeSubsystem/PID/Setpoint").publish();
         pidOutputPublisher = instance.getDoubleTopic("TelescopeSubsystem/PID/Output").publish();
         pidAtSetpointPublisher = instance.getBooleanTopic("TelescopeSubsystem/PID/AtSetpoint").publish();
 
+        Timer.delay(3);
         encoder.reset();
     }
 
@@ -77,6 +82,11 @@ public class TelescopeSubsystem extends SubsystemBase
         return pidController.atSetpoint();
     }
 
+    public void resetEncoder()
+    {
+        encoder.reset();
+    }
+
     @Override
     public void periodic()
     {
@@ -85,6 +95,7 @@ public class TelescopeSubsystem extends SubsystemBase
         encoderDistancePublisher.set(encoder.getDistance());
         encoderDistancePerRotationPublisher.set(encoder.getDistancePerRotation());
         encoderFrequencyPublisher.set(encoder.getFrequency());
+        encoderPositionOffsetPublisher.set(encoder.getPositionOffset());
 
         pidErrorPublisher.set(pidController.getPositionError());
         pidSetpointPublisher.set(pidController.getSetpoint());

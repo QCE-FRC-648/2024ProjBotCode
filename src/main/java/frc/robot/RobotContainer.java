@@ -23,6 +23,7 @@ import frc.robot.commands.IntakeCommands.FeedShooterCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
 import frc.robot.commands.OperatorCommands.ShootNoteCommand;
 import frc.robot.commands.TelescopeCommands.ExtendTelescope;
+import frc.robot.commands.TiltCommands.FullyTiltCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -81,7 +82,7 @@ public class RobotContainer
 
     operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
     
-    operatorController.b().toggleOnTrue(new ExtendTelescope(telescope));
+    operatorController.b().toggleOnTrue(new FullyTiltCommand(tilt));
 
     operatorController.leftTrigger().whileTrue(new ManualClimbCommand(
       climber, 

@@ -17,7 +17,7 @@ public class FullyTiltCommand extends Command
     @Override
     public void execute()
     {
-        subsystem.setTiltPosition(Units.inchesToMeters(0));
+        subsystem.setTiltPosition(Units.degreesToRadians(30));
     }
 
     @Override

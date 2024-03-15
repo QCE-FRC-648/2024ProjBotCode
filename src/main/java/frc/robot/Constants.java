@@ -108,7 +108,7 @@ public final class Constants
     public static final double kTelescopePositionP = 11;
     public static final double kTelescopePositionI = 0;
     public static final double kTelescopePositionD = 0;
-    public static final double kPIDTolerance = Units.inchesToMeters(0.01);
+    public static final double kPIDTolerance = 0.1; //meters
   }
 
   public static class TiltConstants
@@ -117,12 +117,12 @@ public final class Constants
 
     public static final int kTiltDutyCycleEncoderDIOId = 8;
 
-    public static final double kTiltEncoderPositionFactor = 2 * Math.PI;
+    public static final double kTiltEncoderPositionFactor = Math.PI;
 
-    public static final double kTiltPositionP = 0;
+    public static final double kTiltPositionP = 16;
     public static final double kTiltPositionI = 0;
     public static final double kTiltPositionD = 0;
-    public static final double kPIDTolerance = Units.degreesToRadians(5);
+    public static final double kPIDTolerance = Units.degreesToRadians(2);
   }
 
   public static class ClimberConstants
