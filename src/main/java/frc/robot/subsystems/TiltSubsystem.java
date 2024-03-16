@@ -9,7 +9,6 @@ import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.TiltConstants;
 
@@ -78,6 +77,11 @@ public class TiltSubsystem extends SubsystemBase
             pidController.calculate(getScaledPosition(), desiredPosition));
     }
 
+    public void setPidSetpoint(double setpoint)
+    {
+        pidController.setSetpoint(setpoint);
+    }
+
     public boolean getPidAtSetpoint()
     {
         return pidController.atSetpoint();
@@ -85,7 +89,7 @@ public class TiltSubsystem extends SubsystemBase
 
     public double getScaledPosition()
     {
-        return encoder.get() * TiltConstants.kTiltEncoderPositionFactor;
+        return (encoder.getAbsolutePosition() - encoder.getPositionOffset()) * TiltConstants.kTiltEncoderPositionFactor;
     }
 
     public void getOffset()

@@ -105,10 +105,10 @@ public final class Constants
     public static final double kMinRetractLength = Units.inchesToMeters(0);
     public static final double kMaxExtendLength = Units.inchesToMeters(13.5);
 
-    public static final double kTelescopePositionP = 11;
+    public static final double kTelescopePositionP = 15;
     public static final double kTelescopePositionI = 0;
     public static final double kTelescopePositionD = 0;
-    public static final double kPIDTolerance = 0.1; //meters
+    public static final double kPIDTolerance = 0.01; //meters
   }
 
   public static class TiltConstants
@@ -117,12 +117,12 @@ public final class Constants
 
     public static final int kTiltDutyCycleEncoderDIOId = 8;
 
-    public static final double kTiltEncoderPositionFactor = Math.PI;
+    public static final double kTiltEncoderPositionFactor = 4 * Math.PI;
 
     public static final double kTiltPositionP = 16;
     public static final double kTiltPositionI = 0;
     public static final double kTiltPositionD = 0;
-    public static final double kPIDTolerance = Units.degreesToRadians(2);
+    public static final double kPIDTolerance = Units.degreesToRadians(0.5);
   }
 
   public static class ClimberConstants
@@ -160,7 +160,7 @@ public final class Constants
     public static final double kTurningEncoderPositionFactor = (2 * Math.PI); //radians
     public static final double kTurningEncoderVelocityFactor = kTurningEncoderPositionFactor / 60.0; //radians per second
 
-    //constants for the PIDs 0.0000009
+    //constants for the PIDs
     public static final double kDrivingP = 0.005;
     public static final double kDrivingI = 0;
     public static final double kDrivingD = 0;
@@ -168,7 +168,8 @@ public final class Constants
     public static final double kDrivingMinOutput = -1;
     public static final double kDrivingMaxOutput = 1;
 
-    public static final double kTurningP = 0.22;
+    //0.22
+    public static final double kTurningP = 0.4;
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
     public static final double kTurningMinOutput = -1;

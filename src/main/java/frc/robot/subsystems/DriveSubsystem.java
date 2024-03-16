@@ -135,6 +135,14 @@ public class DriveSubsystem extends SubsystemBase
         backRight.setDesiredState(testState);
     }
 
+    public void setTurningMotors(double percent)
+    {
+        frontLeft.setTurnMotor(percent);
+        frontRight.setTurnMotor(percent);
+        backLeft.setTurnMotor(percent);
+        backRight.setTurnMotor(percent);           
+    }
+
     public void setDrivingMotors(double percent)
     {
         frontLeft.setDriveMotor(percent);

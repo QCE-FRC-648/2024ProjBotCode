@@ -5,6 +5,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -21,9 +22,10 @@ import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.IntakeCommands.FeedShooterCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
+import frc.robot.commands.OperatorCommands.AmpPosCommand;
 import frc.robot.commands.OperatorCommands.ShootNoteCommand;
-import frc.robot.commands.TelescopeCommands.ExtendTelescope;
-import frc.robot.commands.TiltCommands.FullyTiltCommand;
+import frc.robot.commands.TelescopeCommands.TelescopeCommand;
+import frc.robot.commands.TiltCommands.TiltCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -82,7 +84,7 @@ public class RobotContainer
 
     operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
     
-    operatorController.b().toggleOnTrue(new FullyTiltCommand(tilt));
+    operatorController.b().toggleOnTrue(new AmpPosCommand(telescope, tilt));
 
     operatorController.leftTrigger().whileTrue(new ManualClimbCommand(
       climber, 
@@ -100,7 +102,8 @@ public class RobotContainer
    */
   public Command getAutonomousCommand() 
   {
-    return new RunCommand(() -> driveTrain.testSwerve(1, 0), driveTrain);
+    //driveTrain.testSwerve(0.5, Math.PI/2)
+    return new RunCommand(() -> driveTrain.testSwerve(0,Math.PI/2), driveTrain);
   }
   
 }

@@ -17,7 +17,10 @@ public class FlywheelHoldCommand extends Command
     }
 
     @Override
-    public void initialize() { }
+    public void initialize() 
+    { 
+        isTriggered = false;
+    }
 
     @Override
     public void execute()
@@ -47,5 +50,6 @@ public class FlywheelHoldCommand extends Command
     public void end(boolean interrupted)
     {
         subsystem.setFlyWheelMotors(0);
+        isTriggered = false;
     }
 }

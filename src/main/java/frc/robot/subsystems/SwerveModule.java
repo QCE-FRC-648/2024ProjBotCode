@@ -104,6 +104,11 @@ public class SwerveModule
         optimizedState = optimizedDesiredState;
     }
 
+    public void setTurnMotor(double percent)
+    {
+        turningMotor.set(percent);
+    }
+
     public void setDriveMotor(double percent)
     {
         drivingMotor.set(percent);

@@ -77,6 +77,11 @@ public class TelescopeSubsystem extends SubsystemBase
         telescopeMotor.set(ControlMode.PercentOutput, value);
     }
 
+    public void setPidSetpoint(double setpoint)
+    {
+        pidController.setSetpoint(setpoint);
+    }
+
     public boolean getPidAtSetpoint()
     {
         return pidController.atSetpoint();
