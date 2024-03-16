@@ -1,13 +1,14 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.commands.PathfindingCommand;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -23,9 +24,8 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.IntakeCommands.FeedShooterCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
 import frc.robot.commands.OperatorCommands.AmpPosCommand;
+import frc.robot.commands.OperatorCommands.EjectNoteCommand;
 import frc.robot.commands.OperatorCommands.ShootNoteCommand;
-import frc.robot.commands.TelescopeCommands.TelescopeCommand;
-import frc.robot.commands.TiltCommands.TiltCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -45,11 +45,17 @@ public class RobotContainer
   private final TiltSubsystem tilt = new TiltSubsystem();
 
   private final CommandXboxController driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-  private final static CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
+  private final CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
+
+  private final SendableChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
   {
+    autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser.setDefaultOption("NOTHING!!!", new InstantCommand());
+    SmartDashboard.putData(autoChooser);
+
     // Configure the trigger bindings
     configureBindings();
 
@@ -86,6 +92,8 @@ public class RobotContainer
     
     operatorController.b().toggleOnTrue(new AmpPosCommand(telescope, tilt));
 
+    operatorController.rightBumper().onTrue(new EjectNoteCommand(conveyor, flyWheel));
+
     operatorController.leftTrigger().whileTrue(new ManualClimbCommand(
       climber, 
       () -> -operatorController.getLeftTriggerAxis()));
@@ -102,8 +110,7 @@ public class RobotContainer
    */
   public Command getAutonomousCommand() 
   {
-    //driveTrain.testSwerve(0.5, Math.PI/2)
-    return new RunCommand(() -> driveTrain.testSwerve(0,Math.PI/2), driveTrain);
+    return autoChooser.getSelected();
   }
   
 }

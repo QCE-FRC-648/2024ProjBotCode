@@ -1,20 +1,16 @@
 package frc.robot.commands.IntakeCommands;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ConveyorSubsystem;
 
-public class EjectNoteCommand extends Command 
+public class IntakeEjectNoteCommand extends Command 
 {
     private final ConveyorSubsystem subsystem;
-    private Supplier<Double> leftTrig;
 
-    public EjectNoteCommand(ConveyorSubsystem conveyorSubsystem, Supplier<Double> leftTrigger)
+    public IntakeEjectNoteCommand(ConveyorSubsystem conveyorSubsystem)
     {
         addRequirements(conveyorSubsystem);
         subsystem = conveyorSubsystem;
-        leftTrig = leftTrigger;
     }
 
     @Override
@@ -25,16 +21,6 @@ public class EjectNoteCommand extends Command
     {
         subsystem.setConveyorMotors(-0.2);
         subsystem.setIntakeMotor(-0.5);
-    }
-
-    @Override
-    public boolean isFinished()
-    {
-        double num = leftTrig.get();
-        if(num < 0.1) {
-            return true;
-        }
-        return false;
     }
 
     @Override 

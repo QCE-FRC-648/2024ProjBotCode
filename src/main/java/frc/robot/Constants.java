@@ -193,6 +193,11 @@ public final class Constants
     public static final int kConveyorProximitySensorDIOId = 0;
   }
 
+  public static class LimelightConstants
+  {
+    public static final String kCameraName = "photonVision";
+  }
+
   public static class OIConstants
   {
     public static final int kDriverControllerPort = 0;

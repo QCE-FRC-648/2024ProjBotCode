@@ -13,12 +13,14 @@ public class FlyWheelShootCommand extends Command
         subsystem = flyWheelSubsystem;
         subsystem.setFlyWheelMotorsCoast();
         addRequirements(subsystem);
-        counter = 0;
         System.out.println("new shoot " + counter);
     }
 
     @Override
-    public void initialize() {}
+    public void initialize() 
+    {
+        counter = 0;
+    }
 
     @Override 
     public void execute()
@@ -27,39 +29,32 @@ public class FlyWheelShootCommand extends Command
 
         if(subsystem.getProximitySensor())
         {
-            if(counter == 0) //triggered for the first time. top of note is triggering it
+            if(counter == 0)
             {
                 counter++;
             }
-            else if(counter == 2) //tiggered for the second time bottom of note is triggering it
+            else if(counter == 1)
             {
                 counter++;
             }
         }
-        else if(counter == 1) //inside the hoop
-        {
-            counter++;
-        }
-        else if(counter == 3) //note is past the sensor
-        {
-            counter++;
-        }
+
     }
 
     @Override
     public boolean isFinished()
     {
-        /*if(counter == 4)
+        if(!subsystem.getProximitySensor() && counter ==2)
         {
             return true;
-        }*/
+        }
         return false;
     }
 
     @Override
     public void end(boolean interrupted)
     {
-        System.out.println("shoot end " + counter);
         subsystem.setFlyWheelVelocity(0); //go back to zero when finished
+        counter = 0;
     }
 }

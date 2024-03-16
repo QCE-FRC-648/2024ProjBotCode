@@ -13,10 +13,5 @@ public class ShootNoteCommand extends ParallelDeadlineGroup
     {
         super(new FlyWheelShootCommand(flywheel),
             new WaitCommand(0.4).andThen(new FeedShooterCommand(conveyor)));
-        
-        /* 
-        setDeadline(new FlyWheelShootCommand(flywheel));
-        addCommands(
-            new WaitCommand(0.4).andThen(new FeedShooterCommand(conveyor)));*/
     }
 }
