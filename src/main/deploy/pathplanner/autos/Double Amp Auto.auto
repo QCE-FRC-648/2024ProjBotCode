@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.44,
-      "y": 5.5196408968316515
+      "x": 1.26,
+      "y": 7.03
     },
     "rotation": 0
   },
@@ -12,13 +12,25 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Start to Amp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AmpScore"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Center to center note path"
+                  "pathName": "Amp to Note"
                 }
               },
               {
@@ -31,9 +43,15 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Note to Amp"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "ShootNote"
+            "name": "AmpScore"
           }
         }
       ]
