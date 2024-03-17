@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.262771534552078,
-        "y": 7.025974412309185
+        "x": 1.4291761916857166,
+        "y": 7.090687334527822
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.262771534552078,
-        "y": 7.025974412309185
+        "x": 1.4291761916857166,
+        "y": 7.090687334527822
       },
       "isLocked": false,
       "linkedName": null
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Double Amp Auto",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
