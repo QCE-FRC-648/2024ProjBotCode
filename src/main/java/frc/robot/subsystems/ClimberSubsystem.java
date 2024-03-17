@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.networktables.DoublePublisher;
@@ -12,8 +14,8 @@ import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase
 {
-    private WPI_VictorSPX climber1 = new WPI_VictorSPX(ClimberConstants.kClimber1CANId);
-    private WPI_VictorSPX climber2 = new WPI_VictorSPX(ClimberConstants.kClimber2CANId);
+    private VictorSPX climber1 = new WPI_VictorSPX(ClimberConstants.kClimber1CANId);
+    private VictorSPX climber2 = new WPI_VictorSPX(ClimberConstants.kClimber2CANId);
     private PowerDistribution PDH = new PowerDistribution();
     private final NetworkTableInstance instance;
     private final DoublePublisher climber1CurrentPublisher;
@@ -36,8 +38,8 @@ public class ClimberSubsystem extends SubsystemBase
 
     public void setClimberSpeeds(double num)     
     {
-        climber1.set(num);
-        climber2.set(num);
+        climber1.set(ControlMode.PercentOutput, num);
+        climber2.set(ControlMode.PercentOutput, num);
     }
 
     @Override

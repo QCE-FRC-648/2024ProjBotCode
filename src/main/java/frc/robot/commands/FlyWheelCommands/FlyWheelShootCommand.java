@@ -26,25 +26,31 @@ public class FlyWheelShootCommand extends Command
     public void execute()
     {
         subsystem.setFlyWheelMotors(1);
-
-        if(subsystem.getProximitySensor())
-        {
-            if(counter == 0)
-            {
-                counter++;
-            }
-            else if(counter == 1)
-            {
-                counter++;
-            }
-        }
-
     }
 
     @Override
     public boolean isFinished()
     {
-        if(!subsystem.getProximitySensor() && counter ==2)
+        if(subsystem.getProximitySensor()) 
+        {
+            if(counter == 0) //When the top of the note is sensed 
+            {
+                counter++;
+            }
+            else if(counter == 2) // when the bottom of the note is sensed
+            {
+                counter++;
+            }
+        }
+        else if(counter == 1) //When the sensor is in the hole of the note
+        {
+            counter++;
+        }
+        else if(counter == 3) // when the note passes the sensor
+        {
+            counter++;
+        }
+        else if(counter == 4)
         {
             return true;
         }

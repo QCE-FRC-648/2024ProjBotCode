@@ -129,7 +129,7 @@ public final class Constants
   {
     public static final int kClimber1CANId = 25;
     public static final int kClimber2CANId = 26;
-    public static final int currentMax = 50;
+    public static final int currentMax = 20;
     public static final int kClimber1PDH = 14;
     public static final int kClimber2PDH = 15;
   } 
@@ -193,9 +193,32 @@ public final class Constants
     public static final int kConveyorProximitySensorDIOId = 0;
   }
 
-  public static class LimelightConstants
+  public static class VisionConstants
   {
     public static final String kCameraName = "photonVision";
+
+    //Camera position relative to center of the robot in meters
+    public static final double kCamX = 0;
+    public static final double kCamY = 0;
+    public static final double kCamZ = 0;
+
+    //Camera rotation in radians
+    public static final double kCamRoll = 0;
+    public static final double kCamPitch = 0;
+    public static final double kCamYaw = 0;
+  }
+
+  public static class PoseEstimatorConstants
+  {
+    // Increase these numbers to trust your model's state estimates less.
+    public static final double kPositionStdDevX = 0.1;
+    public static final double kPositionStdDevY = 0.1;
+    public static final double kPositionStdDevTheta = 10;
+
+    // Increase these numbers to trust global measurements from vision less.
+    public static final double kVisionStdDevX = 0.5;
+    public static final double kVisionStdDevY = 0.5;
+    public static final double kVisionStdDevTheta = 500;
   }
 
   public static class OIConstants

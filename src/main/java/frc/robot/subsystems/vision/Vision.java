@@ -1,4 +1,4 @@
-package frc.robot.vision;
+package frc.robot.subsystems.vision;
 
 import java.util.Optional;
 
@@ -11,17 +11,23 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
-import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants.VisionConstants;
 
-public class Limelight 
+public class Vision 
 {
-    private PhotonCamera camera = new PhotonCamera(LimelightConstants.kCameraName);
+    private PhotonCamera camera;
     private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
 
     private Transform3d robotToCam;
     private PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, robotToCam);
 
-    public Limelight() {}
+    public Vision(String _cameraName, Transform3d _camPosition) 
+    {
+        camera = new PhotonCamera(VisionConstants.kCameraName);
+        robotToCam = _camPosition;
+        
+        photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, robotToCam);
+    }
 
     public Optional<EstimatedRobotPose> getEstimatedRobotPose(Pose2d prevEstimatedRobotPose)
     {
