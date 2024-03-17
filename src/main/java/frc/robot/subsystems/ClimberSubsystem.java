@@ -26,6 +26,7 @@ public class ClimberSubsystem extends SubsystemBase
         climber1.setNeutralMode(NeutralMode.Brake);
         climber2.setNeutralMode(NeutralMode.Brake);
         //PDH = new PowerDistribution(1, ModuleType.kRev);
+
         instance = NetworkTableInstance.getDefault();
         climber1CurrentPublisher = instance.getDoubleTopic("/ClimberSubsystem/MotorsInfo/Climber1/Current").publish();
         climber2CurrentPublisher = instance.getDoubleTopic("/ClimberSubsystem/MotorsInfo/Climber2/Current").publish();
