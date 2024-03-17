@@ -50,8 +50,6 @@ public class DriveSubsystem extends SubsystemBase
 
     private Field2d field = new Field2d();
 
-    
-
     private final StructArrayPublisher<SwerveModuleState> measuredSwerveStatePublisher;
     private final StructArrayPublisher<SwerveModuleState> setpointSwerveStatePublisher;
 
@@ -210,6 +208,8 @@ public class DriveSubsystem extends SubsystemBase
 
         //publish to networktable for advantagescope
         measuredSwerveStatePublisher.set(getModuleStates());
+
+        field.setRobotPose(getPose());
 
         setpointSwerveStatePublisher.set(new SwerveModuleState[]{
             frontLeft.getDesiredState(),

@@ -211,14 +211,14 @@ public final class Constants
   public static class PoseEstimatorConstants
   {
     // Increase these numbers to trust your model's state estimates less.
-    public static final double kPositionStdDevX = 0.1;
-    public static final double kPositionStdDevY = 0.1;
-    public static final double kPositionStdDevTheta = 10;
+    public static final double kPositionStdDevX = 0.05;
+    public static final double kPositionStdDevY = 0.05;
+    public static final double kPositionStdDevTheta = Units.degreesToRadians(5);
 
     // Increase these numbers to trust global measurements from vision less.
     public static final double kVisionStdDevX = 0.5;
     public static final double kVisionStdDevY = 0.5;
-    public static final double kVisionStdDevTheta = 500;
+    public static final double kVisionStdDevTheta = Units.degreesToRadians(30);
   }
 
   public static class OIConstants
