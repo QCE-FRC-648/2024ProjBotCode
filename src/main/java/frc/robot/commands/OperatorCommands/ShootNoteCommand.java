@@ -10,7 +10,7 @@ import frc.robot.subsystems.FlyWheelSubsystem;
 public class ShootNoteCommand extends ParallelDeadlineGroup
 {
     public ShootNoteCommand(ConveyorSubsystem conveyor, FlyWheelSubsystem flywheel)
-    {
+    { 
         super(new FlyWheelShootCommand(flywheel),
             new WaitCommand(0.4).andThen(new FeedShooterCommand(conveyor)));
     }

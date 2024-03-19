@@ -147,5 +147,4 @@ public class SwerveModule
     {
         drivingEncoder.setPosition(0);
     }
-
 }

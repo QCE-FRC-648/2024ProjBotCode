@@ -17,14 +17,17 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.TelescopeSubsystem;
 import frc.robot.subsystems.TiltSubsystem;
+import frc.robot.subsystems.vision.Vision;
 import frc.utils.JoystickUtils;
 import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
 import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.IntakeCommands.FeedShooterCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
 import frc.robot.commands.OperatorCommands.AmpPosCommand;
 import frc.robot.commands.OperatorCommands.EjectNoteCommand;
+import frc.robot.commands.OperatorCommands.PassNoteCommand;
 import frc.robot.commands.OperatorCommands.ShootNoteCommand;
 
 /**
@@ -35,9 +38,10 @@ import frc.robot.commands.OperatorCommands.ShootNoteCommand;
  */
 public class RobotContainer 
 {
+  private final Vision cam = new Vision(VisionConstants.kCameraName, VisionConstants.camTransform);
+  
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveTrain = new DriveSubsystem();
-
   private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
   private final FlyWheelSubsystem flyWheel = new FlyWheelSubsystem();
   private final ClimberSubsystem climber = new ClimberSubsystem();
@@ -52,16 +56,16 @@ public class RobotContainer
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
   {
+    //Pathplanner commands
+    NamedCommands.registerCommand("IntakeNote", new RunIntakeCommand(conveyor));
+    NamedCommands.registerCommand("ShootNote", new ShootNoteCommand(conveyor, flyWheel));
+
     autoChooser = AutoBuilder.buildAutoChooser();
     autoChooser.setDefaultOption("NOTHING!!!", new InstantCommand());
     SmartDashboard.putData(autoChooser);
 
     // Configure the trigger bindings
     configureBindings();
-
-    //Pathplanner commands
-    NamedCommands.registerCommand("IntakeNote", new RunIntakeCommand(conveyor));
-    NamedCommands.registerCommand("ShootNote", new ShootNoteCommand(conveyor, flyWheel));
     
     driveTrain.setDefaultCommand(new RunCommand(
       //left joystick controls translation
@@ -88,11 +92,12 @@ public class RobotContainer
 
     operatorController.y().toggleOnTrue(new ShootNoteCommand(conveyor, flyWheel));
 
-    operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
+    //Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor))
+    operatorController.a().toggleOnTrue(new PassNoteCommand(conveyor, flyWheel));
     
     operatorController.b().toggleOnTrue(new AmpPosCommand(telescope, tilt));
 
-    operatorController.rightBumper().onTrue(new EjectNoteCommand(conveyor, flyWheel));
+    operatorController.rightBumper().toggleOnTrue(new EjectNoteCommand(conveyor, flyWheel));
 
     operatorController.leftTrigger().whileTrue(new ManualClimbCommand(
       climber, 

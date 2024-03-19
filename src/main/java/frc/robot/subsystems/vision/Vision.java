@@ -12,7 +12,6 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
-import frc.robot.Constants.VisionConstants;
 
 public class Vision 
 {
@@ -24,7 +23,7 @@ public class Vision
 
     public Vision(String _cameraName, Transform3d _camPosition) 
     {
-        camera = new PhotonCamera(VisionConstants.kCameraName);
+        camera = new PhotonCamera(_cameraName);
         robotToCam = _camPosition;
         
         photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, robotToCam);

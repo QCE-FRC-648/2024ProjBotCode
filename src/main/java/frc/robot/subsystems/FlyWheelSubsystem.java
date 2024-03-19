@@ -36,7 +36,6 @@ public class FlyWheelSubsystem extends SubsystemBase
 
     private AnalogInput proximitySensor = new AnalogInput(FlyWheelConstants.kFlyWheelProximitySensorDIOId);
     
-
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(
         FlyWheelConstants.kFlyWheelkS, 
         FlyWheelConstants.kFlyWheelkV, 

@@ -1,5 +1,6 @@
 package frc.robot.commands.FlyWheelCommands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FlyWheelSubsystem;
 
@@ -13,7 +14,6 @@ public class FlyWheelShootCommand extends Command
         subsystem = flyWheelSubsystem;
         subsystem.setFlyWheelMotorsCoast();
         addRequirements(subsystem);
-        System.out.println("new shoot " + counter);
     }
 
     @Override
@@ -24,12 +24,6 @@ public class FlyWheelShootCommand extends Command
 
     @Override 
     public void execute()
-    {
-        subsystem.setFlyWheelMotors(1);
-    }
-
-    @Override
-    public boolean isFinished()
     {
         if(subsystem.getProximitySensor()) 
         {
@@ -50,7 +44,16 @@ public class FlyWheelShootCommand extends Command
         {
             counter++;
         }
-        else if(counter == 4)
+
+        subsystem.setFlyWheelMotors(1);
+    }
+
+    @Override
+    public boolean isFinished()
+    {
+        SmartDashboard.putNumber("count", counter);
+        
+        if(counter == 4)
         {
             return true;
         }
@@ -60,7 +63,7 @@ public class FlyWheelShootCommand extends Command
     @Override
     public void end(boolean interrupted)
     {
-        subsystem.setFlyWheelVelocity(0); //go back to zero when finished
+        subsystem.setFlyWheelMotors(0); //go back to zero when finished
         counter = 0;
     }
 }

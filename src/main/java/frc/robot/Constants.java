@@ -5,7 +5,10 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
@@ -197,15 +200,19 @@ public final class Constants
   {
     public static final String kCameraName = "photonVision";
 
+    //camera monting angle last calculated is 61.21 degrees - yaw
     //Camera position relative to center of the robot in meters
-    public static final double kCamX = 0;
-    public static final double kCamY = 0;
+    public static final double kCamX = -Units.inchesToMeters(12);
+    public static final double kCamY = Units.inchesToMeters(11.75);
     public static final double kCamZ = 0;
 
     //Camera rotation in radians
     public static final double kCamRoll = 0;
-    public static final double kCamPitch = 0;
+    public static final double kCamPitch = Units.degreesToRadians(61.21);
     public static final double kCamYaw = 0;
+
+    public static final Transform3d camTransform = new Transform3d(new Translation3d(kCamX, kCamY, kCamZ), new Rotation3d(kCamRoll, kCamPitch, kCamYaw));
+
   }
 
   public static class PoseEstimatorConstants
