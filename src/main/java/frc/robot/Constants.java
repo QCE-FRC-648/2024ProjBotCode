@@ -198,7 +198,7 @@ public final class Constants
 
   public static class VisionConstants
   {
-    public static final String kCameraName = "photonVision";
+    public static final String kCameraName = "Camera_Module_v1";
 
     //camera monting angle last calculated is 61.21 degrees - yaw
     //Camera position relative to center of the robot in meters
