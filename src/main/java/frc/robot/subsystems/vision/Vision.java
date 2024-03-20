@@ -25,7 +25,6 @@ public class Vision
     {
         camera = new PhotonCamera(_cameraName);
         robotToCam = _camPosition;
-        
         photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, robotToCam);
     }
 

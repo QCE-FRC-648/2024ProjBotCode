@@ -8,8 +8,10 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.TiltConstants;
 
 public class TiltSubsystem extends SubsystemBase
@@ -23,6 +25,8 @@ public class TiltSubsystem extends SubsystemBase
         TiltConstants.kTiltPositionI, 
         TiltConstants.kTiltPositionD);
 
+    private PowerDistribution PDH;
+
     private final NetworkTableInstance instance = NetworkTableInstance.getDefault();
     private final DoublePublisher encoderRotationsPublisher;
     private final DoublePublisher encoderAbsolutePositionPublisher;
@@ -35,9 +39,13 @@ public class TiltSubsystem extends SubsystemBase
     private final DoublePublisher pidErrorPublisher;
     private final DoublePublisher pidSetpointPublisher;
 
+    private final DoublePublisher motorCurrentPublisher;
+
     public TiltSubsystem()
     {
-        tiltMotor.setInverted(true);
+        PDH = RobotContainer.pdh;
+
+        tiltMotor.setInverted(false);
         tiltMotor.setNeutralMode(NeutralMode.Brake);
 
         encoder.setDistancePerRotation(TiltConstants.kTiltEncoderPositionFactor);
@@ -55,6 +63,8 @@ public class TiltSubsystem extends SubsystemBase
 
         pidErrorPublisher = instance.getDoubleTopic("TiltSubsystem/PID/Error").publish();
         pidSetpointPublisher = instance.getDoubleTopic("TiltSubsystem/PID/Setpoint").publish();
+
+        motorCurrentPublisher = instance.getDoubleTopic("/TiltSubsystem/MotorInfo/Climber1/Current").publish();
 
         Timer.delay(3);
         getOffset();
@@ -110,5 +120,13 @@ public class TiltSubsystem extends SubsystemBase
 
         pidErrorPublisher.set(pidController.getPositionError());
         pidSetpointPublisher.set(pidController.getSetpoint());
+
+        motorCurrentPublisher.set(PDH.getCurrent(10));
+
+        //if motor current is over 15amps turn off the motor
+        if(PDH.getCurrent(10) >= 15)
+        {
+            tiltMotor.set(ControlMode.PercentOutput, 0);
+        }
     }
 }

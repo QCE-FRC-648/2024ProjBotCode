@@ -1,11 +1,11 @@
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.commands.PathfindingCommand;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -17,18 +17,18 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.TelescopeSubsystem;
 import frc.robot.subsystems.TiltSubsystem;
-import frc.robot.subsystems.vision.Vision;
-import frc.utils.JoystickUtils;
+import frc.robot.commands.ClimberCommands.ToggleClimbCommand;
+import frc.robot.commands.FlyWheelCommands.FlyWheelShootCommand;
 import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
 import frc.robot.commands.ClimberCommands.ManualClimbCommand;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.VisionConstants;
+import frc.robot.commands.IntakeCommands.EjectNoteCommand;
 import frc.robot.commands.IntakeCommands.FeedShooterCommand;
+import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
-import frc.robot.commands.OperatorCommands.AmpPosCommand;
-import frc.robot.commands.OperatorCommands.EjectNoteCommand;
-import frc.robot.commands.OperatorCommands.PassNoteCommand;
 import frc.robot.commands.OperatorCommands.ShootNoteCommand;
+import frc.robot.commands.TelescopeCommands.ExtendTelescope;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -38,10 +38,9 @@ import frc.robot.commands.OperatorCommands.ShootNoteCommand;
  */
 public class RobotContainer 
 {
-  private final Vision cam = new Vision(VisionConstants.kCameraName, VisionConstants.camTransform);
-  
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveTrain = new DriveSubsystem();
+
   private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
   private final FlyWheelSubsystem flyWheel = new FlyWheelSubsystem();
   private final ClimberSubsystem climber = new ClimberSubsystem();
@@ -49,41 +48,46 @@ public class RobotContainer
   private final TiltSubsystem tilt = new TiltSubsystem();
 
   private final CommandXboxController driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
-  private final CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
-
-  private final SendableChooser<Command> autoChooser;
+  private final static CommandXboxController operatorController = new CommandXboxController(OIConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
   {
-    //Pathplanner commands
-    NamedCommands.registerCommand("IntakeNote", new RunIntakeCommand(conveyor));
-    NamedCommands.registerCommand("ShootNote", new ShootNoteCommand(conveyor, flyWheel));
-
-    autoChooser = AutoBuilder.buildAutoChooser();
-    autoChooser.setDefaultOption("NOTHING!!!", new InstantCommand());
-    SmartDashboard.putData(autoChooser);
-
     // Configure the trigger bindings
     configureBindings();
+
+    NamedCommands.registerCommand("IntakeNote", new RunIntakeCommand(conveyor));
+    NamedCommands.registerCommand("ShootNote", new ShootNoteCommand(conveyor, flyWheel));
     
     driveTrain.setDefaultCommand(new RunCommand(
       //left joystick controls translation
       //right joystick controls rotation of the robot
       () -> driveTrain.drive(
-        -JoystickUtils.applySensitivity(driverController.getLeftY(), OIConstants.kDriverDeadband, OIConstants.kDriverSensativity), 
-        -JoystickUtils.applySensitivity(driverController.getLeftX(), OIConstants.kDriverDeadband, OIConstants.kDriverSensativity), 
-        -JoystickUtils.applySensitivity(driverController.getRightX(), OIConstants.kDriverDeadband, OIConstants.kDriverSensativity), 
+        -MathUtil.applyDeadband(driverController.getLeftY(), OIConstants.kDriverDeadband), 
+        -MathUtil.applyDeadband(driverController.getLeftX(), OIConstants.kDriverDeadband), 
+        -MathUtil.applyDeadband(driverController.getRightX(), OIConstants.kDriverDeadband), 
         true), 
       driveTrain));
+    
+    climber.setDefaultCommand(new ManualClimbCommand(
+      climber, 
+      () -> -MathUtil.applyDeadband(operatorController.getLeftTriggerAxis(), OIConstants.kDriverDeadband)));
+
+    climber.setDefaultCommand(new ManualClimbCommand(
+      climber, 
+      () -> MathUtil.applyDeadband(operatorController.getRightTriggerAxis(), OIConstants.kDriverDeadband)));
+    
     
     telescope.setDefaultCommand(new RunCommand(
       () -> telescope.setTelescopeMotor(-MathUtil.applyDeadband(operatorController.getRightY(), OIConstants.kDriverDeadband)*0.5), 
       telescope));
     
+     
     tilt.setDefaultCommand(new RunCommand(
-      ()-> tilt.setTiltMotor(-MathUtil.applyDeadband(operatorController.getLeftY() *0.5, OIConstants.kDriverDeadband)), 
+      ()-> tilt.setTiltMotor(-MathUtil.applyDeadband(operatorController.getRightY(), OIConstants.kDriverDeadband)), 
       tilt));
+
+    
   }
 
   private void configureBindings() 
@@ -92,22 +96,11 @@ public class RobotContainer
 
     operatorController.y().toggleOnTrue(new ShootNoteCommand(conveyor, flyWheel));
 
-    //Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor))
-    operatorController.a().toggleOnTrue(new PassNoteCommand(conveyor, flyWheel));
+    operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
     
-    operatorController.b().toggleOnTrue(new AmpPosCommand(telescope, tilt));
-
-    operatorController.rightBumper().toggleOnTrue(new EjectNoteCommand(conveyor, flyWheel));
-
-    operatorController.leftTrigger().whileTrue(new ManualClimbCommand(
-      climber, 
-      () -> -operatorController.getLeftTriggerAxis()));
-
-    operatorController.rightTrigger().whileTrue(new ManualClimbCommand(
-      climber, 
-      () -> operatorController.getRightTriggerAxis()));
+    operatorController.b().toggleOnTrue(new ExtendTelescope(telescope));
   }
-  
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -115,7 +108,7 @@ public class RobotContainer
    */
   public Command getAutonomousCommand() 
   {
-    return autoChooser.getSelected();
+    return new PathPlannerAuto("Example Auto");
   }
   
 }
