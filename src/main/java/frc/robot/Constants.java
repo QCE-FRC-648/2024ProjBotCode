@@ -37,7 +37,7 @@ public final class Constants
 
     //Not the maxium capable speed of the robot 
     //but an allowed max speed of the robot
-    public static final double kMaxSpeedMetersPerSecond = 4;
+    public static final double kMaxSpeedMetersPerSecond = 4.5;
     public static final double kMaxAngularSpeed = 2*Math.PI; //radians per second
 
     public static final double kTrackWidth = Units.inchesToMeters(24.5);
