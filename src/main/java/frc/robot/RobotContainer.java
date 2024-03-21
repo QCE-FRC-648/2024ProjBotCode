@@ -5,6 +5,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -17,16 +18,21 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FlyWheelSubsystem;
 import frc.robot.subsystems.TelescopeSubsystem;
 import frc.robot.subsystems.TiltSubsystem;
+import frc.robot.subsystems.vision.PoseEstimatorVision;
+import frc.robot.subsystems.vision.Vision;
 import frc.robot.commands.ClimberCommands.ToggleClimbCommand;
 import frc.robot.commands.FlyWheelCommands.FlyWheelShootCommand;
 import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
 import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.IntakeCommands.EjectNoteCommand;
 import frc.robot.commands.IntakeCommands.FeedShooterCommand;
 import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
+import frc.robot.commands.OperatorCommands.AmpPosCommand;
+import frc.robot.commands.OperatorCommands.ResetShooterCommand;
 import frc.robot.commands.OperatorCommands.ShootNoteCommand;
 import frc.robot.commands.TelescopeCommands.ExtendTelescope;
 
@@ -38,9 +44,11 @@ import frc.robot.commands.TelescopeCommands.ExtendTelescope;
  */
 public class RobotContainer 
 {
+  private final Vision cam = new Vision(VisionConstants.kCameraName, VisionConstants.camTransform);
+
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveTrain = new DriveSubsystem();
-
+  private final PoseEstimatorVision poseEstimator = new PoseEstimatorVision(cam, driveTrain);
   private final ConveyorSubsystem conveyor = new ConveyorSubsystem();
   private final FlyWheelSubsystem flyWheel = new FlyWheelSubsystem();
   private final ClimberSubsystem climber = new ClimberSubsystem();
@@ -98,8 +106,9 @@ public class RobotContainer
 
     operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
     
-    operatorController.b().toggleOnTrue(new ExtendTelescope(telescope));
-  }
+    operatorController.b().toggleOnTrue(new AmpPosCommand(telescope, tilt));//.toggleOnFalse(new ResetShooterCommand(telescope, tilt));
+
+}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

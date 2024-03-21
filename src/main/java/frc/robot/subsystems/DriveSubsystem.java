@@ -53,9 +53,10 @@ public class DriveSubsystem extends SubsystemBase
     private final StructArrayPublisher<SwerveModuleState> measuredSwerveStatePublisher;
     private final StructArrayPublisher<SwerveModuleState> setpointSwerveStatePublisher;
 
-
+    
     public DriveSubsystem() 
     { 
+        /* 
         AutoBuilder.configureHolonomic(
             this::getPose, 
             this::resetPose, 
@@ -75,7 +76,7 @@ public class DriveSubsystem extends SubsystemBase
 
         PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
 
-        SmartDashboard.putData("Field", field);
+        SmartDashboard.putData("Field", field);*/
 
         measuredSwerveStatePublisher = NetworkTableInstance.getDefault()
             .getStructArrayTopic("/SwerveModuleState/Measured", SwerveModuleState.struct).publish();
