@@ -100,6 +100,12 @@ public class RobotContainer
 
   private void configureBindings() 
   {
+    driverController.rightTrigger().whileTrue(new RunCommand(
+      ()->driveTrain.setSlowModePower(0.25), driveTrain));
+
+    driverController.rightTrigger().whileFalse(new RunCommand(
+      ()->driveTrain.setSlowModePower(1), driveTrain));
+
     operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor)); //intake
 
     operatorController.y().toggleOnTrue(new ShootNoteCommand(conveyor, flyWheel));
@@ -107,6 +113,12 @@ public class RobotContainer
     operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
     
     operatorController.b().toggleOnTrue(new AmpPosCommand(telescope, tilt));//.toggleOnFalse(new ResetShooterCommand(telescope, tilt));
+
+    operatorController.leftTrigger().whileTrue(new ManualClimbCommand(climber, 
+      ()->-operatorController.getLeftTriggerAxis()));
+
+    operatorController.rightTrigger().whileTrue(new ManualClimbCommand(climber, 
+      ()->operatorController.getLeftTriggerAxis()));
 
 }
 

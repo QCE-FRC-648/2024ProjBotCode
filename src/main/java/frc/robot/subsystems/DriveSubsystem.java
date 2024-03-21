@@ -50,6 +50,8 @@ public class DriveSubsystem extends SubsystemBase
 
     private Field2d field = new Field2d();
 
+    private double slowModePower = 1;
+
     private final StructArrayPublisher<SwerveModuleState> measuredSwerveStatePublisher;
     private final StructArrayPublisher<SwerveModuleState> setpointSwerveStatePublisher;
 
@@ -95,9 +97,9 @@ public class DriveSubsystem extends SubsystemBase
      */
     public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative) 
     { 
-        double xSpeedCommanded = xSpeed;
-        double ySpeedCommanded = ySpeed;
-        double rotSpeedCommanded = rotSpeed;
+        double xSpeedCommanded = xSpeed * slowModePower;
+        double ySpeedCommanded = ySpeed * slowModePower;
+        double rotSpeedCommanded = rotSpeed * slowModePower;
         
 
         double xSpeedDelivered = xSpeedCommanded * DrivetrainConstants.kMaxSpeedMetersPerSecond;
@@ -117,6 +119,11 @@ public class DriveSubsystem extends SubsystemBase
         frontRight.setDesiredState(swerveModuleStates[1]);
         backLeft.setDesiredState(swerveModuleStates[2]);
         backRight.setDesiredState(swerveModuleStates[3]);
+    }
+
+    public void setSlowModePower(double power)
+    {
+        slowModePower = power;
     }
 
     /**

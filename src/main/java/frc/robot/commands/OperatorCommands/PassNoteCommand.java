@@ -8,7 +8,7 @@ import frc.robot.commands.IntakeCommands.FeedShooterCommand;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.FlyWheelSubsystem;
 
-public class PassNoteCommand extends ParallelDeadlineGroup
+public class PassNoteCommand extends SequentialCommandGroup
 {
     public PassNoteCommand(ConveyorSubsystem conveyor, FlyWheelSubsystem flyWheel)
     {
