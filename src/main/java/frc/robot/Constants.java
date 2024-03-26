@@ -111,7 +111,7 @@ public final class Constants
     public static final double kTelescopePositionP = 15;
     public static final double kTelescopePositionI = 0;
     public static final double kTelescopePositionD = 0;
-    public static final double kPIDTolerance = 0.01; //meters
+    public static final double kPIDTolerance = 0.005; //meters
   }
 
   public static class TiltConstants
@@ -132,7 +132,7 @@ public final class Constants
   {
     public static final int kClimber1CANId = 25;
     public static final int kClimber2CANId = 26;
-    public static final int currentMax = 20;
+    public static final int currentMax = 5;
     public static final int kClimber1PDH = 14;
     public static final int kClimber2PDH = 15;
   } 
@@ -198,7 +198,7 @@ public final class Constants
 
   public static class VisionConstants
   {
-    public static final String kCameraName = "Camera_Module_v1";
+    public static final String kCameraName = "cameraUwU";
 
     //camera monting angle last calculated is 61.21 degrees - yaw
     //Camera position relative to center of the robot in meters

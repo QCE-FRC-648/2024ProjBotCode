@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7275269251393202,
-      "y": 6.770915422172725
+      "x": 2,
+      "y": 2
     },
-    "rotation": 56.9832471271642
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -15,12 +15,6 @@
           "type": "named",
           "data": {
             "name": "ShootNote"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Left to left note path"
           }
         }
       ]

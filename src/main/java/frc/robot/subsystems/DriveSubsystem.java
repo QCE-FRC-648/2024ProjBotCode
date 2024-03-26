@@ -117,6 +117,11 @@ public class DriveSubsystem extends SubsystemBase
         backRight.setDesiredState(swerveModuleStates[3]);
     }
 
+    public SwerveDriveKinematics getKinematics()
+    {
+        return DrivetrainConstants.kDriveKinematics;
+    }
+
     public void setSlowModePower(double power)
     {
         slowModePower = power;

@@ -29,7 +29,7 @@ public class PoseEstimatorVision extends SubsystemBase
         camera = _camera;
 
         poseEstimator = new SwerveDrivePoseEstimator
-        (null, 
+        (driveTrain.getKinematics(), 
         driveTrain.getHeading(), 
         driveTrain.getModulePositions(), 
         driveTrain.getPose(),

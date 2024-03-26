@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -20,11 +19,9 @@ import frc.robot.subsystems.TelescopeSubsystem;
 import frc.robot.subsystems.TiltSubsystem;
 import frc.robot.subsystems.vision.PoseEstimatorVision;
 import frc.robot.subsystems.vision.Vision;
-import frc.robot.commands.FlyWheelCommands.FlywheelHoldCommand;
 import frc.robot.commands.ClimberCommands.ManualClimbCommand;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.VisionConstants;
-import frc.robot.commands.IntakeCommands.FeedShooterCommand;
 import frc.robot.commands.IntakeCommands.RunIntakeCommand;
 import frc.robot.commands.OperatorCommands.AmpPosCommand;
 import frc.robot.commands.OperatorCommands.EjectNoteCommand;
@@ -81,29 +78,19 @@ public class RobotContainer
         true), 
       driveTrain));
     
-    climber.setDefaultCommand(new ManualClimbCommand(
-      climber, 
-      () -> -MathUtil.applyDeadband(operatorController.getLeftTriggerAxis(), OIConstants.kDriverDeadband)));
-
-    climber.setDefaultCommand(new ManualClimbCommand(
-      climber, 
-      () -> MathUtil.applyDeadband(operatorController.getRightTriggerAxis(), OIConstants.kDriverDeadband)));
-    
-    
     telescope.setDefaultCommand(new RunCommand(
       () -> telescope.setTelescopeMotor(-MathUtil.applyDeadband(operatorController.getRightY(), OIConstants.kDriverDeadband)*0.5), 
       telescope));
     
      
     tilt.setDefaultCommand(new RunCommand(
-      ()-> tilt.setTiltMotor(-MathUtil.applyDeadband(operatorController.getRightY(), OIConstants.kDriverDeadband)), 
+      ()-> tilt.setTiltMotor(-MathUtil.applyDeadband(operatorController.getLeftY(), OIConstants.kDriverDeadband)), 
       tilt));
-
-    
   }
 
   private void configureBindings() 
   {
+    
     driverController.rightTrigger().whileTrue(new RunCommand(
       ()->driveTrain.setSlowModePower(0.25), driveTrain));
 
@@ -114,17 +101,19 @@ public class RobotContainer
 
     operatorController.y().toggleOnTrue(new ShootNoteCommand(conveyor, flyWheel));
 
-    operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
+    //operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
     
-    operatorController.b().toggleOnTrue(new AmpPosCommand(telescope, tilt));//.toggleOnFalse(new ResetShooterCommand(telescope, tilt));
+    operatorController.leftBumper().toggleOnTrue(new AmpPosCommand(telescope, tilt, conveyor, flyWheel));
+    operatorController.leftBumper().toggleOnFalse(new ResetShooterCommand(telescope, tilt));
 
     operatorController.rightBumper().whileTrue(new EjectNoteCommand(conveyor, flyWheel));
 
-    operatorController.leftTrigger().whileTrue(new ManualClimbCommand(climber, 
+    operatorController.leftTrigger().whileTrue(new ManualClimbCommand
+    (climber, 
       ()->-operatorController.getLeftTriggerAxis()));
 
     operatorController.rightTrigger().whileTrue(new ManualClimbCommand(climber, 
-      ()->operatorController.getLeftTriggerAxis()));
+      ()->operatorController.getRightTriggerAxis()));
 
 }
 
@@ -137,5 +126,4 @@ public class RobotContainer
   {
     return autoChooser.getSelected();
   }
-  
 }
