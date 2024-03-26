@@ -19,7 +19,6 @@ public class ResetShooterCommand extends SequentialCommandGroup
         tilt = _tilt;
 
         addCommands(
-
             Commands.parallel(
                 new TelescopeCommand(telescope, 0),
                 new TiltCommand(tilt, Units.degreesToRadians(15))

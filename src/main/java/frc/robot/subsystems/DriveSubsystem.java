@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,10 +11,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrivetrainConstants;
 
@@ -50,12 +46,15 @@ public class DriveSubsystem extends SubsystemBase
 
     private Field2d field = new Field2d();
 
+    private double slowModePower = 1;
+
     private final StructArrayPublisher<SwerveModuleState> measuredSwerveStatePublisher;
     private final StructArrayPublisher<SwerveModuleState> setpointSwerveStatePublisher;
 
-
+    
     public DriveSubsystem() 
     { 
+        /* 
         AutoBuilder.configureHolonomic(
             this::getPose, 
             this::resetPose, 
@@ -75,7 +74,7 @@ public class DriveSubsystem extends SubsystemBase
 
         PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
 
-        SmartDashboard.putData("Field", field);
+        SmartDashboard.putData("Field", field);*/
 
         measuredSwerveStatePublisher = NetworkTableInstance.getDefault()
             .getStructArrayTopic("/SwerveModuleState/Measured", SwerveModuleState.struct).publish();
@@ -94,9 +93,9 @@ public class DriveSubsystem extends SubsystemBase
      */
     public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative) 
     { 
-        double xSpeedCommanded = xSpeed;
-        double ySpeedCommanded = ySpeed;
-        double rotSpeedCommanded = rotSpeed;
+        double xSpeedCommanded = xSpeed * slowModePower;
+        double ySpeedCommanded = ySpeed * slowModePower;
+        double rotSpeedCommanded = rotSpeed * slowModePower;
         
 
         double xSpeedDelivered = xSpeedCommanded * DrivetrainConstants.kMaxSpeedMetersPerSecond;
@@ -116,6 +115,16 @@ public class DriveSubsystem extends SubsystemBase
         frontRight.setDesiredState(swerveModuleStates[1]);
         backLeft.setDesiredState(swerveModuleStates[2]);
         backRight.setDesiredState(swerveModuleStates[3]);
+    }
+
+    public SwerveDriveKinematics getKinematics()
+    {
+        return DrivetrainConstants.kDriveKinematics;
+    }
+
+    public void setSlowModePower(double power)
+    {
+        slowModePower = power;
     }
 
     /**

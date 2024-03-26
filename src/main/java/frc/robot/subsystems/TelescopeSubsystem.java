@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.BooleanPublisher;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -66,7 +67,18 @@ public class TelescopeSubsystem extends SubsystemBase
 
     public void setTelescopeMotor(double desiredPower)
     {
+        if(encoder.getDistance() >= Units.inchesToMeters(8) && Math.signum(desiredPower) == 1)
+        {
+            telescopeMotor.set(ControlMode.PercentOutput, 0);
+        }
+        else if(encoder.getDistance() <= 0.01 && Math.signum(desiredPower) == -1)
+        {
+            telescopeMotor.set(ControlMode.PercentOutput, 0);
+        }
+        else
+        {
         telescopeMotor.set(ControlMode.PercentOutput, desiredPower);
+        }
     }
 
     public void setTelescopeDistance(double desiredDistance)

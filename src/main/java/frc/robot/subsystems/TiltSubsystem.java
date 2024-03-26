@@ -43,7 +43,7 @@ public class TiltSubsystem extends SubsystemBase
 
     public TiltSubsystem()
     {
-        PDH = RobotContainer.pdh;
+       PDH = RobotContainer.pdh;
 
         tiltMotor.setInverted(false);
         tiltMotor.setNeutralMode(NeutralMode.Brake);
@@ -124,7 +124,7 @@ public class TiltSubsystem extends SubsystemBase
         motorCurrentPublisher.set(PDH.getCurrent(10));
 
         //if motor current is over 15amps turn off the motor
-        if(PDH.getCurrent(10) >= 15)
+        if(PDH.getCurrent(10) >= 10)
         {
             tiltMotor.set(ControlMode.PercentOutput, 0);
         }

@@ -1,20 +1,33 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 1.44,
+      "y": 5.5196408968316515
+    },
+    "rotation": 0
+  },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "Start to Amp"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AmpScore"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootNote"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              }
+            ]
           }
         },
         {
@@ -24,7 +37,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp to Note"
+                  "pathName": "Center to center note path"
                 }
               },
               {
@@ -34,18 +47,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Note to Amp"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AmpScore"
           }
         }
       ]

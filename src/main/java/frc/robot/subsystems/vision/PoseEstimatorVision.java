@@ -15,7 +15,7 @@ import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.PoseEstimatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class PoseEstimator extends SubsystemBase
+public class PoseEstimatorVision extends SubsystemBase
 {
     private final DriveSubsystem driveTrain;
     private final SwerveDrivePoseEstimator poseEstimator;
@@ -23,13 +23,13 @@ public class PoseEstimator extends SubsystemBase
 
     private final Field2d field = new Field2d();
 
-    PoseEstimator(Vision _camera, DriveSubsystem _driveTrain)
+    public PoseEstimatorVision(Vision _camera, DriveSubsystem _driveTrain)
     {
         driveTrain = _driveTrain;
         camera = _camera;
 
         poseEstimator = new SwerveDrivePoseEstimator
-        (null, 
+        (driveTrain.getKinematics(), 
         driveTrain.getHeading(), 
         driveTrain.getModulePositions(), 
         driveTrain.getPose(),
