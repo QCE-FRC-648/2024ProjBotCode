@@ -37,6 +37,7 @@ import frc.robot.commands.OperatorCommands.ShootNoteCommand;
 public class RobotContainer 
 {
   public static final PowerDistribution pdh = new PowerDistribution();
+
   private final Vision cam = new Vision(VisionConstants.kCameraName, VisionConstants.camTransform);
 
   // The robot's subsystems and commands are defined here...
