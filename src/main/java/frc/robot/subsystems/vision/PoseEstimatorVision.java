@@ -77,8 +77,8 @@ public class PoseEstimatorVision extends SubsystemBase
 
         try
         {
-            EstimatedRobotPose estimatedRobotPose = camera.getEstimatedRobotPose(poseEstimator.getEstimatedPosition()).get();
-            poseEstimator.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(), estimatedRobotPose.timestampSeconds);
+            //EstimatedRobotPose estimatedRobotPose = camera.getEstimatedRobotPose(poseEstimator.getEstimatedPosition()).get();
+            //poseEstimator.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(), estimatedRobotPose.timestampSeconds);
 
         }
         catch(Exception e){}

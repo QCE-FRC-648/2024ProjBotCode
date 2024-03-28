@@ -37,7 +37,6 @@ import frc.robot.commands.OperatorCommands.ShootNoteCommand;
 public class RobotContainer 
 {
   public static final PowerDistribution pdh = new PowerDistribution();
-
   private final Vision cam = new Vision(VisionConstants.kCameraName, VisionConstants.camTransform);
 
   // The robot's subsystems and commands are defined here...
@@ -91,13 +90,6 @@ public class RobotContainer
 
   private void configureBindings() 
   {
-    
-    driverController.rightTrigger().whileTrue(new RunCommand(
-      ()->driveTrain.setSlowModePower(0.25), driveTrain));
-
-    driverController.rightTrigger().whileFalse(new RunCommand(
-      ()->driveTrain.setSlowModePower(1), driveTrain));
-
     operatorController.x().toggleOnTrue(new RunIntakeCommand(conveyor)); //intake
 
     operatorController.y().toggleOnTrue(new ShootNoteCommand(conveyor, flyWheel));
@@ -109,12 +101,9 @@ public class RobotContainer
 
     operatorController.rightBumper().whileTrue(new EjectNoteCommand(conveyor, flyWheel));
 
-    operatorController.leftTrigger().whileTrue(new ManualClimbCommand
-    (climber, 
-      ()->-operatorController.getLeftTriggerAxis()));
+    operatorController.leftTrigger().whileTrue(new ManualClimbCommand(climber, -1.0));
 
-    operatorController.rightTrigger().whileTrue(new ManualClimbCommand(climber, 
-      ()->operatorController.getRightTriggerAxis()));
+    operatorController.rightTrigger().whileTrue(new ManualClimbCommand(climber, 1.0));
 
 }
 

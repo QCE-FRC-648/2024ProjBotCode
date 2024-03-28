@@ -28,11 +28,12 @@ public class Vision
         photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, robotToCam);
     }
 
+    /* 
     public Optional<EstimatedRobotPose> getEstimatedRobotPose(Pose2d prevEstimatedRobotPose)
     {
         photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
         return photonPoseEstimator.update();
-    }
+    }*/
 
     public PhotonPipelineResult getLatestResult()
     {

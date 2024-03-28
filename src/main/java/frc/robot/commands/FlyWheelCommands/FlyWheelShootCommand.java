@@ -1,6 +1,4 @@
 package frc.robot.commands.FlyWheelCommands;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FlyWheelSubsystem;
 
@@ -50,9 +48,7 @@ public class FlyWheelShootCommand extends Command
 
     @Override
     public boolean isFinished()
-    {
-        SmartDashboard.putNumber("count", counter);
-        
+    {        
         if(counter == 4)
         {
             return true;

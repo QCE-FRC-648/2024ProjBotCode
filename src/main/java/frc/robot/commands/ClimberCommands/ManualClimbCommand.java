@@ -1,21 +1,20 @@
 package frc.robot.commands.ClimberCommands;
-
-import java.util.function.Supplier;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.Constants.ClimberConstants;
 
-public class ManualClimbCommand extends Command{
+public class ManualClimbCommand extends Command
+{
 
     private final ClimberSubsystem climber;
-    private final Supplier<Double> rightJoystickY;
+    private final double speed;
 
-    public ManualClimbCommand(ClimberSubsystem subsystem, Supplier<Double> _rightJoystickY)
+    public ManualClimbCommand(ClimberSubsystem subsystem, Double _speed)
     {
         addRequirements(subsystem);
         climber = subsystem;
-        rightJoystickY = _rightJoystickY;
+        speed = _speed;
     }
     
     @Override
@@ -24,18 +23,17 @@ public class ManualClimbCommand extends Command{
     @Override
     public void execute() 
     {
-        double rightY = rightJoystickY.get();
-
-        climber.setClimberSpeeds(rightY);
+        SmartDashboard.putNumber("climber speed", speed);
+        climber.setClimberSpeeds(speed);
     }
 
     @Override
     public boolean isFinished()
     {
-        if(climber.getCurrent(ClimberConstants.kClimber1PDH) > ClimberConstants.currentMax || climber.getCurrent(ClimberConstants.kClimber2PDH) > ClimberConstants.currentMax) 
+        /*if(climber.getCurrent(ClimberConstants.kClimber1PDH) > ClimberConstants.currentMax || climber.getCurrent(ClimberConstants.kClimber2PDH) > ClimberConstants.currentMax) 
         {
             return true;
-        }
+        }*/
         return false;
     }
 

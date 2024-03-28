@@ -37,7 +37,7 @@ public final class Constants
 
     //Not the maxium capable speed of the robot 
     //but an allowed max speed of the robot
-    public static final double kMaxSpeedMetersPerSecond = 4.5;
+    public static final double kMaxSpeedMetersPerSecond = 8;
     public static final double kMaxAngularSpeed = 2*Math.PI; //radians per second
 
     public static final double kTrackWidth = Units.inchesToMeters(24.5);
@@ -132,7 +132,7 @@ public final class Constants
   {
     public static final int kClimber1CANId = 25;
     public static final int kClimber2CANId = 26;
-    public static final int currentMax = 5;
+    public static final double currentMax = 1;
     public static final int kClimber1PDH = 14;
     public static final int kClimber2PDH = 15;
   } 
@@ -199,7 +199,6 @@ public final class Constants
   public static class VisionConstants
   {
     public static final String kCameraName = "cameraUwU";
-
 
     //camera monting angle last calculated is 61.21 degrees - yaw
     //Camera position relative to center of the robot in meters
