@@ -91,20 +91,15 @@ public class DriveSubsystem extends SubsystemBase
      */
     public void drive(double xSpeed, double ySpeed, double rotSpeed, boolean fieldRelative) 
     { 
-        double xSpeedCommanded = xSpeed;
-        double ySpeedCommanded = ySpeed;
-        double rotSpeedCommanded = rotSpeed;
-        
-
-        double xSpeedDelivered = xSpeedCommanded * DrivetrainConstants.kMaxSpeedMetersPerSecond;
-        double ySpeedDelivered = ySpeedCommanded * DrivetrainConstants.kMaxSpeedMetersPerSecond;
-        double rotDelivered = rotSpeedCommanded * DrivetrainConstants.kMaxAngularSpeed;
+        xSpeed *= DrivetrainConstants.kMaxSpeedMetersPerSecond;
+        ySpeed *= DrivetrainConstants.kMaxSpeedMetersPerSecond;
+        rotSpeed *= DrivetrainConstants.kMaxAngularSpeed;
 
 
         var swerveModuleStates = DrivetrainConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative ? //if fieldRelative
-                ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, getHeading())
-                :new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
+                ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotSpeed, getHeading())
+                :new ChassisSpeeds(xSpeed, ySpeed, rotSpeed));
 
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DrivetrainConstants.kMaxSpeedMetersPerSecond);

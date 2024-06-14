@@ -2,7 +2,6 @@ package frc.robot.commands.ClimberCommands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.Constants.ClimberConstants;
 
 public class ManualClimbCommand extends Command
 {
@@ -30,6 +29,10 @@ public class ManualClimbCommand extends Command
     @Override
     public boolean isFinished()
     {
+        if(climber.getLimitSwitchRight() || climber.getLimitSwitchLeft())
+        {
+            return false;
+        }
         /*if(climber.getCurrent(ClimberConstants.kClimber1PDH) > ClimberConstants.currentMax || climber.getCurrent(ClimberConstants.kClimber2PDH) > ClimberConstants.currentMax) 
         {
             return true;

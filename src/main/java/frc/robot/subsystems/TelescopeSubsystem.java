@@ -61,7 +61,7 @@ public class TelescopeSubsystem extends SubsystemBase
         pidOutputPublisher = instance.getDoubleTopic("TelescopeSubsystem/PID/Output").publish();
         pidAtSetpointPublisher = instance.getBooleanTopic("TelescopeSubsystem/PID/AtSetpoint").publish();
 
-        Timer.delay(3);
+        Timer.delay(3.5);
         encoder.reset();
     }
 

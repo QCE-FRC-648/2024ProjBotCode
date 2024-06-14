@@ -6,7 +6,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -20,6 +22,13 @@ public class ClimberSubsystem extends SubsystemBase
     private final NetworkTableInstance instance;
     private final DoublePublisher climber1CurrentPublisher;
     private final DoublePublisher climber2CurrentPublisher;
+    private final DoublePublisher climber1PrecentPublisher;
+    private final DoublePublisher climber2PrecentPublisher;
+
+    
+    private final DigitalInput limitSwitchRight = new DigitalInput(0);
+    private final DigitalInput limitSwitchLeft = new DigitalInput(1);
+
 
     public ClimberSubsystem()
     {
@@ -31,6 +40,18 @@ public class ClimberSubsystem extends SubsystemBase
         instance = NetworkTableInstance.getDefault();
         climber1CurrentPublisher = instance.getDoubleTopic("/ClimberSubsystem/MotorsInfo/Climber1/Current").publish();
         climber2CurrentPublisher = instance.getDoubleTopic("/ClimberSubsystem/MotorsInfo/Climber2/Current").publish();
+        climber1PrecentPublisher = instance.getDoubleTopic("/ClimberSubsystem/MotorsInfo/Climber1/Precent").publish();
+        climber2PrecentPublisher = instance.getDoubleTopic("/ClimberSubsystem/MotorsInfo/Climber2/Precent").publish();
+    }
+
+    public boolean getLimitSwitchRight()
+    {
+        return limitSwitchRight.get();
+    }
+
+    public boolean getLimitSwitchLeft()
+    {
+        return limitSwitchLeft.get();
     }
 
     public double getCurrent(int num) 
@@ -49,5 +70,11 @@ public class ClimberSubsystem extends SubsystemBase
     {
         climber1CurrentPublisher.set(getCurrent(ClimberConstants.kClimber1PDH));
         climber2CurrentPublisher.set(getCurrent(ClimberConstants.kClimber2PDH));
+        climber1PrecentPublisher.set(climber1.get());
+        climber2PrecentPublisher.set(climber2.get());
+
+        SmartDashboard.getBoolean("limitSwitchRight", limitSwitchRight.get());
+        SmartDashboard.getBoolean("limitSwitchRight", limitSwitchLeft.get());
+
     }
 }

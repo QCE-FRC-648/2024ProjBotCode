@@ -104,7 +104,6 @@ public class RobotContainer
     operatorController.leftTrigger().whileTrue(new ManualClimbCommand(climber, -1.0));
 
     operatorController.rightTrigger().whileTrue(new ManualClimbCommand(climber, 1.0));
-
 }
 
   /**

@@ -64,11 +64,6 @@ public final class Constants
       kMaxSpeedMetersPerSecond,
       new Translation2d(kWheelBase/2, kTrackWidth/2).getNorm(), //front left offset of kinematics
       new ReplanningConfig());
-
-      //for slew rate limits
-      public static final double kDirectionSlewRate = 2; // radians per second
-      public static final double kMagnitudeSlewRate = 2; // percent per second (1 = 100%)
-      public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
   }
 
   public static class FlyWheelConstants
@@ -164,7 +159,7 @@ public final class Constants
     public static final double kTurningEncoderVelocityFactor = kTurningEncoderPositionFactor / 60.0; //radians per second
 
     //constants for the PIDs
-    public static final double kDrivingP = 0.005;
+    public static final double kDrivingP = 0.006;
     public static final double kDrivingI = 0;
     public static final double kDrivingD = 0;
     public static final double kDrivingFF = 1/kDrivingWheelFreeSpeedRPS;
