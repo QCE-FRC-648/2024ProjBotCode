@@ -26,7 +26,7 @@ public class AmpPosCommand extends SequentialCommandGroup
                 new TelescopeCommand(telescope, Units.inchesToMeters(8)),
                 new TiltCommand(tilt, Units.degreesToRadians(90))
             ),
-            new TiltCommand(tilt, Units.degreesToRadians(130))
+            new TiltCommand(tilt, Units.degreesToRadians(130)) //change
         );
     }
 }

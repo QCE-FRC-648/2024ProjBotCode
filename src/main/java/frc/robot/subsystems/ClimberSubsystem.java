@@ -73,8 +73,8 @@ public class ClimberSubsystem extends SubsystemBase
         climber1PrecentPublisher.set(climber1.get());
         climber2PrecentPublisher.set(climber2.get());
 
-        SmartDashboard.getBoolean("limitSwitchRight", limitSwitchRight.get());
-        SmartDashboard.getBoolean("limitSwitchRight", limitSwitchLeft.get());
+        SmartDashboard.putBoolean("limitSwitchRight", limitSwitchRight.get());
+        SmartDashboard.putBoolean("limitSwitchLeft", limitSwitchLeft.get());
 
     }
 }

@@ -96,13 +96,17 @@ public class RobotContainer
 
     //operatorController.a().toggleOnTrue(Commands.deadline(new FlywheelHoldCommand(flyWheel), new FeedShooterCommand(conveyor)));
     
+    //amp setting
     operatorController.leftBumper().toggleOnTrue(new AmpPosCommand(telescope, tilt, conveyor, flyWheel));
     operatorController.leftBumper().toggleOnFalse(new ResetShooterCommand(telescope, tilt));
 
+    //eject note
     operatorController.rightBumper().whileTrue(new EjectNoteCommand(conveyor, flyWheel));
 
+    //climb controls
     operatorController.leftTrigger().whileTrue(new ManualClimbCommand(climber, -1.0));
 
+    //up
     operatorController.rightTrigger().whileTrue(new ManualClimbCommand(climber, 1.0));
 }
 

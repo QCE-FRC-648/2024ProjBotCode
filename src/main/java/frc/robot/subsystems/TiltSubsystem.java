@@ -66,7 +66,7 @@ public class TiltSubsystem extends SubsystemBase
 
         motorCurrentPublisher = instance.getDoubleTopic("/TiltSubsystem/MotorInfo/Climber1/Current").publish();
 
-        Timer.delay(3);
+        Timer.delay(3.5);
         getOffset();
   
     }

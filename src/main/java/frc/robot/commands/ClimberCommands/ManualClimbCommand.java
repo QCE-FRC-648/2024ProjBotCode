@@ -29,14 +29,11 @@ public class ManualClimbCommand extends Command
     @Override
     public boolean isFinished()
     {
-        if(climber.getLimitSwitchRight() || climber.getLimitSwitchLeft())
-        {
-            return false;
-        }
-        /*if(climber.getCurrent(ClimberConstants.kClimber1PDH) > ClimberConstants.currentMax || climber.getCurrent(ClimberConstants.kClimber2PDH) > ClimberConstants.currentMax) 
+        if((climber.getLimitSwitchRight() || !climber.getLimitSwitchLeft()) && speed == -1)
         {
             return true;
-        }*/
+        }
+        
         return false;
     }
 
